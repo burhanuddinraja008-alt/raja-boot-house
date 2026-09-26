@@ -18,6 +18,8 @@
     { n: 15, brand: 'V Shape', name: 'V Shape Flip-flop', colour: 'Black / Red', offer: '\u20B9120', c: '18-c15.jpg', f: ['36-f15.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+V+Shape+Flip-flop+%28Black%2FRed%29+-+Rs+120.+Please+share+available+sizes.+%2815%29') },
     { n: 16, brand: 'Combit', name: 'Combit Slide', colour: 'Black', offer: '\u20B9250', mrp: '\u20B9460', c: '19-c16.jpg', f: ['37-f16.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Combit+Slide+%28Black%29+-+Rs+250+%28MRP+Rs+460%29.+Please+share+available+sizes.+%2816%29') },
     { n: 17, brand: 'Combit', name: 'Combit Slide', colour: 'Red / Black', offer: '\u20B9250', mrp: '\u20B9460', c: '20-c17.jpg', f: ['38-f17.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Combit+Slide+%28Red%29+-+Rs+250+%28MRP+Rs+460%29.+Please+share+available+sizes.+%2817%29') }
+,
+    { n: 18, brand: 'RBH', name: 'Crocs', colour: 'White / Grey / Black', offer: '\u20B9150', mrp: '\u20B9250', sizes: '7 se 10', c: '1-c18.jpg', f: ['2-f18.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Crocs+%28White%2FGrey%2FBlack%29+-+Rs+150+%28MRP+Rs+250%29.+Size+7-10+mein+se+confirm+karenge.+%2818%29') }
   ];
 
   function card(it) {
@@ -29,7 +31,7 @@
       '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy">' +
       (it.mrp ? '<div class="mrp">MRP ' + it.mrp + '</div>' : '') +
       '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein') + '</div>' +
-      '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> WhatsApp par confirm karein</div></div>' +
+      '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + (it.sizes || 'WhatsApp par confirm karein') + '</div></div>' +
       '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>';
     el.addEventListener('click', function (e) {
       if (e.target.closest('a')) return;
