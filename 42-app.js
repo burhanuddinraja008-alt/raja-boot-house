@@ -116,7 +116,7 @@
 
   stage.addEventListener('pointerdown', function (e) {
     if (e.target.closest('button')) return;
-    stage.setPointerCapture(e.pointerId);
+    try { stage.setPointerCapture(e.pointerId); } catch (_) {}
     pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pts.size === 2) {
       var p = Array.from(pts.values());
