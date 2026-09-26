@@ -76,3 +76,10 @@ body {
 .lb-prev { left: 6px; }
 .lb-next { right: 6px; }
 .lb-cap { text-align: center; font-size: 12px; color: #cfc4a9; padding: 10px 0 4px; }
+
+/* ---- Instagram reels section ---- */
+.reels-sub { font-size: 14px; color: #6b6259; margin-bottom: 10px; }
+.reel-feature iframe, .reel-grid-embed iframe { width: 100%; border: 1px solid #e7e2d6; border-radius: 12px; background: #fff; display: block; }
+.reel-feature iframe { height: 640px; }
+.reel-grid-embed iframe { height: 440px; }
+.reels-h3 { font-size: 15px; margin: 16px 0 8px; color: #8a6d1f; }
