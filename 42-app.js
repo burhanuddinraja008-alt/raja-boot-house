@@ -115,6 +115,7 @@
   function mid(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
 
   stage.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('button')) return;
     stage.setPointerCapture(e.pointerId);
     pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pts.size === 2) {
