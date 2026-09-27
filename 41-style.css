@@ -86,7 +86,9 @@ body {
 .reels-h3 { font-size: 15px; margin: 16px 0 8px; color: #8a6d1f; }
 
 /* ---- Category icon row (Flipkart-style) ---- */
-.catrow { display: flex; gap: 10px; justify-content: space-between; }
+.catrow { display: flex; gap: 10px; justify-content: space-between; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.catrow::-webkit-scrollbar { display: none; }
+.catrow a { flex-shrink: 0; }
 .catrow a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: #251f21; font-size: 12px; font-weight: 600; text-align: center; line-height: 1.25; }
 .catrow img { width: 64px; height: 64px; border-radius: 50%; border: 2px solid #8a6d1f; background: #fff; object-fit: cover; box-shadow: 0 1px 3px rgba(37,31,33,0.12); }
 section[id] { scroll-margin-top: 10px; }
