@@ -459,6 +459,11 @@
       firebase.initializeApp(FBCFG);
       db = firebase.firestore();
       loadRevs();
+      if (firebase.auth) {
+        auth = firebase.auth();
+        auth.onAuthStateChanged(function (u) { onUser(u); setTimeout(showLpop, 1200); });
+      } else { setTimeout(showLpop, 1200); }
+      countVisit();
     }
   } catch (e) { db = null; }
 
@@ -485,4 +490,254 @@
       revMsg.textContent = 'Review save nahi ho paya - net check karke phir try karein.';
     }).finally(function () { revSubmit.disabled = false; });
   });
+
+  /* ---------- A+B: bag, Google login, visitor counter, owner panel ---------- */
+  var OWNER = 'burhanuddinraja008@gmail.com',
+      SITE = 'https://burhanuddinraja008-alt.github.io/raja-boot-house/',
+      auth = null, curUser = null;
+
+  function esc(s) { return (s + '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function todayKey() { var d = new Date(); function p(x) { return (x < 10 ? '0' : '') + x; } return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+
+  /* --- Google login --- */
+  var loginBtn = document.getElementById('login-btn'),
+      lpop = document.getElementById('loginpop'),
+      lpopMsg = document.getElementById('lpop-msg'),
+      umenu = document.getElementById('usermenu');
+
+  function showLpop() {
+    if (!lpop) return;
+    if (localStorage.getItem('rbhSkipLogin') === '1') return;
+    if (curUser) return;
+    if (location.hash === '#admin') return;
+    lpop.hidden = false;
+  }
+  function hideLpop() { if (lpop) lpop.hidden = true; }
+  function googleLogin() {
+    if (!auth) { if (lpopMsg) lpopMsg.textContent = 'Login abhi available nahi - internet check karein.'; return; }
+    if (lpopMsg) lpopMsg.textContent = '';
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function (e) {
+      if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return;
+      if (lpopMsg) lpopMsg.textContent = 'Login nahi hua - dubara try karein.';
+    });
+  }
+  if (lpop) {
+    document.getElementById('lpop-skip').addEventListener('click', function () {
+      localStorage.setItem('rbhSkipLogin', '1');
+      hideLpop();
+    });
+    document.getElementById('lpop-google').addEventListener('click', googleLogin);
+  }
+  if (loginBtn) loginBtn.addEventListener('click', function () {
+    if (curUser) { if (umenu) umenu.hidden = !umenu.hidden; return; }
+    if (lpop) lpop.hidden = false;
+  });
+  var umLogout = document.getElementById('umenu-logout'),
+      umAdmin = document.getElementById('umenu-admin'),
+      umEmail = document.getElementById('umenu-email');
+  if (umLogout) umLogout.addEventListener('click', function () { if (auth) auth.signOut(); if (umenu) umenu.hidden = true; });
+  if (umAdmin) umAdmin.addEventListener('click', function () {
+    if (umenu) umenu.hidden = true;
+    if (location.hash === '#admin') { openAdmin(); } else { location.hash = 'admin'; }
+  });
+  function onUser(u) {
+    curUser = u;
+    if (u) {
+      hideLpop();
+      if (loginBtn) loginBtn.textContent = (u.displayName || 'Aap').split(' ')[0];
+      if (umEmail) umEmail.textContent = u.email || '';
+      if (umAdmin) umAdmin.hidden = (u.email !== OWNER);
+      if (db) {
+        var ref = db.collection('customers').doc(u.uid);
+        ref.get().then(function (s) {
+          var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
+          if (!s.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
+          return ref.set(d, { merge: true });
+        }).catch(function () {});
+      }
+      var adm = document.getElementById('admin');
+      if (adm && !adm.hidden) renderAdmin();
+    } else if (loginBtn) { loginBtn.textContent = 'Login'; }
+  }
+
+  /* --- Visitor counter (Firestore daily) --- */
+  function countVisit() {
+    if (!db) return;
+    var docRef = db.collection('visitors').doc(todayKey());
+    var done = false;
+    try { done = sessionStorage.getItem('rbhCounted') === todayKey(); } catch (e) {}
+    var p = done ? Promise.resolve() : docRef.set({ count: firebase.firestore.FieldValue.increment(1) }, { merge: true }).then(function () {
+      try { sessionStorage.setItem('rbhCounted', todayKey()); } catch (e) {}
+    });
+    p.then(function () { return docRef.get(); }).then(function (s) {
+      if (s.exists) {
+        var el = document.getElementById('visline');
+        if (el) { el.textContent = 'Aaj yahan ' + s.data().count + ' log aaye.'; el.hidden = false; }
+      }
+    }).catch(function () {});
+  }
+
+  /* --- Shopping bag --- */
+  var BAGKEY = 'rbhBag',
+      bagEl = document.getElementById('bag'),
+      bagItems = document.getElementById('bag-items'),
+      bagTotal = document.getElementById('bag-total'),
+      bagOrder = document.getElementById('bag-order'),
+      bagCount = document.getElementById('bag-count');
+
+  function getBag() { try { var b = JSON.parse(localStorage.getItem(BAGKEY)); return b && b.length ? b : []; } catch (e) { return []; } }
+  function saveBag(b) { try { localStorage.setItem(BAGKEY, JSON.stringify(b)); } catch (e) {} refreshBadge(); }
+  function priceNum(it) { if (!it.offer) return 0; var m = (it.offer + '').replace(/[^0-9]/g, ''); return m ? parseInt(m, 10) : 0; }
+  function refreshBadge() {
+    if (!bagCount) return;
+    var n = 0; getBag().forEach(function (x) { n += x.qty; });
+    bagCount.hidden = n === 0;
+    bagCount.textContent = n;
+  }
+  function addToBag(it, col, size, q) {
+    var b = getBag(), found = false;
+    b.forEach(function (x) { if (x.n === it.n && x.col === col && x.size === size) { x.qty = Math.min(10, x.qty + q); found = true; } });
+    if (!found) b.push({ n: it.n, col: col, size: size, qty: q });
+    saveBag(b);
+  }
+  function bagMsg() {
+    var b = getBag(), lines = ['Namaste Raja Boot House! Mera order:'], total = 0, unsure = 0;
+    b.forEach(function (x, i) {
+      var it = byN[x.n]; if (!it) return;
+      var p = priceNum(it) * x.qty; total += p; if (!priceNum(it)) unsure++;
+      lines.push((i + 1) + ') ' + it.name + ' (' + x.col + ', #' + it.n + ') - Size ' + (x.size || 'confirm karna hai') + ' x ' + x.qty + (p ? ' = Rs ' + p : ' (price WhatsApp par)'));
+      lines.push('Photo: ' + SITE + it.c);
+      lines.push('Link: ' + SITE + '#p' + it.n);
+    });
+    lines.push('Total: Rs ' + total + (unsure ? ' + kuch items ka price WhatsApp par confirm hoga' : ''));
+    return lines.join('\n');
+  }
+  function renderBag() {
+    if (!bagItems) return;
+    var b = getBag();
+    bagItems.innerHTML = '';
+    if (!b.length) {
+      bagItems.innerHTML = '<p class="bag-empty">Bag khaali hai - pasand ka footwear add karein.</p>';
+      bagTotal.textContent = '';
+      bagOrder.hidden = true;
+      return;
+    }
+    bagOrder.hidden = false;
+    var total = 0, unsure = 0;
+    b.forEach(function (x, idx) {
+      var it = byN[x.n]; if (!it) return;
+      var p = priceNum(it), line = p * x.qty; total += line; if (!p) unsure++;
+      var row = document.createElement('div'); row.className = 'bagrow';
+      var img = document.createElement('img'); img.src = it.c; img.alt = it.name;
+      var bi = document.createElement('div'); bi.className = 'bi';
+      var t = document.createElement('b'); t.textContent = it.name;
+      var s = document.createElement('span'); s.textContent = x.col + (x.size ? ' - Size ' + x.size : '') + ' (#' + it.n + ')';
+      var pr = document.createElement('div'); pr.className = 'bprice';
+      pr.textContent = p ? 'Rs ' + p + ' x ' + x.qty + ' = Rs ' + line : 'Price WhatsApp par confirm hoga';
+      bi.appendChild(t); bi.appendChild(s); bi.appendChild(pr);
+      var right = document.createElement('div'); right.className = 'bright';
+      var qb = document.createElement('div'); qb.className = 'qty qty-sm';
+      var mn = document.createElement('button'); mn.type = 'button'; mn.textContent = '−'; mn.setAttribute('aria-label', 'Kam');
+      var qv = document.createElement('span'); qv.textContent = x.qty;
+      var pl = document.createElement('button'); pl.type = 'button'; pl.textContent = '+'; pl.setAttribute('aria-label', 'Zyada');
+      mn.addEventListener('click', function () { x.qty = Math.max(1, x.qty - 1); b[idx] = x; saveBag(b); renderBag(); });
+      pl.addEventListener('click', function () { x.qty = Math.min(10, x.qty + 1); b[idx] = x; saveBag(b); renderBag(); });
+      qb.appendChild(mn); qb.appendChild(qv); qb.appendChild(pl);
+      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'bag-rm'; rm.textContent = 'Hatao';
+      rm.addEventListener('click', function () { b.splice(idx, 1); saveBag(b); renderBag(); });
+      right.appendChild(qb); right.appendChild(rm);
+      row.appendChild(img); row.appendChild(bi); row.appendChild(right);
+      bagItems.appendChild(row);
+    });
+    bagTotal.innerHTML = '';
+    var t1 = document.createElement('span'); t1.textContent = 'Total';
+    var t2 = document.createElement('span'); t2.textContent = 'Rs ' + total + (unsure ? ' (+ kuch price WhatsApp par)' : '');
+    bagTotal.appendChild(t1); bagTotal.appendChild(t2);
+    bagOrder.href = WA(encodeURIComponent(bagMsg()));
+  }
+  function openBag() { renderBag(); if (bagEl) { bagEl.hidden = false; document.body.style.overflow = 'hidden'; } }
+  function closeBag() { if (bagEl) { bagEl.hidden = true; document.body.style.overflow = ''; } }
+  var bagBtn = document.getElementById('bag-btn'),
+      bagClose = document.getElementById('bag-close'),
+      pdpAddbag = document.getElementById('pdp-addbag');
+  if (bagBtn) bagBtn.addEventListener('click', function () {
+    if (location.hash === '#bag') { openBag(); } else { location.hash = 'bag'; }
+  });
+  if (bagClose) bagClose.addEventListener('click', closeBag);
+  if (pdpAddbag) pdpAddbag.addEventListener('click', function () {
+    if (!curIt) return;
+    addToBag(curIt, curCol, curSize, qty);
+    var btn = this, old = btn.textContent;
+    btn.textContent = 'Bag mein daal diya ✓';
+    setTimeout(function () { btn.textContent = old; }, 1500);
+  });
+  refreshBadge();
+
+  /* --- Owner admin panel --- */
+  var adminEl = document.getElementById('admin'),
+      adminBody = document.getElementById('admin-body'),
+      adminClose = document.getElementById('admin-close');
+  function fmtTs(ts) {
+    try { var d = ts.toDate(); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ', ' + d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }); } catch (e) { return ''; }
+  }
+  function renderAdmin() {
+    if (!adminBody) return;
+    adminBody.innerHTML = '';
+    if (!curUser) {
+      var p0 = document.createElement('p'); p0.className = 'bag-empty';
+      p0.textContent = 'Owner panel ke liye pehle Google se login karein.';
+      adminBody.appendChild(p0);
+      var lb = document.createElement('button'); lb.className = 'btn pdp-cta'; lb.type = 'button';
+      lb.textContent = 'Google se login karein';
+      lb.addEventListener('click', googleLogin);
+      adminBody.appendChild(lb);
+      return;
+    }
+    if (curUser.email !== OWNER) {
+      var p1 = document.createElement('p'); p1.className = 'bag-empty';
+      p1.textContent = 'Ye page sirf shop owner ke liye hai.';
+      adminBody.appendChild(p1);
+      return;
+    }
+    var s1 = document.createElement('div'); s1.className = 'adm-sec';
+    s1.innerHTML = '<h3>Aaj ka hisab</h3><p class="adm-load">Load ho raha hai...</p>';
+    var s2 = document.createElement('div'); s2.className = 'adm-sec';
+    s2.innerHTML = '<h3>Customers (Google login)</h3><p class="adm-load">Load ho raha hai...</p>';
+    var s3 = document.createElement('div'); s3.className = 'adm-sec';
+    s3.innerHTML = '<h3>Visitors - roz ka count</h3><p class="adm-load">Load ho raha hai...</p>';
+    adminBody.appendChild(s1); adminBody.appendChild(s2); adminBody.appendChild(s3);
+    db.collection('customers').orderBy('lastLoginAt', 'desc').limit(100).get().then(function (snap) {
+      var html = '';
+      if (!snap.size) { html = '<p class="adm-load">Abhi koi customer login nahi hua.</p>'; }
+      else {
+        html = '<table class="adm-table"><tr><th>Naam</th><th>Email</th><th>Last login</th></tr>';
+        snap.forEach(function (d) { var v = d.data(); html += '<tr><td>' + esc(v.name) + '</td><td>' + esc(v.email) + '</td><td>' + fmtTs(v.lastLoginAt) + '</td></tr>'; });
+        html += '</table>';
+      }
+      s2.innerHTML = '<h3>Customers (Google login) - ' + snap.size + '</h3>' + html;
+      return db.collection('visitors').orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(14).get();
+    }).then(function (vs) {
+      var today = 0, rows = '';
+      vs.forEach(function (d) { if (d.id === todayKey()) today = d.data().count; rows += '<tr><td>' + d.id + '</td><td>' + d.data().count + '</td></tr>'; });
+      s1.innerHTML = '<h3>Aaj ka hisab</h3><p class="adm-big">Aaj ke visitors: <b>' + today + '</b></p>';
+      s3.innerHTML = '<h3>Visitors - roz ka count</h3>' + (rows ? '<table class="adm-table"><tr><th>Date</th><th>Visitors</th></tr>' + rows + '</table>' : '<p class="adm-load">Abhi koi data nahi.</p>');
+    }).catch(function () {
+      [s1, s2, s3].forEach(function (s) { var l = s.querySelector('.adm-load'); if (l) l.textContent = 'Data nahi mila - internet check karein.'; });
+    });
+  }
+  function openAdmin() { renderAdmin(); if (adminEl) { adminEl.hidden = false; document.body.style.overflow = 'hidden'; } }
+  function closeAdmin() { if (adminEl) { adminEl.hidden = true; document.body.style.overflow = ''; } }
+  if (adminClose) adminClose.addEventListener('click', closeAdmin);
+
+  /* --- Deep links: #p12, #bag, #admin --- */
+  function handleHash() {
+    var h = location.hash;
+    if (h === '#bag') { openBag(); return; }
+    if (h === '#admin') { openAdmin(); return; }
+    var m = h.match(/^#p(\d+)$/);
+    if (m && byN[+m[1]]) { openPdp(byN[+m[1]]); }
+  }
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
+
 })();
