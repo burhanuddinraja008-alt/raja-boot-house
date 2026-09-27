@@ -20,6 +20,8 @@
     { n: 17, brand: 'Combit', name: 'Combit Slide', colour: 'Red / Black', offer: '\u20B9250', mrp: '\u20B9460', c: '20-c17.jpg', f: ['38-f17.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Combit+Slide+%28Red%29+-+Rs+250+%28MRP+Rs+460%29.+Please+share+available+sizes.+%2817%29') }
 ,
     { n: 18, brand: 'RBH', name: 'Crocs', colour: 'White / Grey / Black', offer: '\u20B9150', mrp: '\u20B9250', sizes: '7 se 10', c: '1-c18.jpg', f: ['2-f18.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Crocs+%28White%2FGrey%2FBlack%29+-+Rs+150+%28MRP+Rs+250%29.+Size+7-10+mein+se+confirm+karenge.+%2818%29') }
+,
+    { n: 19, brand: 'RBH', name: 'Flip-flop', colour: 'White', offer: '\u20B9100', sizes: '6/10', c: '1-c19.jpg', f: ['2-f19.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Flip-flop+%28White%29+-+Rs+100.+Size+6%2F10.+Stock+limited%21+%2819%29') }
   ];
 
   function card(it) {
