@@ -19,9 +19,18 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="RBH">
 <link rel="icon" href="1-logo-new.jpg">
-<link rel="stylesheet" href="41-style.css?v=9">
+<link rel="stylesheet" href="41-style.css?v=10">
 </head>
 <body>
+<div class="topbar">
+  <button class="tb-btn" id="login-btn" type="button">Login</button>
+  <button class="tb-btn tb-bag" id="bag-btn" type="button" aria-label="Bag kholen" title="Aapka Bag"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#f6efe2;"><path d="M18 6h-2c0-2.2-1.8-4-4-4S8 3.8 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></svg><span class="tb-badge" id="bag-count" hidden>0</span></button>
+</div>
+<div class="umenu" id="usermenu" hidden>
+  <p id="umenu-email"></p>
+  <a href="#admin" id="umenu-admin" hidden>Owner panel</a>
+  <button type="button" id="umenu-logout">Logout</button>
+</div>
 <main class="page">
   <p class="topline">RAJA BOOT HOUSE &bull; DHARNI</p>
   <header class="hero">
@@ -135,7 +144,8 @@
     <a class="btn btn-dark" id="install-btn" hidden>App install karein</a>
     <p class="reels-sub" id="apptip" hidden>App install ke liye site ko Chrome browser mein kholein - upar 3 dot (&hellip;) &gt; "Open in Chrome".</p>
   </section>
-  <footer class="note">Prices 26 September 2026 ke shop posters se hain. Stock limited hai - size aur availability WhatsApp par confirm karein. Yahan koi online payment ya cart nahi hai; order WhatsApp par final hota hai.</footer>
+  <footer class="note">Prices 26 September 2026 ke shop posters se hain. Stock limited hai - size aur availability WhatsApp par confirm karein. Yahan koi online payment nahi hai - bag bhar kar order WhatsApp par final hota hai.</footer>
+  <p class="visline" id="visline" hidden></p>
 </main>
 <div class="pdp" id="pdp" hidden>
   <div class="pdp-top">
@@ -161,6 +171,7 @@
     <div class="chips" id="pdp-sizes"></div>
     <div class="pdp-label">Quantity</div>
     <div class="qty"><button type="button" id="q-minus" aria-label="Kam">&minus;</button><span id="q-val">1</span><button type="button" id="q-plus" aria-label="Zyada">+</button></div>
+    <button class="btn pdp-addbag" id="pdp-addbag" type="button">Add to Bag</button>
     <a class="btn pdp-cta" id="pdp-order" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
     <div class="offers-box" id="pdp-offers"><b>Available offers</b><p>&#129344; Diwali Offer - Coming Soon!</p></div>
     <div class="steps-box">
@@ -181,6 +192,38 @@
     <div class="rel-row" id="pdp-rel"></div>
   </div>
 </div>
+<div class="pdp" id="bag" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="bag-close" aria-label="Band karein">&times;</button>
+    <span class="pdp-toptitle">Aapka Bag</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <div id="bag-items"></div>
+    <div class="bag-total" id="bag-total"></div>
+    <a class="btn pdp-cta btn-wa" id="bag-order" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+    <p class="bag-note">Order WhatsApp par confirm hoga - size, stock aur payment wahi final honge.</p>
+  </div>
+</div>
+<div class="pdp" id="admin" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="admin-close" aria-label="Band karein">&times;</button>
+    <span class="pdp-toptitle">Owner Panel</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="admin-body"></div>
+</div>
+<div class="lpop" id="loginpop" hidden>
+  <div class="lpop-card">
+    <img src="1-logo-new.jpg" alt="Raja Boot House logo" class="lpop-logo">
+    <h2>Login to Raja Boot House</h2>
+    <p>for best quality footwear</p>
+    <button class="btn lpop-g" id="lpop-google" type="button"><svg width="18" height="18" viewBox="0 0 24 24" style="width:18px;height:18px;"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l3.7 2.9c2.3-2.1 3.7-5.2 3.7-8.6z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.7-2.9c-1 .7-2.4 1.2-4.2 1.2-3.2 0-5.9-2.1-6.8-5H1.3v3C3.3 21.3 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.3 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.7.4-2.4v-3H1.3C.5 8.2 0 10 0 12s.5 3.8 1.3 5.4l4-3z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.3 2.7 1.3 6.6l4 3c.9-2.8 3.6-4.9 6.7-4.9z"/></svg>Google se login karein</button>
+    <p class="lpop-note">Sirf aapka naam aur email aata hai.</p>
+    <button class="lpop-skip" id="lpop-skip" type="button">Baad mein</button>
+    <p class="lpop-msg" id="lpop-msg"></p>
+  </div>
+</div>
 <div class="lb" id="lb" hidden>
   <div class="lb-top">
     <span class="lb-title" id="lb-title"></span>
@@ -196,7 +239,8 @@
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="42-app.js?v=9"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="42-app.js?v=10"></script>
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
 var deferredPrompt = null;
