@@ -111,6 +111,7 @@
     <a class="btn btn-dark" href="https://wa.me/919022150546?text=Hi+Raja+Boot+House%21+I+saw+your+website+and+have+a+question.">WhatsApp to Order</a>
     <a class="btn btn-dark" href="https://maps.app.goo.gl/eQ2NU3e2YMCHUP7F6" target="_blank" rel="noopener">Raasta dekho (Google Maps)</a>
     <a class="btn btn-dark" id="install-btn" hidden>App install karein</a>
+    <p class="reels-sub" id="apptip" hidden>App install ke liye site ko Chrome browser mein kholein - upar 3 dot (&hellip;) &gt; "Open in Chrome".</p>
   </section>
   <footer class="note">Prices 26 September 2026 ke shop posters se hain. Stock limited hai - size aur availability WhatsApp par confirm karein. Yahan koi online payment ya cart nahi hai; order WhatsApp par final hota hai.</footer>
 </main>
@@ -134,8 +135,11 @@ var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
   deferredPrompt = e;
+  var inApp = /FBAN|FBAV|Instagram|WhatsApp|; wv\)/i.test(navigator.userAgent);
+  var tip = document.getElementById('apptip');
+  if (inApp && tip) { tip.hidden = false; }
   var b = document.getElementById('install-btn');
-  if (b) b.hidden = false;
+  if (b && !inApp) b.hidden = false;
 });
 document.addEventListener('click', function (e) {
   var b = e.target.closest('#install-btn');
