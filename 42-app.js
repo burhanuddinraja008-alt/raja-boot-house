@@ -33,7 +33,8 @@
       (it.mrp ? '<div class="mrp">MRP ' + it.mrp + '</div>' : '') +
       '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein') + '</div>' +
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
-      '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>';
+      '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>' +
+      '<a class="rlink" href="' + WA('Hi+Raja+Boot+House%21+Mera+review+-+' + encodeURIComponent(it.name + ' (' + it.colour + ', #' + it.n + ')') + '%3A%0A') + '" target="_blank" rel="noopener">Apna review likhein</a>';
     el.addEventListener('click', function (e) {
       if (e.target.closest('a')) return;
       openLb(it);
