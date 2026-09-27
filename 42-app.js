@@ -85,6 +85,9 @@
   var byN = {};
   items.forEach(function (i) { byN[i.n] = i; });
   function pick(ns) { return ns.map(function (n) { return byN[n]; }); }
+  /* --- Trending (front page top): user-picked offer posters as card photos for products 6 & 7 --- */
+  var TRENDIMG = { 6: '1-trending-power-olive.jpg', 7: '2-trending-power-navy.jpg' };
+  fill('grid-trending', pick([6, 7]).map(function (it) { var t = Object.assign({}, it); if (TRENDIMG[t.n]) t.c = TRENDIMG[t.n]; return t; }));
   fill('grid-shoes', pick([1, 2, 3, 4]));
   fill('grid-sandals', pick([6, 7, 22, 23, 32, 38]));
   fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
