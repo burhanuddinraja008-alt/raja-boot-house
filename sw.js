@@ -1,5 +1,5 @@
-var CACHE = 'rbh-v2';
-var CORE = ['./', 'index.html', '41-style.css', '42-app.js', 'manifest.json', '1-logo-new.jpg'];
+var CACHE = 'rbh-v3';
+var CORE = ['./', 'index.html', '41-style.css?v=3', '42-app.js?v=3', 'manifest.json', '1-logo-new.jpg'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE); }).then(function () { return self.skipWaiting(); }));
 });
