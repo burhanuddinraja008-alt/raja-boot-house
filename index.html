@@ -14,6 +14,10 @@
 <meta property="og:image:height" content="1254">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#161311">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RBH">
 <link rel="icon" href="1-logo-new.jpg">
 <link rel="stylesheet" href="41-style.css">
 </head>
@@ -85,6 +89,7 @@
     <p>YouTube: <a href="https://youtube.com/@raja.boot.house_rbh">@raja.boot.house_rbh</a></p>
     <p>Facebook: <a href="https://www.facebook.com/share/1Dw8Jw3onz/">Raja Boot House Dharni</a></p>
     <a class="btn btn-dark" href="https://wa.me/919022150546?text=Hi+Raja+Boot+House%21+I+saw+your+website+and+have+a+question.">WhatsApp to Order</a>
+    <a class="btn btn-dark" id="install-btn" hidden>App install karein</a>
   </section>
   <footer class="note">Prices 26 September 2026 ke shop posters se hain. Stock limited hai - size aur availability WhatsApp par confirm karein. Yahan koi online payment ya cart nahi hai; order WhatsApp par final hota hai.</footer>
 </main>
@@ -102,5 +107,21 @@
   <a class="btn btn-wa" id="lb-wa" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
 </div>
 <script src="42-app.js"></script>
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var b = document.getElementById('install-btn');
+  if (b) b.hidden = false;
+});
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('#install-btn');
+  if (!b || !deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.finally(function () { deferredPrompt = null; b.hidden = true; });
+});
+</script>
 </body>
 </html>
