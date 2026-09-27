@@ -39,7 +39,14 @@
     { n: 34, brand: 'Gola', name: 'Gola School Shoes', colour: 'Black', sizes: '5-10, 11-13, 1-10', szarr: ['5-10', '11-13', '1-10'], c: '47-133-w34.jpg', f: ['50-156-t34.jpg', '53-168-m34.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Gola+School+Shoes+%28Black%29.+Please+share+price+and+available+sizes.+%2834%29') },
     { n: 35, brand: 'Cross', name: 'Ladies Cross Clog (Charms)', colour: 'Pink', offer: '₹199', sizes: '5 se 8', szarr: ['5', '6', '7', '8'], tag: 'Ladies', c: '48-134-w35.jpg', f: ['51-157-t35.jpg', '54-169-m35.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Ladies+Cross+Clog+%28Pink%29+-+Rs+199.+Size+5+se+8.+Please+share+available+sizes.+%2835%29') },
     { n: 36, brand: 'RBH', name: 'Horsebit Formal Loafer', colour: 'Brown', offer: '₹350', mrp: '₹500', sizes: SZ, c: '56-135-w36.jpg', f: ['58-158-t36.jpg', '60-170-m36.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Horsebit+Formal+Loafer+%28Brown%29+-+Rs+350+%28MRP+Rs+500%29.+Please+share+available+sizes.+%2836%29') },
-    { n: 37, brand: 'RBH', name: 'Chelsea Boot', colour: 'Black', offer: '₹450', mrp: '₹600', sizes: SZ, c: '57-136-w37.jpg', f: ['59-159-t37.jpg', '61-171-m37.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Chelsea+Boot+%28Black%29+-+Rs+450+%28MRP+Rs+600%29.+Please+share+available+sizes.+%2837%29') }
+    { n: 37, brand: 'RBH', name: 'Chelsea Boot', colour: 'Black', offer: '₹450', mrp: '₹600', sizes: SZ, c: '57-136-w37.jpg', f: ['59-159-t37.jpg', '61-171-m37.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Chelsea+Boot+%28Black%29+-+Rs+450+%28MRP+Rs+600%29.+Please+share+available+sizes.+%2837%29') },
+    { n: 38, brand: 'Paragon', name: 'Paragon Slickers Sandal', colour: 'Olive', offer: '₹300', mrp: '₹349', sizes: SZ, c: '62-137-w38.jpg', f: ['69-160-t38.jpg', '76-172-m38.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Slickers+Sandal+%28Olive%29+-+Rs+300+%28MRP+Rs+349%29.+Please+share+available+sizes.+%2838%29') },
+    { n: 39, brand: 'Paragon', name: 'Paragon Office Chappal', colour: 'Brown', offer: '₹199', mrp: '₹219', sizes: SZ, c: '63-138-w39.jpg', f: ['70-161-t39.jpg', '77-173-m39.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Office+Chappal+%28Brown%29+-+Rs+199+%28MRP+Rs+219%29.+Please+share+available+sizes.+%2839%29') },
+    { n: 40, brand: 'Eeken', name: 'Eeken Cross-Strap Slider', colour: 'Black', offer: '₹450', mrp: '₹599', sizes: SZ, c: '64-139-w40.jpg', f: ['71-162-t40.jpg', '78-174-m40.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Eeken+Cross-Strap+Slider+%28Black%29+-+Rs+450+%28MRP+Rs+599%29.+Please+share+available+sizes.+%2840%29') },
+    { n: 41, brand: 'Paragon', name: 'Paragon Vertex Chappal', colour: 'Black', offer: '₹250', mrp: '₹305', sizes: SZ, c: '65-140-w41.jpg', f: ['72-163-t41.jpg', '79-175-m41.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Chappal+%28Black%29+-+Rs+250+%28MRP+Rs+305%29.+Please+share+available+sizes.+%2841%29') },
+    { n: 42, brand: 'Paragon', name: 'Paragon Vertex Toe-Ring Chappal', colour: 'Brown', offer: '₹250', mrp: '₹319', sizes: SZ, c: '66-141-w42.jpg', f: ['73-164-t42.jpg', '80-176-m42.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Toe-Ring+Chappal+%28Brown%29+-+Rs+250+%28MRP+Rs+319%29.+Please+share+available+sizes.+%2842%29') },
+    { n: 43, brand: 'Eeken', name: 'Eeken Double-Buckle Slider', colour: 'Beige / Brown', offer: '₹450', mrp: '₹610', sizes: SZ, c: '67-142-w43.jpg', f: ['74-165-t43.jpg', '81-177-m43.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Eeken+Double-Buckle+Slider+%28Beige-Brown%29+-+Rs+450+%28MRP+Rs+610%29.+Please+share+available+sizes.+%2843%29') },
+    { n: 44, brand: 'Paragon', name: 'Paragon Vertex Kolhapuri', colour: 'Brown', offer: '₹250', mrp: '₹309', sizes: SZ, c: '68-143-w44.jpg', f: ['75-166-t44.jpg', '82-178-m44.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Kolhapuri+%28Brown%29+-+Rs+250+%28MRP+Rs+309%29.+Please+share+available+sizes.+%2844%29') }
   ];
 
   function offPct(it) {
@@ -77,9 +84,9 @@
   items.forEach(function (i) { byN[i.n] = i; });
   function pick(ns) { return ns.map(function (n) { return byN[n]; }); }
   fill('grid-shoes', pick([1, 2, 3, 4]));
-  fill('grid-sandals', pick([6, 7, 22, 23, 32]));
-  fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29]));
-  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 35]));
+  fill('grid-sandals', pick([6, 7, 22, 23, 32, 38]));
+  fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
+  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 35, 39, 41, 42, 44]));
   fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37]));
   fill('grid-school', pick([33, 34]));
 
