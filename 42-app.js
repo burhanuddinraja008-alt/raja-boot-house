@@ -494,7 +494,7 @@
   /* ---------- A+B: bag, Google login, visitor counter, owner panel ---------- */
   var OWNER = 'burhanuddinraja008@gmail.com',
       SITE = 'https://burhanuddinraja008-alt.github.io/raja-boot-house/',
-      auth = null, curUser = null;
+      auth, curUser = null;
 
   function esc(s) { return (s + '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function todayKey() { var d = new Date(); function p(x) { return (x < 10 ? '0' : '') + x; } return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
