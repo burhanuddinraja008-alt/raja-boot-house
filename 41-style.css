@@ -83,3 +83,13 @@ body {
 .reel-feature iframe { height: 640px; }
 .reel-grid-embed iframe { height: 440px; }
 .reels-h3 { font-size: 15px; margin: 16px 0 8px; color: #8a6d1f; }
+
+/* ---- Category icon row (Flipkart-style) ---- */
+.catrow { display: flex; gap: 10px; justify-content: space-between; }
+.catrow a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: #251f21; font-size: 12px; font-weight: 600; text-align: center; line-height: 1.25; }
+.catrow img { width: 64px; height: 64px; border-radius: 50%; border: 2px solid #8a6d1f; background: #fff; object-fit: cover; box-shadow: 0 1px 3px rgba(37,31,33,0.12); }
+section[id] { scroll-margin-top: 10px; }
+.card .gtag { background: #8a6d1f; color: #fff; font-size: 9px; padding: 1px 6px; border-radius: 999px; letter-spacing: 0.04em; }
+/* ---- Customer reviews ---- */
+.review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.review-grid iframe { width: 100%; height: 480px; border: 1px solid #e7e2d6; border-radius: 12px; background: #fff; display: block; }
