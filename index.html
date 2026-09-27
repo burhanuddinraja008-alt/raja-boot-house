@@ -19,7 +19,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="RBH">
 <link rel="icon" href="1-logo-new.jpg">
-<link rel="stylesheet" href="41-style.css">
+<link rel="stylesheet" href="41-style.css?v=3">
 </head>
 <body>
 <main class="page">
@@ -37,6 +37,14 @@
     <a href="#sec-sliders"><img src="122-cat-sliders.jpg" alt="Sliders category"><span>Sliders</span></a>
     <a href="#sec-flipflops"><img src="119-cat-flipflops.jpg" alt="Flip-flops category"><span>Flip-flops</span></a>
   </nav>
+  <div class="banner" id="offer-banner" hidden></div>
+  <div class="searchrow"><input type="search" id="q" placeholder="Chappal dhoondo - naam, brand ya rang..." aria-label="Search products"></div>
+  <div class="frow" id="frow">
+    <button class="fchip on" data-f="all" type="button">Sab</button>
+    <button class="fchip" data-f="200" type="button">&#8377;200 tak</button>
+    <button class="fchip" data-f="500" type="button">&#8377;500 tak</button>
+    <button class="fchip" data-f="501" type="button">&#8377;500+</button>
+  </div>
   <figure class="logo-fig"><img src="1-logo-new.jpg" alt="Raja Boot House ka naya logo - A House of Quality Footwear"><figcaption>Hamara nishaan</figcaption></figure>
   <section class="howto">
     <h2 class="sec-bar">How to Order</h2>
@@ -67,16 +75,28 @@
     </div>
     <a class="btn btn-dark" href="https://www.instagram.com/raja.boot.house_rbh/reels/" target="_blank" rel="noopener">Aur reviews Instagram par dekho</a>
     <p class="reels-sub" style="margin-top:16px">Hamare saath judo:</p>
-    <div class="socialrow">
-      <a href="https://www.instagram.com/raja.boot.house_rbh" target="_blank" rel="noopener"><span class="sicon"><svg viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.4"/></svg></span>Instagram</a>
-      <a href="https://youtube.com/@raja.boot.house_rbh" target="_blank" rel="noopener"><span class="sicon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="none" stroke="#f6efe2" stroke-width="2"/><path d="M10 9.2v5.6l5-2.8z"/></svg></span>YouTube</a>
-      <a href="https://www.facebook.com/share/1Dw8Jw3onz/" target="_blank" rel="noopener"><span class="sicon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span>Facebook</a>
+    <div class="socialrow" style="display:flex;gap:18px;justify-content:center;margin:12px 0 4px;">
+      <a href="https://www.instagram.com/raja.boot.house_rbh" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.4" fill="#f6efe2"/></svg></span>Instagram</a>
+      <a href="https://youtube.com/@raja.boot.house_rbh" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="2" y="5" width="20" height="14" rx="4" fill="none" stroke="#f6efe2" stroke-width="2"/><path d="M10 9.2v5.6l5-2.8z" fill="#f6efe2"/></svg></span>YouTube</a>
+      <a href="https://www.facebook.com/share/1Dw8Jw3onz/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;fill:#f6efe2;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span>Facebook</a>
     </div>
   </section>
   <section id="sec-sports"><h2 class="sec-bar">Sports Shoes</h2><div class="grid" id="grid-shoes"></div></section>
   <section id="sec-sandals"><h2 class="sec-bar">Sandals</h2><div class="grid" id="grid-sandals"></div></section>
   <section id="sec-sliders"><h2 class="sec-bar">Sliders</h2><div class="grid" id="grid-sliders"></div></section>
   <section id="sec-flipflops"><h2 class="sec-bar">Flip-flops</h2><div class="grid" id="grid-flipflops"></div></section>
+  <section class="sizechart">
+    <h2 class="sec-bar">Size Guide</h2>
+    <table>
+      <tr><th>UK / IND Size</th><th>Pair ki lambai (andazan)</th></tr>
+      <tr><td>6</td><td>25 cm</td></tr>
+      <tr><td>7</td><td>25.5 cm</td></tr>
+      <tr><td>8</td><td>26.5 cm</td></tr>
+      <tr><td>9</td><td>27 cm</td></tr>
+      <tr><td>10</td><td>28 cm</td></tr>
+    </table>
+    <p class="reels-sub">Yeh andaza hai - brand ke hisaab se thoda farak ho sakta hai. Exact fit WhatsApp par confirm karein.</p>
+  </section>
   <section class="shopinfo">
     <h2 class="sec-bar">Raja Boot House</h2>
     <p>A House of Quality Footwear</p>
@@ -89,6 +109,7 @@
     <p>YouTube: <a href="https://youtube.com/@raja.boot.house_rbh">@raja.boot.house_rbh</a></p>
     <p>Facebook: <a href="https://www.facebook.com/share/1Dw8Jw3onz/">Raja Boot House Dharni</a></p>
     <a class="btn btn-dark" href="https://wa.me/919022150546?text=Hi+Raja+Boot+House%21+I+saw+your+website+and+have+a+question.">WhatsApp to Order</a>
+    <a class="btn btn-dark" href="https://maps.app.goo.gl/eQ2NU3e2YMCHUP7F6" target="_blank" rel="noopener">Raasta dekho (Google Maps)</a>
     <a class="btn btn-dark" id="install-btn" hidden>App install karein</a>
   </section>
   <footer class="note">Prices 26 September 2026 ke shop posters se hain. Stock limited hai - size aur availability WhatsApp par confirm karein. Yahan koi online payment ya cart nahi hai; order WhatsApp par final hota hai.</footer>
@@ -106,7 +127,7 @@
   <div class="lb-cap" id="lb-cap"></div>
   <a class="btn btn-wa" id="lb-wa" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
 </div>
-<script src="42-app.js"></script>
+<script src="42-app.js?v=3"></script>
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
 var deferredPrompt = null;
