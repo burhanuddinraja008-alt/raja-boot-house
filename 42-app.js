@@ -36,7 +36,7 @@
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
       (it.oos ? '<div class="oosnote">Stock khatam - naya stock ke liye WhatsApp karein</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
       '<div class="rrow">' +
-      '<a class="rlink" href="' + WA('Hi+Raja+Boot+House%21+Mera+review+-+' + encodeURIComponent(it.name + ' (' + it.colour + ', #' + it.n + ')') + '%3A%0A') + '" target="_blank" rel="noopener">Apna review likhein</a>' +
+      '<a class="rlink" href="#reviews" data-rev="' + it.n + '">Apna review likhein</a>' +
       '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Ye dekho - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' sirf ' + it.offer + ' me' : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener" aria-label="Dost ko bhejo" title="Dost ko bhejo"><svg width="17" height="17" viewBox="0 0 24 24" style="width:17px;height:17px;fill:#8a6d1f;vertical-align:-3px;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></a>' +
       '</div>';
     el.addEventListener('click', function (e) {
@@ -222,4 +222,124 @@
   }
   stage.addEventListener('pointerup', lift);
   stage.addEventListener('pointercancel', function (e) { pts.delete(e.pointerId); pinchD0 = 0; });
+
+  /* ---------- Site reviews (Firebase Firestore) ---------- */
+  var FBCFG = {
+    apiKey: 'AIzaSyDzVdG_NZjNJzIcgYV_Gi8nV1jS7XZOw4Q',
+    authDomain: 'bh-love-birds.firebaseapp.com',
+    projectId: 'bh-love-birds',
+    storageBucket: 'bh-love-birds.firebasestorage.app',
+    messagingSenderId: '143532647588',
+    appId: '1:143532647588:web:74971b7709ff22a0f6f231'
+  };
+  var revOpen = document.getElementById('rev-open'),
+      revForm = document.getElementById('revform'),
+      revName = document.getElementById('rev-name'),
+      revProd = document.getElementById('rev-product'),
+      revText = document.getElementById('rev-text'),
+      revHp = document.getElementById('rev-hp'),
+      revMsg = document.getElementById('rev-msg'),
+      revList = document.getElementById('revlist'),
+      starBox = document.getElementById('rev-stars'),
+      revSubmit = document.getElementById('rev-submit');
+  var rating = 0, db = null;
+
+  items.forEach(function (it) {
+    var o = document.createElement('option');
+    o.value = it.name + ' (' + it.colour + ', #' + it.n + ')';
+    o.textContent = '#' + it.n + ' ' + it.name;
+    revProd.appendChild(o);
+  });
+
+  function setRating(r) {
+    rating = r;
+    var bs = starBox.querySelectorAll('button');
+    bs.forEach(function (b) { b.classList.toggle('on', +b.dataset.s <= r); });
+  }
+  starBox.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (b) setRating(+b.dataset.s);
+  });
+
+  function openRevForm(prodVal) {
+    revForm.hidden = false;
+    if (prodVal) revProd.value = prodVal;
+    revForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  revOpen.addEventListener('click', function () { openRevForm(); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-rev]');
+    if (!a) return;
+    e.preventDefault();
+    var it = byN[+a.dataset.rev];
+    openRevForm(it ? it.name + ' (' + it.colour + ', #' + it.n + ')' : '');
+  });
+
+  function starStr(r) { var s = ''; for (var i = 1; i <= 5; i++) s += i <= r ? '\u2605' : '\u2606'; return s; }
+
+  function renderRevs(docs) {
+    revList.innerHTML = '';
+    if (!docs.length) {
+      var p = document.createElement('p');
+      p.className = 'revempty';
+      p.textContent = 'Abhi site par koi review nahi - pehla review aap likhein!';
+      revList.appendChild(p);
+      return;
+    }
+    docs.forEach(function (d) {
+      var v = d.data();
+      var el = document.createElement('div');
+      el.className = 'rev';
+      var head = document.createElement('div'); head.className = 'rhead';
+      var nm = document.createElement('span'); nm.className = 'rname'; nm.textContent = v.name;
+      var st = document.createElement('span'); st.className = 'rstars'; st.textContent = starStr(v.rating);
+      head.appendChild(nm); head.appendChild(st);
+      el.appendChild(head);
+      if (v.product) {
+        var pr = document.createElement('div'); pr.className = 'rprod'; pr.textContent = v.product;
+        el.appendChild(pr);
+      }
+      var tx = document.createElement('div'); tx.className = 'rtext'; tx.textContent = v.text;
+      el.appendChild(tx);
+      revList.appendChild(el);
+    });
+  }
+
+  function loadRevs() {
+    if (!db) return;
+    db.collection('reviews').orderBy('createdAt', 'desc').limit(30).get()
+      .then(function (snap) { renderRevs(snap.docs); })
+      .catch(function () {});
+  }
+
+  try {
+    if (window.firebase) {
+      firebase.initializeApp(FBCFG);
+      db = firebase.firestore();
+      loadRevs();
+    }
+  } catch (e) { db = null; }
+
+  revSubmit.addEventListener('click', function () {
+    if (revHp.value) { revMsg.textContent = 'Shukriya!'; return; }
+    var name = revName.value.trim(), text = revText.value.trim(), prod = revProd.value;
+    if (name.length < 2) { revMsg.textContent = 'Apna naam likhein.'; return; }
+    if (!rating) { revMsg.textContent = 'Stars chunein (1 se 5).'; return; }
+    if (text.length < 10) { revMsg.textContent = 'Review thoda lamba likhein (kam se kam 10 letters).'; return; }
+    if (!db) { revMsg.textContent = 'Abhi review save nahi ho paya - baad mein try karein.'; return; }
+    var last = +(localStorage.getItem('rbh_rev_at') || 0);
+    if (Date.now() - last < 120000) { revMsg.textContent = 'Thoda rukiye - ek review abhi bheja hai.'; return; }
+    revSubmit.disabled = true;
+    revMsg.textContent = 'Bhej rahe hain...';
+    db.collection('reviews').add({
+      name: name, text: text, rating: rating, product: prod,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function () {
+      localStorage.setItem('rbh_rev_at', Date.now());
+      revMsg.textContent = 'Shukriya! Aapka review site par dikh raha hai.';
+      revName.value = ''; revText.value = ''; revProd.value = ''; setRating(0);
+      setTimeout(loadRevs, 1500);
+    }).catch(function () {
+      revMsg.textContent = 'Review save nahi ho paya - net check karke phir try karein.';
+    }).finally(function () { revSubmit.disabled = false; });
+  });
 })();
