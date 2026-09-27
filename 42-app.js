@@ -368,12 +368,12 @@
 
   /* ---------- Site reviews (Firebase Firestore) ---------- */
   var FBCFG = {
-    apiKey: 'AIzaSyDzVdG_NZjNJzIcgYV_Gi8nV1jS7XZOw4Q',
-    authDomain: 'bh-love-birds.firebaseapp.com',
-    projectId: 'bh-love-birds',
-    storageBucket: 'bh-love-birds.firebasestorage.app',
-    messagingSenderId: '143532647588',
-    appId: '1:143532647588:web:74971b7709ff22a0f6f231'
+    apiKey: 'AIzaSyBWl9NX064CJAZa03ltvVoF97X7_1BkGzs',
+    authDomain: 'raja-boot-house-dharni.firebaseapp.com',
+    projectId: 'raja-boot-house-dharni',
+    storageBucket: 'raja-boot-house-dharni.firebasestorage.app',
+    messagingSenderId: '983191567554',
+    appId: '1:983191567554:web:8feb614da884b5df29cf5b'
   };
   var revOpen = document.getElementById('rev-open'),
       revForm = document.getElementById('revform'),
@@ -461,7 +461,7 @@
       loadRevs();
       if (firebase.auth) {
         auth = firebase.auth();
-        auth.onAuthStateChanged(function (u) { onUser(u); setTimeout(showLpop, 1200); });
+        auth.onAuthStateChanged(function (u) { authReady = true; onUser(u); showLpop(); });
       } else { setTimeout(showLpop, 1200); }
       countVisit();
     }
@@ -494,7 +494,7 @@
   /* ---------- A+B: bag, Google login, visitor counter, owner panel ---------- */
   var OWNER = 'burhanuddinraja008@gmail.com',
       SITE = 'https://burhanuddinraja008-alt.github.io/raja-boot-house/',
-      auth, curUser = null;
+      auth, authReady = false, curUser = null;
 
   function esc(s) { return (s + '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function todayKey() { var d = new Date(); function p(x) { return (x < 10 ? '0' : '') + x; } return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
@@ -508,6 +508,7 @@
   function showLpop() {
     if (!lpop) return;
     if (localStorage.getItem('rbhSkipLogin') === '1') return;
+    if (auth && !authReady) return;
     if (curUser) return;
     if (location.hash === '#admin') return;
     lpop.hidden = false;
