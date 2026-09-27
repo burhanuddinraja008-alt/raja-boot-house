@@ -132,18 +132,28 @@
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
 var deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function (e) {
-  e.preventDefault();
-  deferredPrompt = e;
-  var inApp = /FBAN|FBAV|Instagram|WhatsApp|; wv\)/i.test(navigator.userAgent);
-  var tip = document.getElementById('apptip');
-  if (inApp && tip) { tip.hidden = false; }
-  var b = document.getElementById('install-btn');
-  if (b && !inApp) b.hidden = false;
-});
+var ua = navigator.userAgent;
+var inApp = /FBAN|FBAV|Instagram|WhatsApp|; wv\)/i.test(ua);
+var isAndroid = /Android/i.test(ua);
+var installBtn = document.getElementById('install-btn');
+var appTip = document.getElementById('apptip');
+if (inApp && installBtn && isAndroid) {
+  installBtn.hidden = false;
+  installBtn.textContent = 'App install ke liye Chrome mein kholein';
+  installBtn.href = 'intent://burhanuddinraja008-alt.github.io/raja-boot-house/#Intent;scheme=https;package=com.android.chrome;end';
+} else if (inApp && appTip) {
+  appTip.hidden = false;
+} else {
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installBtn) installBtn.hidden = false;
+  });
+}
 document.addEventListener('click', function (e) {
   var b = e.target.closest('#install-btn');
   if (!b || !deferredPrompt) return;
+  e.preventDefault();
   deferredPrompt.prompt();
   deferredPrompt.userChoice.finally(function () { deferredPrompt = null; b.hidden = true; });
 });
