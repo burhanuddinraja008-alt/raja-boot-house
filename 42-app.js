@@ -1,7 +1,7 @@
 (function () {
   var WA = function (t) { return 'https://wa.me/919022150546?text=' + t; };
   var SZ = '6 se 10 (confirm karne ke liye WhatsApp karein)';
-  var OFFER = '';  // offer banner text - khali rakha toh banner nahi dikhega
+  var OFFER = '🪔 Diwali Offer - Coming Soon!';  // offer banner text - khali rakha toh banner nahi dikhega
   var items = [
     { n: 1, brand: 'Addoxy', name: 'Addoxy Sneaker', colour: 'White / Black', offer: '₹450', mrp: '₹899', sizes: SZ, c: '100-w01.jpg', f: ['123-t01.jpg', '142-m01.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Addoxy+Sneaker+-+Rs+450+%28MRP+Rs+899%29.+Please+share+available+sizes.+%281%29') },
     { n: 2, brand: 'Xlerate', name: 'Xlerate Sports Shoes', colour: 'Blue / Green', offer: '₹450', mrp: '₹1299', sizes: SZ, c: '101-w02.jpg', f: ['124-t02.jpg', '143-m02.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Xlerate+Sports+Shoes+%28Blue%2FGreen%29+-+Rs+450+%28MRP+Rs+1299%29.+Please+share+available+sizes.+%282%29') },
