@@ -37,7 +37,9 @@
     { n: 32, brand: 'Paragon', name: "Paragon Blot 3330 Men's Sport Sandal", colour: 'Red/Black & Navy/Yellow', offer: '₹299', mrp: '₹380', sizes: SZ, tag: "Men's", cols: ['Red/Black', 'Navy/Yellow'], c: '13-131-w32.jpg', f: ['27-154-t32.jpg', '42-173-m32.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Blot+3330+Men%27s+Sport+Sandal+-+Rs+299+%28MRP+Rs+380%29.+Colour+Red%2FBlack+ya+Navy%2FYellow.+Please+share+available+sizes.+%2832%29') },
     { n: 33, brand: 'RBH', name: 'Girls School Belly', colour: 'Black', sizes: '5-10, 11-13, 1-8', szarr: ['5-10', '11-13', '1-8'], c: '46-132-w33.jpg', f: ['49-155-t33.jpg', '52-167-m33.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Girls+School+Belly+%28Black%29.+Please+share+price+and+available+sizes.+%2833%29') },
     { n: 34, brand: 'Gola', name: 'Gola School Shoes', colour: 'Black', sizes: '5-10, 11-13, 1-10', szarr: ['5-10', '11-13', '1-10'], c: '47-133-w34.jpg', f: ['50-156-t34.jpg', '53-168-m34.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Gola+School+Shoes+%28Black%29.+Please+share+price+and+available+sizes.+%2834%29') },
-    { n: 35, brand: 'Cross', name: 'Ladies Cross Clog (Charms)', colour: 'Pink', offer: '₹199', sizes: '5 se 8', szarr: ['5', '6', '7', '8'], tag: 'Ladies', c: '48-134-w35.jpg', f: ['51-157-t35.jpg', '54-169-m35.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Ladies+Cross+Clog+%28Pink%29+-+Rs+199.+Size+5+se+8.+Please+share+available+sizes.+%2835%29') }
+    { n: 35, brand: 'Cross', name: 'Ladies Cross Clog (Charms)', colour: 'Pink', offer: '₹199', sizes: '5 se 8', szarr: ['5', '6', '7', '8'], tag: 'Ladies', c: '48-134-w35.jpg', f: ['51-157-t35.jpg', '54-169-m35.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Ladies+Cross+Clog+%28Pink%29+-+Rs+199.+Size+5+se+8.+Please+share+available+sizes.+%2835%29') },
+    { n: 36, brand: 'RBH', name: 'Horsebit Formal Loafer', colour: 'Brown', offer: '₹350', mrp: '₹500', sizes: SZ, c: '56-135-w36.jpg', f: ['58-158-t36.jpg', '60-170-m36.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Horsebit+Formal+Loafer+%28Brown%29+-+Rs+350+%28MRP+Rs+500%29.+Please+share+available+sizes.+%2836%29') },
+    { n: 37, brand: 'RBH', name: 'Chelsea Boot', colour: 'Black', offer: '₹450', mrp: '₹600', sizes: SZ, c: '57-136-w37.jpg', f: ['59-159-t37.jpg', '61-171-m37.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Chelsea+Boot+%28Black%29+-+Rs+450+%28MRP+Rs+600%29.+Please+share+available+sizes.+%2837%29') }
   ];
 
   function offPct(it) {
@@ -78,7 +80,7 @@
   fill('grid-sandals', pick([6, 7, 22, 23, 32]));
   fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29]));
   fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 35]));
-  fill('grid-shoes2', pick([24, 25, 30, 31]));
+  fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37]));
   fill('grid-school', pick([33, 34]));
 
   /* ---------- Lightbox ---------- */
