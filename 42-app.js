@@ -1,6 +1,7 @@
 (function () {
   var WA = function (t) { return 'https://wa.me/919022150546?text=' + t; };
   var SZ = '6 se 10 (confirm karne ke liye WhatsApp karein)';
+  var OFFER = '';  // offer banner text - khali rakha toh banner nahi dikhega
   var items = [
     { n: 1, brand: 'Addoxy', name: 'Addoxy Sneaker', colour: 'White / Black', offer: '₹450', mrp: '₹899', sizes: SZ, c: '100-w01.jpg', f: ['123-t01.jpg', '142-m01.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Addoxy+Sneaker+-+Rs+450+%28MRP+Rs+899%29.+Please+share+available+sizes.+%281%29') },
     { n: 2, brand: 'Xlerate', name: 'Xlerate Sports Shoes', colour: 'Blue / Green', offer: '₹450', mrp: '₹1299', sizes: SZ, c: '101-w02.jpg', f: ['124-t02.jpg', '143-m02.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Xlerate+Sports+Shoes+%28Blue%2FGreen%29+-+Rs+450+%28MRP+Rs+1299%29.+Please+share+available+sizes.+%282%29') },
@@ -25,16 +26,19 @@
 
   function card(it) {
     var el = document.createElement('article');
-    el.className = 'card';
+    el.className = 'card' + (it.oos ? ' oos' : '');
     el.innerHTML =
-      '<div class="num">' + it.n + ' &nbsp;<span class="brand">' + it.brand + '</span>' + (it.tag ? ' &nbsp;<span class="gtag">' + it.tag + '</span>' : '') + '</div>' +
+      '<div class="num">' + it.n + ' &nbsp;<span class="brand">' + it.brand + '</span>' + (it.tag ? ' &nbsp;<span class="gtag">' + it.tag + '</span>' : '') + (it.tag2 ? ' &nbsp;<span class="gtag2">' + it.tag2 + '</span>' : '') + '</div>' +
       '<h3>' + it.name + '</h3>' +
       '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy">' +
       (it.mrp ? '<div class="mrp">MRP ' + it.mrp + '</div>' : '') +
       '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein') + '</div>' +
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
-      '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>' +
-      '<a class="rlink" href="' + WA('Hi+Raja+Boot+House%21+Mera+review+-+' + encodeURIComponent(it.name + ' (' + it.colour + ', #' + it.n + ')') + '%3A%0A') + '" target="_blank" rel="noopener">Apna review likhein</a>';
+      (it.oos ? '<div class="oosnote">Stock khatam - naya stock ke liye WhatsApp karein</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
+      '<div class="rrow">' +
+      '<a class="rlink" href="' + WA('Hi+Raja+Boot+House%21+Mera+review+-+' + encodeURIComponent(it.name + ' (' + it.colour + ', #' + it.n + ')') + '%3A%0A') + '" target="_blank" rel="noopener">Apna review likhein</a>' +
+      '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Ye dekho - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' sirf ' + it.offer + ' me' : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener">Dost ko bhejo</a>' +
+      '</div>';
     el.addEventListener('click', function (e) {
       if (e.target.closest('a')) return;
       openLb(it);
@@ -43,7 +47,7 @@
   }
   function fill(id, list) {
     var g = document.getElementById(id);
-    list.forEach(function (it) { g.appendChild(card(it)); });
+    list.forEach(function (it) { g.appendChild(it._el = card(it)); });
   }
   var byN = {};
   items.forEach(function (i) { byN[i.n] = i; });
@@ -90,6 +94,40 @@
     next.style.display = many ? '' : 'none';
     resetZoom();
   }
+  // offer banner
+  if (OFFER) { var ob = document.getElementById('offer-banner'); if (ob) { ob.textContent = OFFER; ob.hidden = false; } }
+
+  // search + price filter
+  var curF = 'all';
+  function priceNum(it) { var m = (it.offer || '').replace(/[^0-9]/g, ''); return m ? parseInt(m, 10) : null; }
+  function applyFilter() {
+    var q = (document.getElementById('q').value || '').toLowerCase().trim();
+    var shown = { 'grid-shoes': 0, 'grid-sandals': 0, 'grid-sliders': 0, 'grid-flipflops': 0 };
+    items.forEach(function (it) {
+      var el = it._el; if (!el) return;
+      var p = priceNum(it);
+      var okF = curF === 'all' || (curF === '200' ? (p !== null && p <= 200) : curF === '500' ? (p !== null && p <= 500) : (p !== null && p > 500));
+      var okQ = !q || (it.name + ' ' + it.brand + ' ' + it.colour).toLowerCase().indexOf(q) !== -1;
+      var show = okF && okQ;
+      el.style.display = show ? '' : 'none';
+      if (show && el.parentElement) shown[el.parentElement.id] = (shown[el.parentElement.id] || 0) + 1;
+    });
+    ['sec-sports', 'sec-sandals', 'sec-sliders', 'sec-flipflops'].forEach(function (secId, i) {
+      var sec = document.getElementById(secId);
+      var gid = ['grid-shoes', 'grid-sandals', 'grid-sliders', 'grid-flipflops'][i];
+      if (sec) sec.style.display = shown[gid] ? '' : 'none';
+    });
+  }
+  var qEl = document.getElementById('q');
+  if (qEl) qEl.addEventListener('input', applyFilter);
+  var frow = document.getElementById('frow');
+  if (frow) frow.addEventListener('click', function (e) {
+    var b = e.target.closest('.fchip'); if (!b) return;
+    curF = b.getAttribute('data-f');
+    frow.querySelectorAll('.fchip').forEach(function (c) { c.classList.toggle('on', c === b); });
+    applyFilter();
+  });
+
   function openLb(it) {
     cur = it; idx = 0;
     lb.hidden = false;
