@@ -21,16 +21,35 @@
     { n: 16, brand: 'Combit', name: 'Combit Flip-flop', colour: 'Black', offer: '₹250', mrp: '₹460', sizes: SZ, c: '115-w16.jpg', f: ['138-t16.jpg', '157-m16.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Combit+Flip-flop+%28Black%29+-+Rs+250+%28MRP+Rs+460%29.+Please+share+available+sizes.+%2816%29') },
     { n: 17, brand: 'Combit', name: 'Combit Flip-flop', colour: 'Red / Black', offer: '₹250', mrp: '₹460', sizes: SZ, c: '116-w17.jpg', f: ['139-t17.jpg', '158-m17.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Combit+Flip-flop+%28Red%29+-+Rs+250+%28MRP+Rs+460%29.+Please+share+available+sizes.+%2817%29') },
     { n: 18, brand: 'RBH', name: 'Crocs', colour: 'White / Grey / Black', offer: '₹150', mrp: '₹250', sizes: SZ, c: '117-w18.jpg', f: ['140-t18.jpg', '159-m18.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Crocs+%28White%2FGrey%2FBlack%29+-+Rs+150+%28MRP+Rs+250%29.+Size+6+se+10+mein+se+confirm+karenge.+%2818%29') },
-    { n: 19, brand: 'RBH', name: 'Flip-flop', colour: 'White', offer: '₹100', sizes: '6/10', c: '118-w19.jpg', f: ['141-t19.jpg', '160-m19.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Flip-flop+%28White%29+-+Rs+100.+Size+6%2F10.+Stock+limited%21+%2819%29') }
+    { n: 19, brand: 'RBH', name: 'Flip-flop', colour: 'White', offer: '₹100', sizes: '6/10', c: '118-w19.jpg', f: ['141-t19.jpg', '160-m19.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Flip-flop+%28White%29+-+Rs+100.+Size+6%2F10.+Stock+limited%21+%2819%29') },
+    { n: 20, brand: 'Paragon', name: 'Paragon Thong Flip-flop', colour: 'Tan', offer: '₹250', mrp: '₹299', sizes: SZ, c: '119-w20.jpg', f: ['142-t20.jpg', '154-m20.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Thong+Flip-flop+%28Tan%29+-+Rs+250+%28MRP+Rs+299%29.+Please+share+available+sizes.+%2820%29') },
+    { n: 21, brand: 'Paragon', name: 'Paragon Original Rubber Hawai', colour: 'Blue / White', offer: '₹120', sizes: SZ, c: '120-w21.jpg', f: ['143-t21.jpg', '155-m21.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Original+Rubber+Hawai+%28Blue%2FWhite%29+-+Rs+120.+Please+share+available+sizes.+%2821%29') },
+    { n: 22, brand: 'Paragon', name: 'Paragon Kolhapuri Chappal', colour: 'Brown', offer: '₹250', sizes: SZ, c: '121-w22.jpg', f: ['144-t22.jpg', '156-m22.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Kolhapuri+Chappal+%28Brown%29+-+Rs+250.+Please+share+available+sizes.+%2822%29') },
+    { n: 23, brand: 'Paragon', name: 'Paragon Sandal (Back Strap)', colour: 'Brown', offer: '₹300', mrp: '₹380', sizes: SZ, c: '122-w23.jpg', f: ['145-t23.jpg', '157-m23.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Sandal+Back+Strap+%28Brown%29+-+Rs+300+%28MRP+Rs+380%29.+Please+share+available+sizes.+%2823%29') },
+    { n: 24, brand: 'RBH', name: 'Perforated Loafer (Slip-on)', colour: 'Black', offer: '₹150', sizes: SZ, tag2: 'Kisaan Favourite', c: '123-w24.jpg', f: ['146-t24.jpg', '158-m24.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Perforated+Loafer+%28Black%29+-+Rs+150.+Please+share+available+sizes.+%2824%29') },
+    { n: 25, brand: 'Paragon', name: 'Paragon EVA Slip-on Shoe', colour: 'Black', offer: '₹220', mrp: '₹300', sizes: SZ, c: '124-w25.jpg', f: ['147-t25.jpg', '159-m25.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+EVA+Slip-on+Shoe+%28Black%29+-+Rs+220+%28MRP+Rs+300%29.+Please+share+available+sizes.+%2825%29') },
+    { n: 26, brand: 'Cross', name: 'Cross Clog', colour: 'Black / Grey', offer: '₹199', mrp: '₹450', sizes: SZ, c: '125-w26.jpg', f: ['148-t26.jpg', '160-m26.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Cross+Clog+%28Black%2FGrey%29+-+Rs+199+%28MRP+Rs+450%29.+Please+share+available+sizes.+%2826%29') },
+    { n: 27, brand: 'Eeken', name: 'Eeken Slider (6162)', colour: 'Olive', offer: '₹450', mrp: '₹629', sizes: SZ, c: '126-w27.jpg', f: ['149-t27.jpg', '161-m27.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Eeken+Slider+6162+%28Olive%29+-+Rs+450+%28MRP+Rs+629%29.+Please+share+available+sizes.+%2827%29') },
+    { n: 28, brand: 'Eeken', name: 'Eeken Double-buckle Slider', colour: 'Navy', offer: '₹550', sizes: SZ, c: '127-w28.jpg', f: ['150-t28.jpg', '162-m28.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Eeken+Double-buckle+Slider+%28Navy%29+-+Rs+550.+Please+share+available+sizes.+%2828%29') },
+    { n: 29, brand: 'Eeken', name: 'Eeken Double-buckle Slider', colour: 'Black', offer: '₹550', sizes: SZ, c: '128-w29.jpg', f: ['151-t29.jpg', '163-m29.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Eeken+Double-buckle+Slider+%28Black%29+-+Rs+550.+Please+share+available+sizes.+%2829%29') },
+    { n: 30, brand: 'RBH', name: 'Military Camo Gum Boot', colour: 'Camo', offer: '₹450', mrp: '₹899', sizes: SZ, c: '129-w30.jpg', f: ['152-t30.jpg', '164-m30.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Military+Camo+Gum+Boot+-+Rs+450+%28MRP+Rs+899%29.+Please+share+available+sizes.+%2830%29') },
+    { n: 31, brand: 'Aarpar', name: 'Aarpar Formal Slip-on', colour: 'Black', offer: '₹250', mrp: '₹350', sizes: SZ, c: '130-w31.jpg', f: ['153-t31.jpg', '165-m31.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Aarpar+Formal+Slip-on+%28Black%29+-+Rs+250+%28MRP+Rs+350%29.+Please+share+available+sizes.+%2831%29') },
+    { n: 32, brand: 'Paragon', name: "Paragon Blot 3330 Men's Sport Sandal", colour: 'Red/Black & Navy/Yellow', offer: '₹299', mrp: '₹380', sizes: SZ, tag: "Men's", cols: ['Red/Black', 'Navy/Yellow'], c: '131-w32.jpg', f: ['154-t32.jpg', '173-m32.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Blot+3330+Men%27s+Sport+Sandal+-+Rs+299+%28MRP+Rs+380%29.+Colour+Red%2FBlack+ya+Navy%2FYellow.+Please+share+available+sizes.+%2832%29') }
   ];
 
+  function offPct(it) {
+    if (!it.mrp || !it.offer) return 0;
+    var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
+    if (!m || !o || o >= m) return 0;
+    return Math.round((m - o) / m * 100);
+  }
   function card(it) {
     var el = document.createElement('article');
     el.className = 'card' + (it.oos ? ' oos' : '');
     el.innerHTML =
       '<div class="num">' + it.n + ' &nbsp;<span class="brand">' + it.brand + '</span>' + (it.tag ? ' &nbsp;<span class="gtag">' + it.tag + '</span>' : '') + (it.tag2 ? ' &nbsp;<span class="gtag2">' + it.tag2 + '</span>' : '') + '</div>' +
       '<h3>' + it.name + '</h3>' +
-      '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy">' +
+      '<div class="imgwrap">' + (offPct(it) ? '<span class="offpill-card">' + offPct(it) + '% off</span>' : '') + (!it.oos ? '<span class="stockpill">IN STOCK</span>' : '') + '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy"></div>' +
       (it.mrp ? '<div class="mrp">MRP ' + it.mrp + '</div>' : '') +
       '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein') + '</div>' +
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
@@ -41,21 +60,22 @@
       '</div>';
     el.addEventListener('click', function (e) {
       if (e.target.closest('a')) return;
-      openLb(it);
+      openPdp(it);
     });
     return el;
   }
   function fill(id, list) {
     var g = document.getElementById(id);
-    list.forEach(function (it) { g.appendChild(it._el = card(it)); });
+    list.forEach(function (it) { it.cat = id; g.appendChild(it._el = card(it)); });
   }
   var byN = {};
   items.forEach(function (i) { byN[i.n] = i; });
   function pick(ns) { return ns.map(function (n) { return byN[n]; }); }
   fill('grid-shoes', pick([1, 2, 3, 4]));
-  fill('grid-sandals', pick([6, 7]));
-  fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13]));
-  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19]));
+  fill('grid-sandals', pick([6, 7, 22, 23, 32]));
+  fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29]));
+  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26]));
+  fill('grid-shoes2', pick([24, 25, 30, 31]));
 
   /* ---------- Lightbox ---------- */
   var lb = document.getElementById('lb'),
@@ -222,6 +242,113 @@
   }
   stage.addEventListener('pointerup', lift);
   stage.addEventListener('pointercancel', function (e) { pts.delete(e.pointerId); pinchD0 = 0; });
+
+
+  /* ---------- Product detail view (shoemato-style, RBH theme) ---------- */
+  var pdp = document.getElementById('pdp'),
+      pdpImg = document.getElementById('pdp-img'),
+      pdpThumbs = document.getElementById('pdp-thumbs'),
+      pdpName = document.getElementById('pdp-name'),
+      pdpPrice = document.getElementById('pdp-price'),
+      pdpMrp = document.getElementById('pdp-mrp'),
+      pdpOff = document.getElementById('pdp-off'),
+      pdpStock = document.getElementById('pdp-stock'),
+      pdpColours = document.getElementById('pdp-colours'),
+      pdpSizes = document.getElementById('pdp-sizes'),
+      pdpRel = document.getElementById('pdp-rel'),
+      pdpOrder = document.getElementById('pdp-order'),
+      pdpOffers = document.getElementById('pdp-offers'),
+      qVal = document.getElementById('q-val'),
+      curIt = null, curCol = '', curSize = '', qty = 1;
+
+  function sizeList(it) { return it.szarr || ['6', '7', '8', '9', '10']; }
+  function colList(it) {
+    if (it.cols) return it.cols;
+    return [it.colour];
+  }
+  function orderLink() {
+    if (!curIt) return '#';
+    var t = 'Hi Raja Boot House! I saw this on your website and want to order: ' + curIt.name +
+      ' (' + curCol + ')' + (curIt.offer ? ' - ' + curIt.offer.replace('\u20b9', 'Rs ') : '') +
+      '. Size: ' + (curSize || 'confirm karna hai') + '. Qty: ' + qty + '. (#' + curIt.n + ')';
+    return WA(encodeURIComponent(t));
+  }
+  function refreshCta() { pdpOrder.href = orderLink(); }
+
+  function chipRow(box, labels, onPick, active) {
+    box.innerHTML = '';
+    labels.forEach(function (lb, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (i === active ? ' on' : '');
+      b.textContent = lb;
+      b.addEventListener('click', function () { onPick(i, lb); });
+      box.appendChild(b);
+    });
+  }
+
+  function openPdp(it) {
+    curIt = it; qty = 1; qVal.textContent = '1';
+    curCol = colList(it)[0];
+    curSize = '';
+    pdpName.textContent = it.name + ' - ' + it.brand;
+    pdpPrice.textContent = it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein';
+    if (it.mrp) { pdpMrp.textContent = 'MRP ' + it.mrp; pdpMrp.hidden = false; } else { pdpMrp.hidden = true; }
+    var off = offPct(it);
+    if (off) { pdpOff.textContent = off + '% off'; pdpOff.hidden = false; } else { pdpOff.hidden = true; }
+    pdpStock.hidden = !!it.oos;
+    pdpImg.src = it.f[0];
+    pdpImg.alt = it.name;
+    pdpThumbs.innerHTML = '';
+    it.f.forEach(function (src, i) {
+      var th = document.createElement('img');
+      th.src = src; th.alt = it.name + ' photo ' + (i + 1);
+      th.className = i === 0 ? 'on' : '';
+      th.addEventListener('click', function () {
+        pdpImg.src = src;
+        pdpThumbs.querySelectorAll('img').forEach(function (x) { x.classList.remove('on'); });
+        th.classList.add('on');
+      });
+      pdpThumbs.appendChild(th);
+    });
+    chipRow(pdpColours, colList(it), function (i, lb) {
+      curCol = lb;
+      pdpColours.querySelectorAll('.chip').forEach(function (x, j) { x.classList.toggle('on', j === i); });
+      if (it.cols && it.f[i]) {
+        pdpImg.src = it.f[i];
+        pdpThumbs.querySelectorAll('img').forEach(function (x, j) { x.classList.toggle('on', j === i); });
+      }
+      refreshCta();
+    }, 0);
+    chipRow(pdpSizes, sizeList(it), function (i, lb) {
+      curSize = lb;
+      pdpSizes.querySelectorAll('.chip').forEach(function (x, j) { x.classList.toggle('on', j === i); });
+      refreshCta();
+    }, -1);
+    if (OFFER) { pdpOffers.hidden = false; } else { pdpOffers.hidden = true; }
+    pdpRel.innerHTML = '';
+    items.forEach(function (o) {
+      if (o === it || o.cat !== it.cat) return;
+      var r = document.createElement('button');
+      r.type = 'button'; r.className = 'relcard';
+      r.innerHTML = '<img src="' + o.c + '" alt="' + o.name + '"><span>' + o.name + '</span><b>' + (o.offer || '') + '</b>';
+      r.addEventListener('click', function () { openPdp(o); pdp.querySelector('.pdp-body').scrollTop = 0; });
+      pdpRel.appendChild(r);
+    });
+    refreshCta();
+    pdp.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closePdp() { pdp.hidden = true; document.body.style.overflow = ''; }
+  document.getElementById('pdp-close').addEventListener('click', closePdp);
+  document.getElementById('q-minus').addEventListener('click', function () { qty = Math.max(1, qty - 1); qVal.textContent = qty; refreshCta(); });
+  document.getElementById('q-plus').addEventListener('click', function () { qty = Math.min(10, qty + 1); qVal.textContent = qty; refreshCta(); });
+  pdpImg.addEventListener('click', function () { if (curIt) openLb(curIt); });
+  document.getElementById('pdp-share').addEventListener('click', function () {
+    if (!curIt) return;
+    var t = 'Ye dekho - ' + curIt.name + ' (' + curIt.colour + ')' + (curIt.offer ? ' sirf ' + curIt.offer + ' me' : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/';
+    window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+  });
 
   /* ---------- Site reviews (Firebase Firestore) ---------- */
   var FBCFG = {
