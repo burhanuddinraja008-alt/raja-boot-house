@@ -46,7 +46,9 @@
     { n: 41, brand: 'Paragon', name: 'Paragon Vertex Chappal', colour: 'Black', offer: '₹250', mrp: '₹305', sizes: SZ, c: '65-140-w41.jpg', f: ['72-163-t41.jpg', '79-175-m41.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Chappal+%28Black%29+-+Rs+250+%28MRP+Rs+305%29.+Please+share+available+sizes.+%2841%29') },
     { n: 42, brand: 'Paragon', name: 'Paragon Vertex Toe-Ring Chappal', colour: 'Brown', offer: '₹250', mrp: '₹319', sizes: SZ, c: '66-141-w42.jpg', f: ['73-164-t42.jpg', '80-176-m42.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Toe-Ring+Chappal+%28Brown%29+-+Rs+250+%28MRP+Rs+319%29.+Please+share+available+sizes.+%2842%29') },
     { n: 43, brand: 'Eeken', name: 'Eeken Double-Buckle Slider', colour: 'Beige / Brown', offer: '₹450', mrp: '₹610', sizes: SZ, c: '67-142-w43.jpg', f: ['74-165-t43.jpg', '81-177-m43.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Eeken+Double-Buckle+Slider+%28Beige-Brown%29+-+Rs+450+%28MRP+Rs+610%29.+Please+share+available+sizes.+%2843%29') },
-    { n: 44, brand: 'Paragon', name: 'Paragon Vertex Kolhapuri', colour: 'Brown', offer: '₹250', mrp: '₹309', sizes: SZ, c: '68-143-w44.jpg', f: ['75-166-t44.jpg', '82-178-m44.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Kolhapuri+%28Brown%29+-+Rs+250+%28MRP+Rs+309%29.+Please+share+available+sizes.+%2844%29') }
+    { n: 44, brand: 'Paragon', name: 'Paragon Vertex Kolhapuri', colour: 'Brown', offer: '₹250', mrp: '₹309', sizes: SZ, c: '68-143-w44.jpg', f: ['75-166-t44.jpg', '82-178-m44.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Paragon+Vertex+Kolhapuri+%28Brown%29+-+Rs+250+%28MRP+Rs+309%29.+Please+share+available+sizes.+%2844%29') },
+    { n: 45, brand: 'AarPar', name: 'AarPar Charli Loafer', colour: 'Black Checked', offer: '₹250', mrp: '₹360', sizes: SZ, c: '83-144-w45.jpg', f: ['85-167-t45.jpg', '87-179-m45.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+AarPar+Charli+Loafer+%28Black%29+-+Rs+250+%28MRP+Rs+360%29.+Please+share+available+sizes.+%2845%29') },
+    { n: 46, brand: 'FS Queen', name: 'Dulhan Chappal (Stone Work)', colour: 'Red / Gold', offer: '₹259', mrp: '₹600', sizes: 'Size WhatsApp par confirm karein', tag: 'Ladies', c: '84-145-w46.jpg', f: ['86-168-t46.jpg', '88-180-m46.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Dulhan+Chappal+%28Red-Gold%29+-+Rs+259+%28MRP+Rs+600%29.+Please+share+available+sizes.+%2846%29') }
   ];
 
   function offPct(it) {
@@ -86,9 +88,10 @@
   fill('grid-shoes', pick([1, 2, 3, 4]));
   fill('grid-sandals', pick([6, 7, 22, 23, 32, 38]));
   fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
-  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 35, 39, 41, 42, 44]));
-  fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37]));
+  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
+  fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37, 45]));
   fill('grid-school', pick([33, 34]));
+  fill('grid-ladies', pick([35, 46]));
 
   /* ---------- Lightbox ---------- */
   var lb = document.getElementById('lb'),
