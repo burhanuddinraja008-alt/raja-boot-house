@@ -715,10 +715,11 @@
         html += '</table>';
       }
       s2.innerHTML = '<h3>Customers (Google login) - ' + snap.size + '</h3>' + html;
-      return db.collection('visitors').orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(14).get();
+      return db.collection('visitors').get();
     }).then(function (vs) {
+      var docs = vs.docs.sort(function (a, b) { return a.id < b.id ? 1 : -1; }).slice(0, 14);
       var today = 0, rows = '';
-      vs.forEach(function (d) { if (d.id === todayKey()) today = d.data().count; rows += '<tr><td>' + d.id + '</td><td>' + d.data().count + '</td></tr>'; });
+      docs.forEach(function (d) { if (d.id === todayKey()) today = d.data().count; rows += '<tr><td>' + d.id + '</td><td>' + d.data().count + '</td></tr>'; });
       s1.innerHTML = '<h3>Aaj ka hisab</h3><p class="adm-big">Aaj ke visitors: <b>' + today + '</b></p>';
       s3.innerHTML = '<h3>Visitors - roz ka count</h3>' + (rows ? '<table class="adm-table"><tr><th>Date</th><th>Visitors</th></tr>' + rows + '</table>' : '<p class="adm-load">Abhi koi data nahi.</p>');
     }).catch(function () {
