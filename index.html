@@ -19,7 +19,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="RBH">
 <link rel="icon" href="1-logo-new.jpg">
-<link rel="stylesheet" href="41-style.css?v=17">
+<link rel="stylesheet" href="41-style.css?v=18">
 </head>
 <body>
 <div class="topbar">
@@ -67,29 +67,6 @@
     </ol>
   </section>
   <section class="reviews" id="reviews">
-    <h2 class="sec-bar">Customer Reviews</h2>
-    <p class="reels-sub">Hamare customers ki asli review reels - seedha Instagram @raja.boot.house_rbh se.</p>
-    <div class="review-grid">
-      <iframe src="https://www.instagram.com/reel/DSpZvDuD1k9/embed/" title="Customer review reel 1" loading="lazy" allowtransparency="true" allow="encrypted-media" scrolling="no"></iframe>
-      <iframe src="https://www.instagram.com/reel/DSm4TPIj4HE/embed/" title="Customer review reel 2" loading="lazy" allowtransparency="true" allow="encrypted-media" scrolling="no"></iframe>
-    </div>
-    <a class="btn btn-dark" href="https://www.instagram.com/raja.boot.house_rbh/reels/" target="_blank" rel="noopener">Aur reviews Instagram par dekho</a>
-    <div class="revcta">
-      <a class="btn btn-dark" href="https://www.google.com/maps/place/RAJA+BOOT+HOUSE,+Tingrya,+road,+Darni,+Maharashtra+444702/data=!4m8!3m7!1s0x3bd7bdf057dbefcf:0x706c5b33434b57bf!9m1!1b1" target="_blank" rel="noopener">Google par review likhein</a>
-      <button class="btn btn-dark" id="rev-open" type="button">Site par review likhein</button>
-    </div>
-    <div class="revform" id="revform" hidden>
-      <input id="rev-name" type="text" maxlength="40" placeholder="Aapka naam" autocomplete="name">
-      <div class="revstars" id="rev-stars" role="radiogroup" aria-label="Stars chunein">
-        <button type="button" data-s="1" aria-label="1 star">&#9733;</button><button type="button" data-s="2" aria-label="2 stars">&#9733;</button><button type="button" data-s="3" aria-label="3 stars">&#9733;</button><button type="button" data-s="4" aria-label="4 stars">&#9733;</button><button type="button" data-s="5" aria-label="5 stars">&#9733;</button>
-      </div>
-      <select id="rev-product"><option value="">Shop / General review</option></select>
-      <textarea id="rev-text" maxlength="600" rows="3" placeholder="Apna review likhein - kya kharida, quality kaisi lagi?"></textarea>
-      <input id="rev-hp" type="text" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn" id="rev-submit" type="button">Review bhejein</button>
-      <p class="revmsg" id="rev-msg"></p>
-    </div>
-    <div class="revlist" id="revlist"></div>
     <p class="reels-sub" style="margin-top:16px">Hamare saath judo:</p>
     <div class="socialrow" style="display:flex;gap:18px;justify-content:center;margin:12px 0 4px;">
       <a href="https://www.instagram.com/raja.boot.house_rbh" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.4" fill="#f6efe2"/></svg></span>Instagram</a>
@@ -228,7 +205,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="42-app.js?v=17"></script>
+<script src="42-app.js?v=18"></script>
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
 var deferredPrompt = null;
@@ -260,3 +237,4 @@ document.addEventListener('click', function (e) {
 </script>
 </body>
 </html>
+
