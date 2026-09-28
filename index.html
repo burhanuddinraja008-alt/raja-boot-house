@@ -20,7 +20,7 @@
 <meta name="apple-mobile-web-app-title" content="RBH">
 <link rel="icon" href="1-icon-192.png">
 <link rel="apple-touch-icon" href="2-icon-512.png">
-<link rel="stylesheet" href="41-style.css?v=19">
+<link rel="stylesheet" href="41-style.css?v=20">
 <style>
 .rbh-install {font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:750;cursor:pointer;border:0}
 .rbh-install[hidden],#install-guide[hidden] {display:none!important}
@@ -39,13 +39,16 @@
 </style>
 </head>
 <body>
+<div class="splash" id="splash">
+  <img src="1-icon-192.png" alt="RBH logo">
+  <div class="splash-name">RAJA BOOT HOUSE</div>
+  <div class="splash-sub">RBH</div>
+  <div class="splash-tag">Walk With Quality</div>
+</div>
 <div class="topbar">
   <button class="rbh-install rbh-install-top" type="button" data-install-app aria-label="Download Raja Boot House app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 18v3h14v-3"/></svg> Download App</button>
   <button class="tb-btn" id="login-btn" type="button">Login</button>
-  <button class="tb-btn tb-ic" id="profile-btn" type="button" aria-label="My profile and settings" title="My profile"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#f6efe2;"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></button>
   <button class="tb-btn tb-ic" id="bell-btn" type="button" aria-label="Notifications" title="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#f6efe2;"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><span class="tb-badge" id="bell-badge" hidden>0</span></button>
-  <button class="tb-btn tb-ic" id="wish-btn" type="button" aria-label="Your wishlist" title="Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#f6efe2;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="tb-badge" id="wish-badge" hidden>0</span></button>
-  <button class="tb-btn tb-bag" id="bag-btn" type="button" aria-label="Open bag" title="Your Bag"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#f6efe2;"><path d="M18 6h-2c0-2.2-1.8-4-4-4S8 3.8 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></svg><span class="tb-badge" id="bag-count" hidden>0</span></button>
 </div>
 <div class="umenu" id="usermenu" hidden>
   <p id="umenu-email"></p>
@@ -90,6 +93,7 @@
   </nav>
   <div class="diya-row"><i class="diya"></i><div class="banner" id="offer-banner" hidden></div><i class="diya"></i></div>
   <div class="searchrow"><input type="search" id="q" placeholder="Search footwear - name, brand or colour..." aria-label="Search products"></div>
+  <div class="qchips" id="qchips" aria-label="Quick categories"></div>
   <div class="fbar">
     <div class="frow" id="frow">
       <button class="fchip on" data-f="all" type="button">All</button>
@@ -116,6 +120,11 @@
       </select>
     </div>
   </div>
+    <section id="sec-new" hidden><h2 class="sec-bar">&#127881; New Arrivals</h2><div class="hrow" id="row-new"></div></section>
+  <section id="sec-best" hidden><h2 class="sec-bar">&#127942; Best Sellers</h2><div class="hrow" id="row-best"></div></section>
+  <section id="sec-recent" hidden><h2 class="sec-bar">&#128064; Recently Viewed</h2><div class="hrow" id="row-recent"></div></section>
+  <section id="sec-reco" hidden><h2 class="sec-bar">&#10024; Recommended For You</h2><div class="hrow" id="row-reco"></div></section>
+  <section id="sec-fancy" hidden><h2 class="sec-bar">&#128096; Fancy &amp; Formal</h2><div class="hrow" id="row-fancy"></div></section>
   <section id="sec-trending"><h2 class="sec-bar">Trending</h2><div class="grid" id="grid-trending"></div></section>
   <section class="howto">
     <h2 class="sec-bar">How to Order</h2>
@@ -172,6 +181,13 @@
   <div class="flinks"><a href="terms.html">Terms &amp; Policies</a></div>
   <p class="visline" id="visline" hidden></p>
 </main>
+<nav class="bnav" id="bnav" aria-label="Main navigation">
+  <button class="btab on" id="bt-home" type="button"><span class="bt-ic">&#127968;</span>Home</button>
+  <button class="btab" id="bt-search" type="button"><span class="bt-ic">&#128269;</span>Search</button>
+  <button class="btab" id="bt-wish" type="button"><span class="bt-ic">&#10084;&#65039;</span>Wishlist<span class="bt-n" id="bt-wish-n" hidden>0</span></button>
+  <button class="btab" id="bt-cart" type="button"><span class="bt-ic">&#128722;</span>Cart<span class="bt-n" id="bt-cart-n" hidden>0</span></button>
+  <button class="btab" id="bt-acct" type="button"><span class="bt-ic">&#128100;</span>Account</button>
+</nav>
 <div class="pdp" id="pdp" hidden>
   <div class="pdp-top">
     <button class="pdp-close" id="pdp-close" aria-label="Close">&times;</button>
@@ -289,6 +305,160 @@
     </div>
   </div>
 </div>
+<div class="pdp" id="account" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">My Account</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="account-body"></div>
+</div>
+<div class="pdp" id="orders" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128230; My Orders</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="orders-body"></div>
+</div>
+<div class="pdp" id="recentov" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128064; Recently Viewed</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="recentov-body"></div>
+</div>
+<div class="pdp" id="mysizes" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128095; My Sizes</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="mysizes-body"></div>
+</div>
+<div class="pdp" id="faq" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#10067; Help &amp; FAQ</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="faq-body"></div>
+</div>
+<div class="pdp" id="finder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128095; Find Your Footwear</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="finder-body"></div>
+</div>
+<div class="pdp" id="quickorder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#9889; Quick Order</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="qo-body"></div>
+</div>
+<div class="pdp" id="contact" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128222; Contact RBH</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <div class="ct-grid">
+      <a class="ct-btn" id="ct-wa">&#128172; WhatsApp</a>
+      <a class="ct-btn" id="ct-call">&#128222; Call</a>
+      <a class="ct-btn" id="ct-insta">&#128248; Instagram</a>
+      <a class="ct-btn" id="ct-yt">&#9654;&#65039; YouTube</a>
+      <a class="ct-btn" id="ct-fb">&#128216; Facebook</a>
+      <a class="ct-btn" id="ct-map">&#128205; Store Location</a>
+    </div>
+    <p class="ship-note" style="margin-top:12px">Raja Boot House, Tingray Road, Dharni. Open 9 AM - 8 PM daily (Wed till 8:30 PM, Fri till 10:30 PM).</p>
+  </div>
+</div>
+<div class="pdp" id="finder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128095; Find Your Footwear</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="finder-body"></div>
+</div>
+<div class="pdp" id="quickorder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#9889; Quick Order</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="qo-body"></div>
+</div>
+<div class="pdp" id="stylehelp" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#127912; Style Help</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <p class="ship-note">Need Help Choosing? &#128095; Upload a footwear / outfit / reference photo and ask RBH what matches.</p>
+    <label class="btn btn-mini" for="sh-photo">&#128247; Choose photo</label>
+    <input type="file" id="sh-photo" accept="image/*" hidden>
+    <img id="sh-prev" class="sh-prev" hidden alt="Your reference photo">
+    <textarea class="rin" id="sh-msg" rows="3" maxlength="300">What footwear will match this?</textarea>
+    <button class="btn pdp-cta" id="sh-send" type="button">Send on WhatsApp</button>
+    <p class="ship-note">WhatsApp opens with your message - attach the same photo there before pressing Send.</p>
+  </div>
+</div>
+<div class="pdp" id="pincheck" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128205; Delivery Checker</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <p class="ship-note">Enter your 6-digit PIN code to check if RBH delivers to you.</p>
+    <div class="pin-row">
+      <input class="rin" id="pin-in" type="text" inputmode="numeric" maxlength="6" placeholder="PIN code">
+      <button class="btn btn-mini" id="pin-go" type="button">Check</button>
+    </div>
+    <div class="pin-out" id="pin-out"></div>
+  </div>
+</div>
+<div class="pdp" id="sizeguide" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128207; Size Guide</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <table class="sg-table">
+      <tr><th>UK / IND Size</th><th>Foot length (approx.)</th></tr>
+      <tr><td>6</td><td>25 cm</td></tr>
+      <tr><td>7</td><td>25.5 cm</td></tr>
+      <tr><td>8</td><td>26.5 cm</td></tr>
+      <tr><td>9</td><td>27 cm</td></tr>
+      <tr><td>10</td><td>28 cm</td></tr>
+    </table>
+    <p class="reels-sub">This is an estimate - it can vary a little by brand. Confirm the exact fit on WhatsApp.</p>
+  </div>
+</div>
+<div class="pdp" id="revmodal" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="revm-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Write a review</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <p class="find-step" id="revm-prod"></p>
+    <div id="revm-stars" class="revm-stars"></div>
+    <input class="rin" id="revm-name" type="text" placeholder="Your name" maxlength="40">
+    <textarea class="rin" id="revm-text" rows="4" placeholder="How was the product? (min 10 letters)" maxlength="600"></textarea>
+    <button class="btn pdp-cta" id="revm-submit" type="button">Submit review</button>
+    <p class="lpop-msg" id="revm-msg"></p>
+  </div>
+</div>
 <div class="install-guide" id="install-guide" hidden role="dialog" aria-modal="true" aria-labelledby="install-guide-title">
   <div class="install-guide-card"><img class="guide-icon" src="1-icon-192.png" alt="Raja Boot House" width="65" height="65"><h2 id="install-guide-title">Raja Boot House app</h2><p id="install-guide-text"></p><button type="button" id="install-guide-close">Samajh gaya</button></div>
 </div>
@@ -328,7 +498,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="42-app.js?v=19"></script>
+<script src="42-app.js?v=20"></script>
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
 window.deferredPrompt = null;
@@ -388,4 +558,3 @@ window.deferredPrompt = null;
 </script>
 </body>
 </html>
-
