@@ -363,15 +363,17 @@ window.deferredPrompt = null;
       location.href = 'intent://burhanuddinraja008-alt.github.io/raja-boot-house/#Intent;scheme=https;package=com.android.chrome;end';
       return;
     }
+    if (isIOS) {
+      showGuide(inApp ? 'Pehle Safari mein yeh link kholo. Phir Safari mein Share (square + arrow) dabao aur Add to Home Screen chuno.' : 'Safari mein Share (square + arrow) dabao, phir Add to Home Screen chuno. App phone ki home screen par aa jayega.');
+      return;
+    }
     if (window.deferredPrompt) {
       var prompt = window.deferredPrompt; window.deferredPrompt = null;
       prompt.prompt();
       prompt.userChoice.catch(function () {});
       return;
     }
-    if (isIOS) {
-      showGuide(inApp ? 'Pehle Safari mein yeh link kholo. Phir Safari mein Share (square + arrow) dabao aur Add to Home Screen chuno.' : 'Safari mein Share (square + arrow) dabao, phir Add to Home Screen chuno. App phone ki home screen par aa jayega.');
-    } else if (inApp) {
+    if (inApp) {
       showGuide('Browser menu se Open in Chrome chuno, phir Chrome menu mein Install App ya Add to Home Screen dabao.');
     } else {
       showGuide('Chrome menu (3 dots) kholo aur Install App ya Add to Home Screen chuno. Agar option abhi na dikhe, page reload karke dekho.');
