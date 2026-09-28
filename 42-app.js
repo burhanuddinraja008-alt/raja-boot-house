@@ -1,6 +1,6 @@
 (function () {
   var WA = function (t) { return 'https://wa.me/919022150546?text=' + t; };
-  var SZ = '6 se 10 (confirm karne ke liye WhatsApp karein)';
+  var SZ = '6 to 10 (confirm on WhatsApp)';
   var OFFER = '🪔 Diwali Offer - Coming Soon!';  // offer banner text - khali rakha toh banner nahi dikhega
   var items = [
     { n: 1, brand: 'Addoxy', name: 'Addoxy Sneaker', colour: 'White / Black', offer: '₹450', mrp: '₹899', sizes: SZ, c: '100-w01.jpg', f: ['123-t01.jpg', '142-m01.jpg'], wa: WA('Hi+Raja+Boot+House%21+I+saw+this+on+your+website+and+want+to+order%3A+Addoxy+Sneaker+-+Rs+450+%28MRP+Rs+899%29.+Please+share+available+sizes.+%281%29') },
@@ -65,21 +65,32 @@
       '<h3>' + it.name + '</h3>' +
       '<div class="imgwrap">' + (offPct(it) ? '<span class="offpill-card">' + offPct(it) + '% off</span>' : '') + (!it.oos ? '<span class="stockpill">IN STOCK</span>' : '') + '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy"></div>' +
       (it.mrp ? '<div class="mrp">MRP ' + it.mrp + '</div>' : '') +
-      '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein') + '</div>' +
+      '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp') + '</div>' +
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
-      (it.oos ? '<div class="oosnote">Stock khatam - naya stock ke liye WhatsApp karein</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
+      (it.oos ? '<div class="oosnote">Out of stock - WhatsApp us for new stock</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
       '<div class="rrow">' +
-      '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Ye dekho - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' sirf ' + it.offer + ' me' : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener" aria-label="Dost ko bhejo" title="Dost ko bhejo"><svg width="17" height="17" viewBox="0 0 24 24" style="width:17px;height:17px;fill:#8a6d1f;vertical-align:-3px;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></a>' +
+      '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Check this out - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' for just ' + it.offer : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener" aria-label="Share with a friend" title="Share with a friend"><svg width="17" height="17" viewBox="0 0 24 24" style="width:17px;height:17px;fill:#8a6d1f;vertical-align:-3px;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></a>' +
       '</div>';
     el.addEventListener('click', function (e) {
-      if (e.target.closest('a')) return;
+      if (e.target.closest('a') || e.target.closest('.wish-heart')) return;
       openPdp(it);
     });
+    var iw = el.querySelector('.imgwrap');
+    if (iw) {
+      var wh = document.createElement('button');
+      wh.type = 'button'; wh.className = 'wish-heart'; wh.setAttribute('data-n', it.n);
+      wh.setAttribute('aria-label', 'Save to wishlist');
+      wh.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21c-5.5-3.6-9-7-9-10.6C3 7.1 5.4 5 8.1 5c1.6 0 3 .8 3.9 2.1C12.9 5.8 14.3 5 15.9 5 18.6 5 21 7.1 21 10.4c0 3.6-3.5 7-9 10.6z"/></svg>';
+      wh.addEventListener('click', function (e) { e.stopPropagation(); toggleWish(it.n); });
+      iw.appendChild(wh);
+    }
+    el._it = it;
     return el;
   }
+  var ORD = 0;
   function fill(id, list) {
     var g = document.getElementById(id);
-    list.forEach(function (it) { it.cat = id; g.appendChild(it._el = card(it)); });
+    list.forEach(function (it) { it.cat = id; var c = card(it); c._ord = ORD++; g.appendChild(it._el = c); });
   }
   var byN = {};
   items.forEach(function (i) { byN[i.n] = i; });
@@ -125,7 +136,7 @@
     img.src = cur.f[idx];
     img.alt = cur.name + ', photo ' + (idx + 1);
     title.textContent = cur.name;
-    cap.textContent = cur.colour + ' · Photo ' + (idx + 1) + '/' + cur.f.length + ' · Pinch ya double-tap se zoom karein';
+    cap.textContent = cur.colour + ' · Photo ' + (idx + 1) + '/' + cur.f.length + ' · Pinch or double-tap to zoom';
     waBtn.href = cur.wa;
     var many = cur.f.length > 1;
     prev.style.display = many ? '' : 'none';
@@ -135,25 +146,47 @@
   // offer banner
   if (OFFER) { var ob = document.getElementById('offer-banner'); if (ob) { ob.textContent = OFFER; ob.hidden = false; } }
 
-  // search + price filter
-  var curF = 'all';
+  // search + filters (price, category, size) + sort
+  var curF = 'all', curCat = 'all', curSize = 'all', curSort = 'feat';
+  var GENDER_BY_GRID = { 'grid-shoes': 'men', 'grid-shoes2': 'men', 'grid-sandals': 'men', 'grid-sliders': 'men', 'grid-flipflops': 'men', 'grid-ladies': 'women', 'grid-school': 'kids' };
   function priceNum(it) { var m = (it.offer || '').replace(/[^0-9]/g, ''); return m ? parseInt(m, 10) : null; }
+  function itemGender(it) { return GENDER_BY_GRID[it.cat] || 'men'; }
+  function itemSizes(it) {
+    if (it.szarr && it.szarr.length) return it.szarr.map(String);
+    var m = (it.sizes || '').match(/\d+/g); return m || ['6', '7', '8', '9', '10'];
+  }
+  var SORT_GRIDS = ['grid-shoes', 'grid-sandals', 'grid-sliders', 'grid-flipflops', 'grid-shoes2', 'grid-school', 'grid-ladies'];
+  var SORT_SECS = ['sec-sports', 'sec-sandals', 'sec-sliders', 'sec-flipflops', 'sec-shoes', 'sec-school', 'sec-ladies'];
   function applyFilter() {
     var q = (document.getElementById('q').value || '').toLowerCase().trim();
-    var shown = { 'grid-shoes': 0, 'grid-sandals': 0, 'grid-sliders': 0, 'grid-flipflops': 0 };
+    var shown = {};
     items.forEach(function (it) {
       var el = it._el; if (!el) return;
       var p = priceNum(it);
       var okF = curF === 'all' || (curF === '200' ? (p !== null && p <= 200) : curF === '500' ? (p !== null && p <= 500) : (p !== null && p > 500));
       var okQ = !q || (it.name + ' ' + it.brand + ' ' + it.colour).toLowerCase().indexOf(q) !== -1;
-      var show = okF && okQ;
+      var okC = curCat === 'all' || itemGender(it) === curCat;
+      var okS = curSize === 'all' || itemSizes(it).indexOf(curSize) !== -1;
+      var show = okF && okQ && okC && okS;
       el.style.display = show ? '' : 'none';
       if (show && el.parentElement) shown[el.parentElement.id] = (shown[el.parentElement.id] || 0) + 1;
     });
-    ['sec-sports', 'sec-sandals', 'sec-sliders', 'sec-flipflops'].forEach(function (secId, i) {
+    SORT_SECS.forEach(function (secId, i) {
       var sec = document.getElementById(secId);
-      var gid = ['grid-shoes', 'grid-sandals', 'grid-sliders', 'grid-flipflops'][i];
-      if (sec) sec.style.display = shown[gid] ? '' : 'none';
+      if (sec) sec.style.display = shown[SORT_GRIDS[i]] ? '' : 'none';
+    });
+  }
+  function applySort() {
+    SORT_GRIDS.forEach(function (gid) {
+      var g = document.getElementById(gid); if (!g) return;
+      var kids = Array.prototype.slice.call(g.children);
+      kids.sort(function (a, b) {
+        if (curSort === 'feat') return (a._ord || 0) - (b._ord || 0);
+        var pa = a._it ? (priceNum(a._it) || 99999) : 99999;
+        var pb = b._it ? (priceNum(b._it) || 99999) : 99999;
+        return curSort === 'lo' ? pa - pb : pb - pa;
+      });
+      kids.forEach(function (k) { g.appendChild(k); });
     });
   }
   var qEl = document.getElementById('q');
@@ -165,6 +198,10 @@
     frow.querySelectorAll('.fchip').forEach(function (c) { c.classList.toggle('on', c === b); });
     applyFilter();
   });
+  var fCat = document.getElementById('f-cat'), fSize = document.getElementById('f-size'), fSort = document.getElementById('f-sort');
+  if (fCat) fCat.addEventListener('change', function () { curCat = fCat.value; applyFilter(); });
+  if (fSize) fSize.addEventListener('change', function () { curSize = fSize.value; applyFilter(); });
+  if (fSort) fSort.addEventListener('change', function () { curSort = fSort.value; applySort(); });
 
   function openLb(it) {
     cur = it; idx = 0;
@@ -288,7 +325,7 @@
     if (!curIt) return '#';
     var t = 'Hi Raja Boot House! I saw this on your website and want to order: ' + curIt.name +
       ' (' + curCol + ')' + (curIt.offer ? ' - ' + curIt.offer.replace('\u20b9', 'Rs ') : '') +
-      '. Size: ' + (curSize || 'confirm karna hai') + '. Qty: ' + qty + '. (#' + curIt.n + ')';
+      '. Size: ' + (curSize || 'to be confirmed') + '. Qty: ' + qty + '. (#' + curIt.n + ')';
     return WA(encodeURIComponent(t));
   }
   function refreshCta() { pdpOrder.href = orderLink(); }
@@ -310,7 +347,7 @@
     curCol = colList(it)[0];
     curSize = '';
     pdpName.textContent = it.name + ' - ' + it.brand;
-    pdpPrice.textContent = it.offer ? 'Offer Price ' + it.offer : 'Price: WhatsApp par poochhein';
+    pdpPrice.textContent = it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp';
     if (it.mrp) { pdpMrp.textContent = 'MRP ' + it.mrp; pdpMrp.hidden = false; } else { pdpMrp.hidden = true; }
     var off = offPct(it);
     if (off) { pdpOff.textContent = off + '% off'; pdpOff.hidden = false; } else { pdpOff.hidden = true; }
@@ -364,7 +401,7 @@
   pdpImg.addEventListener('click', function () { if (curIt) openLb(curIt); });
   document.getElementById('pdp-share').addEventListener('click', function () {
     if (!curIt) return;
-    var t = 'Ye dekho - ' + curIt.name + ' (' + curIt.colour + ')' + (curIt.offer ? ' sirf ' + curIt.offer + ' me' : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/';
+    var t = 'Check this out - ' + curIt.name + ' (' + curIt.colour + ')' + (curIt.offer ? ' for just ' + curIt.offer : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/';
     window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
   });
 
@@ -479,7 +516,7 @@
     if (name.length < 2) { revMsg.textContent = 'Apna naam likhein.'; return; }
     if (!rating) { revMsg.textContent = 'Stars chunein (1 se 5).'; return; }
     if (text.length < 10) { revMsg.textContent = 'Review thoda lamba likhein (kam se kam 10 letters).'; return; }
-    if (!db) { revMsg.textContent = 'Abhi review save nahi ho paya - baad mein try karein.'; return; }
+    if (!db) { revMsg.textContent = 'Could not save the review right now - try again later.'; return; }
     var last = +(localStorage.getItem('rbh_rev_at') || 0);
     if (Date.now() - last < 120000) { revMsg.textContent = 'Thoda rukiye - ek review abhi bheja hai.'; return; }
     revSubmit.disabled = true;
@@ -493,7 +530,7 @@
       revName.value = ''; revText.value = ''; revProd.value = ''; setRating(0);
       setTimeout(loadRevs, 1500);
     }).catch(function () {
-      revMsg.textContent = 'Review save nahi ho paya - net check karke phir try karein.';
+      revMsg.textContent = 'Could not save the review - check your internet and try again.';
     }).finally(function () { revSubmit.disabled = false; });
   });
 
@@ -521,11 +558,11 @@
   }
   function hideLpop() { if (lpop) lpop.hidden = true; }
   function googleLogin() {
-    if (!auth) { if (lpopMsg) lpopMsg.textContent = 'Login abhi available nahi - internet check karein.'; return; }
+    if (!auth) { if (lpopMsg) lpopMsg.textContent = 'Login is not available right now - check your internet.'; return; }
     if (lpopMsg) lpopMsg.textContent = '';
     auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function (e) {
       if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return;
-      if (lpopMsg) lpopMsg.textContent = 'Login nahi hua - dubara try karein.';
+      if (lpopMsg) lpopMsg.textContent = 'Login failed - please try again.';
     });
   }
   if (lpop) {
@@ -551,7 +588,7 @@
     curUser = u;
     if (u) {
       hideLpop();
-      if (loginBtn) loginBtn.textContent = (u.displayName || 'Aap').split(' ')[0];
+      if (loginBtn) loginBtn.textContent = (u.displayName || 'Account').split(' ')[0];
       if (umEmail) umEmail.textContent = u.email || '';
       if (umAdmin) umAdmin.hidden = (u.email !== OWNER);
       if (u.email === OWNER) { try { localStorage.setItem('rbhOwner', '1'); } catch (e) {} }
@@ -589,7 +626,7 @@
     p.then(function () { return docRef.get(); }).then(function (s) {
       if (s.exists) {
         var el = document.getElementById('visline');
-        if (el) { el.textContent = 'Aaj yahan ' + s.data().count + ' log aaye.'; el.hidden = false; }
+        if (el) { el.textContent = s.data().count + ' people visited today.'; el.hidden = false; }
       }
     }).catch(function () {});
   }
@@ -618,15 +655,20 @@
     saveBag(b);
   }
   function bagMsg() {
-    var b = getBag(), lines = ['Namaste Raja Boot House! Mera order:'], total = 0, unsure = 0;
+    var b = getBag(), lines = ['Hello Raja Boot House! My order:'], total = 0, unsure = 0;
     b.forEach(function (x, i) {
       var it = byN[x.n]; if (!it) return;
       var p = priceNum(it) * x.qty; total += p; if (!priceNum(it)) unsure++;
-      lines.push((i + 1) + ') ' + it.name + ' (' + x.col + ', #' + it.n + ') - Size ' + (x.size || 'confirm karna hai') + ' x ' + x.qty + (p ? ' = Rs ' + p : ' (price WhatsApp par)'));
+      lines.push((i + 1) + ') ' + it.name + ' (' + x.col + ', #' + it.n + ') - Size ' + (x.size || 'to be confirmed') + ' x ' + x.qty + (p ? ' = Rs ' + p : ' (price on WhatsApp)'));
       lines.push('Photo: ' + SITE + it.c);
       lines.push('Link: ' + SITE + '#p' + it.n);
     });
-    lines.push('Total: Rs ' + total + (unsure ? ' + kuch items ka price WhatsApp par confirm hoga' : ''));
+    lines.push('Total: Rs ' + total + (unsure ? ' + some item prices to be confirmed' : ''));
+    var a = lsGet(ADDRKEY, {}), prof = lsGet(PROFKEY, {});
+    if (prof.name) lines.push('Name: ' + prof.name);
+    var at = addrText();
+    if (at) { lines.push('Delivery address: ' + at); if (a.phone) lines.push('Phone: ' + a.phone); }
+    lines.push('Note: I understand the shoe price is separate and shipping charges are extra.');
     return lines.join('\n');
   }
   function renderBag() {
@@ -634,9 +676,10 @@
     var b = getBag();
     bagItems.innerHTML = '';
     if (!b.length) {
-      bagItems.innerHTML = '<p class="bag-empty">Bag khaali hai - pasand ka footwear add karein.</p>';
+      bagItems.innerHTML = '<p class="bag-empty">Your bag is empty - add footwear you like.</p>';
       bagTotal.textContent = '';
       bagOrder.hidden = true;
+      renderBagAddr();
       return;
     }
     bagOrder.hidden = false;
@@ -650,17 +693,17 @@
       var t = document.createElement('b'); t.textContent = it.name;
       var s = document.createElement('span'); s.textContent = x.col + (x.size ? ' - Size ' + x.size : '') + ' (#' + it.n + ')';
       var pr = document.createElement('div'); pr.className = 'bprice';
-      pr.textContent = p ? 'Rs ' + p + ' x ' + x.qty + ' = Rs ' + line : 'Price WhatsApp par confirm hoga';
+      pr.textContent = p ? 'Rs ' + p + ' x ' + x.qty + ' = Rs ' + line : 'Price to be confirmed on WhatsApp';
       bi.appendChild(t); bi.appendChild(s); bi.appendChild(pr);
       var right = document.createElement('div'); right.className = 'bright';
       var qb = document.createElement('div'); qb.className = 'qty qty-sm';
-      var mn = document.createElement('button'); mn.type = 'button'; mn.textContent = '−'; mn.setAttribute('aria-label', 'Kam');
+      var mn = document.createElement('button'); mn.type = 'button'; mn.textContent = '−'; mn.setAttribute('aria-label', 'Less');
       var qv = document.createElement('span'); qv.textContent = x.qty;
-      var pl = document.createElement('button'); pl.type = 'button'; pl.textContent = '+'; pl.setAttribute('aria-label', 'Zyada');
+      var pl = document.createElement('button'); pl.type = 'button'; pl.textContent = '+'; pl.setAttribute('aria-label', 'More');
       mn.addEventListener('click', function () { x.qty = Math.max(1, x.qty - 1); b[idx] = x; saveBag(b); renderBag(); });
       pl.addEventListener('click', function () { x.qty = Math.min(10, x.qty + 1); b[idx] = x; saveBag(b); renderBag(); });
       qb.appendChild(mn); qb.appendChild(qv); qb.appendChild(pl);
-      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'bag-rm'; rm.textContent = 'Hatao';
+      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'bag-rm'; rm.textContent = 'Remove';
       rm.addEventListener('click', function () { b.splice(idx, 1); saveBag(b); renderBag(); });
       right.appendChild(qb); right.appendChild(rm);
       row.appendChild(img); row.appendChild(bi); row.appendChild(right);
@@ -668,9 +711,10 @@
     });
     bagTotal.innerHTML = '';
     var t1 = document.createElement('span'); t1.textContent = 'Total';
-    var t2 = document.createElement('span'); t2.textContent = 'Rs ' + total + (unsure ? ' (+ kuch price WhatsApp par)' : '');
+    var t2 = document.createElement('span'); t2.textContent = 'Rs ' + total + (unsure ? ' (+ some prices on WhatsApp)' : '');
     bagTotal.appendChild(t1); bagTotal.appendChild(t2);
     bagOrder.href = WA(encodeURIComponent(bagMsg()));
+    renderBagAddr();
   }
   function openBag() { renderBag(); if (bagEl) { bagEl.hidden = false; document.body.style.overflow = 'hidden'; } }
   function closeBag() { if (bagEl) { bagEl.hidden = true; document.body.style.overflow = ''; } }
@@ -685,7 +729,7 @@
     if (!curIt) return;
     addToBag(curIt, curCol, curSize, qty);
     var btn = this, old = btn.textContent;
-    btn.textContent = 'Bag mein daal diya ✓';
+    btn.textContent = 'Added to bag ✓';
     setTimeout(function () { btn.textContent = old; }, 1500);
   });
   refreshBadge();
@@ -702,30 +746,30 @@
     adminBody.innerHTML = '';
     if (!curUser) {
       var p0 = document.createElement('p'); p0.className = 'bag-empty';
-      p0.textContent = 'Owner panel ke liye pehle Google se login karein.';
+      p0.textContent = 'Sign in with Google first to see the owner panel.';
       adminBody.appendChild(p0);
       var lb = document.createElement('button'); lb.className = 'btn pdp-cta'; lb.type = 'button';
-      lb.textContent = 'Google se login karein';
+      lb.textContent = 'Sign in with Google';
       lb.addEventListener('click', googleLogin);
       adminBody.appendChild(lb);
       return;
     }
     if (curUser.email !== OWNER) {
       var p1 = document.createElement('p'); p1.className = 'bag-empty';
-      p1.textContent = 'Ye page sirf shop owner ke liye hai.';
+      p1.textContent = 'This page is only for the shop owner.';
       adminBody.appendChild(p1);
       return;
     }
     var s1 = document.createElement('div'); s1.className = 'adm-sec';
-    s1.innerHTML = '<h3>Aaj ka hisab</h3><p class="adm-load">Load ho raha hai...</p>';
+    s1.innerHTML = '<h3>Today\'s summary</h3><p class="adm-load">Loading...</p>';
     var s2 = document.createElement('div'); s2.className = 'adm-sec';
     s2.innerHTML = '<h3>Customers (Google login)</h3><p class="adm-load">Load ho raha hai...</p>';
     var s3 = document.createElement('div'); s3.className = 'adm-sec';
-    s3.innerHTML = '<h3>Visitors - roz ka count</h3><p class="adm-load">Load ho raha hai...</p>';
+    s3.innerHTML = '<h3>Visitors - daily count</h3><p class="adm-load">Loading...</p>';
     adminBody.appendChild(s1); adminBody.appendChild(s2); adminBody.appendChild(s3);
     db.collection('customers').orderBy('lastLoginAt', 'desc').limit(100).get().then(function (snap) {
       var html = '';
-      if (!snap.size) { html = '<p class="adm-load">Abhi koi customer login nahi hua.</p>'; }
+      if (!snap.size) { html = '<p class="adm-load">No customer logins yet.</p>'; }
       else {
         html = '<table class="adm-table"><tr><th>Naam</th><th>Email</th><th>Last login</th></tr>';
         snap.forEach(function (d) { var v = d.data(); html += '<tr><td>' + esc(v.name) + '</td><td>' + esc(v.email) + '</td><td>' + fmtTs(v.lastLoginAt) + '</td></tr>'; });
@@ -737,10 +781,10 @@
       var docs = vs.docs.sort(function (a, b) { return a.id < b.id ? 1 : -1; }).slice(0, 14);
       var today = 0, rows = '';
       docs.forEach(function (d) { if (d.id === todayKey()) today = d.data().count; rows += '<tr><td>' + d.id + '</td><td>' + d.data().count + '</td></tr>'; });
-      s1.innerHTML = '<h3>Aaj ka hisab</h3><p class="adm-big">Aaj ke visitors: <b>' + today + '</b></p>';
-      s3.innerHTML = '<h3>Visitors - roz ka count</h3>' + (rows ? '<table class="adm-table"><tr><th>Date</th><th>Visitors</th></tr>' + rows + '</table>' : '<p class="adm-load">Abhi koi data nahi.</p>');
+      s1.innerHTML = '<h3>Today\'s summary</h3><p class="adm-big">Visitors today: <b>' + today + '</b></p>';
+      s3.innerHTML = '<h3>Visitors - roz ka count</h3>' + (rows ? '<table class="adm-table"><tr><th>Date</th><th>Visitors</th></tr>' + rows + '</table>' : '<p class="adm-load">No data yet.</p>');
     }).catch(function () {
-      [s1, s2, s3].forEach(function (s) { var l = s.querySelector('.adm-load'); if (l) l.textContent = 'Data nahi mila - internet check karein.'; });
+      [s1, s2, s3].forEach(function (s) { var l = s.querySelector('.adm-load'); if (l) l.textContent = 'Could not load data - check your internet.'; });
     });
   }
   function openAdmin() { renderAdmin(); if (adminEl) { adminEl.hidden = false; document.body.style.overflow = 'hidden'; } }
@@ -757,5 +801,253 @@
   }
   window.addEventListener('hashchange', handleHash);
   handleHash();
+
+
+  /* ================= v19 PREVIEW FEATURES ================= */
+  var FESTIVE_DEFAULT = true; // Diwali theme master switch: set to false after Diwali
+  function lsGet(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function openOverlay(el) { if (el) { el.hidden = false; document.body.style.overflow = 'hidden'; } }
+  function closeOverlay(el) { if (el) { el.hidden = true; document.body.style.overflow = ''; } }
+  function fieldVal(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+
+  /* --- Carousel (auto-rotate + swipe) --- */
+  (function () {
+    var track = document.getElementById('ctrack'), dots = document.getElementById('cdots');
+    if (!track || !dots || !track.children.length) return;
+    var n = track.children.length, ci = 0, timer = null;
+    for (var i = 0; i < n; i++) { var d = document.createElement('i'); if (!i) d.className = 'on'; dots.appendChild(d); }
+    function mark() {
+      var now = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      Array.prototype.forEach.call(dots.children, function (el, j) { el.classList.toggle('on', j === now); });
+      ci = now;
+    }
+    function go(i) { track.scrollTo({ left: ((i + n) % n) * track.clientWidth, behavior: 'smooth' }); }
+    function auto() { clearInterval(timer); timer = setInterval(function () { if (!document.hidden) go(ci + 1); }, 4000); }
+    track.addEventListener('scroll', function () { window.requestAnimationFrame(mark); }, { passive: true });
+    track.addEventListener('pointerdown', function () { clearInterval(timer); });
+    track.addEventListener('pointerup', auto);
+    auto();
+  })();
+
+  /* --- Wishlist --- */
+  var WISHKEY = 'rbhWish';
+  var wishEl = document.getElementById('wish');
+  function getWish() { return lsGet(WISHKEY, []); }
+  function toggleWish(n) {
+    var w = getWish(), i = w.indexOf(n);
+    if (i === -1) w.push(n); else w.splice(i, 1);
+    lsSet(WISHKEY, w); syncWishUI();
+  }
+  function syncWishUI() {
+    var w = getWish();
+    document.querySelectorAll('.wish-heart').forEach(function (h) {
+      h.classList.toggle('on', w.indexOf(+h.getAttribute('data-n')) !== -1);
+    });
+    var b = document.getElementById('wish-badge');
+    if (b) { b.hidden = w.length === 0; b.textContent = w.length; }
+  }
+  function renderWish() {
+    var body = document.getElementById('wish-body'); if (!body) return;
+    var w = getWish(); body.innerHTML = '';
+    if (!w.length) { body.innerHTML = '<p class="bag-empty">Your wishlist is empty - tap the heart on any product to save it here.</p>'; return; }
+    w.forEach(function (n) {
+      var it = byN[n]; if (!it) return;
+      var row = document.createElement('div'); row.className = 'wishrow';
+      var im = document.createElement('img'); im.src = it.c; im.alt = it.name;
+      var bi = document.createElement('div'); bi.className = 'bi';
+      var t = document.createElement('b'); t.textContent = it.name;
+      var sp = document.createElement('span'); sp.textContent = it.colour + (it.offer ? ' - ' + it.offer : '');
+      bi.appendChild(t); bi.appendChild(sp);
+      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'bag-rm'; rm.textContent = 'Remove';
+      rm.addEventListener('click', function (e) { e.stopPropagation(); toggleWish(n); });
+      row.appendChild(im); row.appendChild(bi); row.appendChild(rm);
+      row.addEventListener('click', function () { closeOverlay(wishEl); openPdp(it); });
+      body.appendChild(row);
+    });
+  }
+
+  /* --- Profile, address, settings --- */
+  var ADDRKEY = 'rbhAddr', PROFKEY = 'rbhProfile';
+  var profileEl = document.getElementById('profile');
+  function getAddr() { return lsGet(ADDRKEY, {}); }
+  function addrText() { var a = getAddr(); return [a.line, a.city, a.pin].filter(Boolean).join(', '); }
+  function renderAva() {
+    var box = document.getElementById('prof-ava-img'); if (!box) return;
+    var prof = lsGet(PROFKEY, {});
+    var src = prof.photo || (curUser && curUser.photoURL) || '';
+    if (src) { box.innerHTML = '<img src="' + src + '" alt="">'; }
+    else { box.innerHTML = '<svg viewBox="0 0 24 24" width="30" height="30" style="fill:#b6a98c;"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>'; }
+  }
+  function openProfile() {
+    var prof = lsGet(PROFKEY, {}), a = getAddr();
+    document.getElementById('prof-name').value = prof.name || (curUser && curUser.displayName) || '';
+    document.getElementById('addr-line').value = a.line || '';
+    document.getElementById('addr-city').value = a.city || '';
+    document.getElementById('addr-pin').value = a.pin || '';
+    document.getElementById('addr-phone').value = a.phone || '';
+    renderAva(); syncTogs();
+    openOverlay(profileEl);
+  }
+  var profPhoto = document.getElementById('prof-photo');
+  if (profPhoto) profPhoto.addEventListener('change', function () {
+    var f = profPhoto.files && profPhoto.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        var cv = document.createElement('canvas'), sc = Math.min(1, 200 / Math.max(im.width, im.height));
+        cv.width = Math.round(im.width * sc); cv.height = Math.round(im.height * sc);
+        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+        var prof = lsGet(PROFKEY, {}); prof.photo = cv.toDataURL('image/jpeg', 0.8); lsSet(PROFKEY, prof); renderAva();
+      };
+      im.src = rd.result;
+    };
+    rd.readAsDataURL(f);
+  });
+  var addrSave = document.getElementById('addr-save');
+  if (addrSave) addrSave.addEventListener('click', function () {
+    lsSet(ADDRKEY, { line: fieldVal('addr-line'), city: fieldVal('addr-city'), pin: fieldVal('addr-pin'), phone: fieldVal('addr-phone') });
+    var prof = lsGet(PROFKEY, {}); prof.name = fieldVal('prof-name'); lsSet(PROFKEY, prof);
+    this.textContent = 'Saved ✓'; var b = this;
+    setTimeout(function () { b.textContent = 'Save details'; }, 1500);
+  });
+  function renderBagAddr() {
+    var el = document.getElementById('bag-addr'); if (!el) return;
+    var a = getAddr(), at = addrText();
+    if (at) {
+      el.innerHTML = '<b>Deliver to</b>' + esc(at) + (a.phone ? '<br>Phone: ' + esc(a.phone) : '') + '<br><button class="addr-edit" type="button" id="addr-edit">Change address</button>';
+    } else {
+      el.innerHTML = '<b>Delivery address</b>Add your address so the shop knows where to deliver.<br><button class="addr-edit" type="button" id="addr-edit">Add address</button>';
+    }
+    var eb = document.getElementById('addr-edit');
+    if (eb) eb.addEventListener('click', function () { closeOverlay(document.getElementById('bag')); openProfile(); });
+  }
+
+  /* --- Dark mode --- */
+  function applyDark(on) { document.body.classList.toggle('dark', !!on); lsSet('rbhDark', !!on); }
+  applyDark(lsGet('rbhDark', false));
+
+  /* --- Diwali festive theme --- */
+  function festiveOn() { return FESTIVE_DEFAULT && lsGet('rbhFestive', true); }
+  function applyFestive() {
+    var on = festiveOn();
+    document.body.classList.toggle('festive', on);
+    var fl = document.getElementById('festive-lights'); if (fl) fl.hidden = !on;
+  }
+  var sparkTimer = null;
+  function sparkStart() {
+    if (sparkTimer || !festiveOn()) return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    sparkTimer = setInterval(function () {
+      if (document.hidden || !festiveOn()) return;
+      var host = document.querySelector('.hero'); if (!host) return;
+      if (host.querySelectorAll('.spark').length > 5) return;
+      var sp = document.createElement('i');
+      sp.className = 'spark';
+      var size = 24 + Math.random() * 30;
+      sp.style.width = sp.style.height = size + 'px';
+      sp.style.left = (Math.random() * 88) + '%';
+      sp.style.top = (Math.random() * 80) + '%';
+      host.appendChild(sp);
+      setTimeout(function () { sp.remove(); }, 1500);
+    }, 1400);
+  }
+
+  /* --- Settings toggles --- */
+  function setTog(id, on) { var t = document.getElementById(id); if (t) t.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  function syncTogs() {
+    setTog('tog-dark', lsGet('rbhDark', false));
+    setTog('tog-notif', lsGet('rbhNotifOn', true));
+    setTog('tog-festive', festiveOn());
+  }
+  var togDark = document.getElementById('tog-dark'), togNotif = document.getElementById('tog-notif'), togFest = document.getElementById('tog-festive');
+  if (togDark) togDark.addEventListener('click', function () { applyDark(!lsGet('rbhDark', false)); syncTogs(); });
+  if (togNotif) togNotif.addEventListener('click', function () { lsSet('rbhNotifOn', !lsGet('rbhNotifOn', true)); syncTogs(); });
+  if (togFest) togFest.addEventListener('click', function () { lsSet('rbhFestive', !festiveOn()); applyFestive(); syncTogs(); sparkStart(); });
+
+  /* --- Notifications (bell + local list) --- */
+  var NOTIFKEY = 'rbhNotifs', SEENKEY = 'rbhNotifsSeen';
+  var notifEl = document.getElementById('notif');
+  function getNotifs() { return lsGet(NOTIFKEY, []); }
+  function pushNotif(text) {
+    if (!lsGet('rbhNotifOn', true)) return;
+    var n = getNotifs(); n.unshift({ t: text, ts: Date.now() }); lsSet(NOTIFKEY, n.slice(0, 20)); syncBell();
+  }
+  function syncBell() {
+    var b = document.getElementById('bell-badge'); if (!b) return;
+    var seen = lsGet(SEENKEY, 0);
+    var un = getNotifs().filter(function (x) { return x.ts > seen; }).length;
+    b.hidden = un === 0; b.textContent = un;
+  }
+  function renderNotifs() {
+    var body = document.getElementById('notif-body'); if (!body) return;
+    var n = getNotifs(); body.innerHTML = '';
+    if (!n.length) { body.innerHTML = '<p class="bag-empty">No notifications yet - new offers will show up here.</p>'; return; }
+    n.forEach(function (x) {
+      var r = document.createElement('div'); r.className = 'notifrow';
+      r.appendChild(document.createTextNode(x.t));
+      var d = document.createElement('span');
+      d.textContent = new Date(x.ts).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      r.appendChild(d); body.appendChild(r);
+    });
+  }
+
+  /* Web push (preview) - OneSignal free tier wiring. To go live:
+     1) Add <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script> to index.html
+     2) window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function () {
+          OneSignal.init({ appId: 'ONESIGNAL_APP_ID' });
+          OneSignal.on('notificationDisplay', function (e) { pushNotif(e.content || 'New offer'); });
+        });
+     The Settings > Offer notifications toggle gates storage/display. */
+
+  /* --- Topbar buttons --- */
+  var wishBtn = document.getElementById('wish-btn'), bellBtn = document.getElementById('bell-btn'), profBtn = document.getElementById('profile-btn');
+  if (wishBtn) wishBtn.addEventListener('click', function () { renderWish(); openOverlay(wishEl); });
+  if (bellBtn) bellBtn.addEventListener('click', function () { renderNotifs(); openOverlay(notifEl); lsSet(SEENKEY, Date.now()); syncBell(); });
+  if (profBtn) profBtn.addEventListener('click', openProfile);
+  [['wish-close', wishEl], ['notif-close', notifEl], ['profile-close', profileEl]].forEach(function (pr) {
+    var b = document.getElementById(pr[0]); if (b) b.addEventListener('click', function () { closeOverlay(pr[1]); });
+  });
+  var umProfile = document.getElementById('umenu-profile');
+  if (umProfile) umProfile.addEventListener('click', function (e) {
+    e.preventDefault(); if (umenu) umenu.hidden = true; openProfile();
+  });
+
+  /* --- Install app popup (after sign-in + browsing, once per session) --- */
+  var ipop = document.getElementById('ipop'), ipopShown = false, browsed = false;
+  function markBrowsed() { browsed = true; maybeIpop(); }
+  function maybeIpop() {
+    if (!ipop || ipopShown || !curUser || !browsed) return;
+    try { if (sessionStorage.getItem('rbhIpopS') === '1') return; } catch (e) {}
+    if (localStorage.getItem('rbhIpop') === '1') return;
+    if (!window.deferredPrompt) return;
+    ipop.hidden = false; ipopShown = true;
+    try { sessionStorage.setItem('rbhIpopS', '1'); } catch (e) {}
+  }
+  var ipopInstall = document.getElementById('ipop-install'), ipopLater = document.getElementById('ipop-later');
+  if (ipopInstall) ipopInstall.addEventListener('click', function () {
+    if (window.deferredPrompt) {
+      window.deferredPrompt.prompt();
+      window.deferredPrompt.userChoice.finally(function () { window.deferredPrompt = null; });
+    }
+    ipop.hidden = true;
+  });
+  if (ipopLater) ipopLater.addEventListener('click', function () {
+    try { localStorage.setItem('rbhIpop', '1'); } catch (e) {}
+    ipop.hidden = true;
+  });
+  var scrollMarked = false;
+  window.addEventListener('scroll', function () {
+    if (!scrollMarked && window.scrollY > 500) { scrollMarked = true; markBrowsed(); }
+  }, { passive: true });
+  var _onUser = onUser;
+  onUser = function (u) { _onUser(u); maybeIpop(); };
+  var _openPdp = openPdp;
+  openPdp = function (it) { markBrowsed(); _openPdp(it); };
+
+  /* --- init --- */
+  syncWishUI(); syncBell(); applyFestive(); syncTogs(); sparkStart();
 
 })();
