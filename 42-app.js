@@ -69,7 +69,6 @@
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
       (it.oos ? '<div class="oosnote">Stock khatam - naya stock ke liye WhatsApp karein</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
       '<div class="rrow">' +
-      '<a class="rlink" href="#reviews" data-rev="' + it.n + '">Apna review likhein</a>' +
       '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Ye dekho - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' sirf ' + it.offer + ' me' : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener" aria-label="Dost ko bhejo" title="Dost ko bhejo"><svg width="17" height="17" viewBox="0 0 24 24" style="width:17px;height:17px;fill:#8a6d1f;vertical-align:-3px;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></a>' +
       '</div>';
     el.addEventListener('click', function (e) {
@@ -392,7 +391,7 @@
       revSubmit = document.getElementById('rev-submit');
   var rating = 0, db = null;
 
-  items.forEach(function (it) {
+  if (revProd) items.forEach(function (it) {
     var o = document.createElement('option');
     o.value = it.name + ' (' + it.colour + ', #' + it.n + ')';
     o.textContent = '#' + it.n + ' ' + it.name;
@@ -404,16 +403,17 @@
     var bs = starBox.querySelectorAll('button');
     bs.forEach(function (b) { b.classList.toggle('on', +b.dataset.s <= r); });
   }
-  starBox.addEventListener('click', function (e) {
+  if (starBox) starBox.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (b) setRating(+b.dataset.s);
   });
 
   function openRevForm(prodVal) {
+    if (!revForm) return;
     revForm.hidden = false;
     if (prodVal) revProd.value = prodVal;
     revForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-  revOpen.addEventListener('click', function () { openRevForm(); });
+  if (revOpen) revOpen.addEventListener('click', function () { openRevForm(); });
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[data-rev]');
     if (!a) return;
@@ -425,6 +425,7 @@
   function starStr(r) { var s = ''; for (var i = 1; i <= 5; i++) s += i <= r ? '\u2605' : '\u2606'; return s; }
 
   function renderRevs(docs) {
+    if (!revList) return;
     revList.innerHTML = '';
     if (!docs.length) {
       var p = document.createElement('p');
@@ -453,7 +454,7 @@
   }
 
   function loadRevs() {
-    if (!db) return;
+    if (!db || !revList) return;
     db.collection('reviews').orderBy('createdAt', 'desc').limit(30).get()
       .then(function (snap) { renderRevs(snap.docs); })
       .catch(function () {});
@@ -472,7 +473,7 @@
     }
   } catch (e) { db = null; }
 
-  revSubmit.addEventListener('click', function () {
+  if (revSubmit) revSubmit.addEventListener('click', function () {
     if (revHp.value) { revMsg.textContent = 'Shukriya!'; return; }
     var name = revName.value.trim(), text = revText.value.trim(), prod = revProd.value;
     if (name.length < 2) { revMsg.textContent = 'Apna naam likhein.'; return; }
