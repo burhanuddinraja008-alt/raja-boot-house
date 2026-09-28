@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raja Boot House, Dharni - Online Footwear Catalogue</title>
+<meta name="description" content="Raja Boot House, Tingray Road, Dharni. Shoes, sandals, sliders & flip-flops - see photos, order on WhatsApp. A House of Quality Footwear.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://burhanuddinraja008-alt.github.io/raja-boot-house/">
+<meta property="og:title" content="Raja Boot House, Dharni - Online Footwear Catalogue">
+<meta property="og:description" content="Shoes, sandals, sliders & flip-flops. Tap a photo to see it fully, order on WhatsApp. Tingray Road, Dharni.">
+<meta property="og:image" content="https://burhanuddinraja008-alt.github.io/raja-boot-house/1-logo-new.jpg">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#161311">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RBH">
+<link rel="icon" href="1-icon-192.png">
+<link rel="apple-touch-icon" href="2-icon-512.png">
+<link rel="stylesheet" href="41-style.css?v=20">
+<style>
+.rbh-install {font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:750;cursor:pointer;border:0}
+.rbh-install[hidden],#install-guide[hidden] {display:none!important}
+.rbh-install-hero {display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:400px;min-height:58px;margin-top:19px;padding:12px 18px;border-radius:14px;background:linear-gradient(120deg,#17130f,#46371b);color:#fff6df;font-size:18px;box-shadow:0 6px 18px rgba(65,46,15,.23);border:1px solid #ad8d41}
+.rbh-install-hero .rbh-install-icon {display:grid;place-items:center;width:35px;height:35px;border-radius:10px;background:#d1aa55;color:#17130f;flex:none}
+.rbh-install-top {display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:8px 10px;background:#8a6d1f;color:white;font-size:11px;white-space:nowrap;flex:none}
+.rbh-install-top svg {width:15px;height:15px}
+.topbar {flex-wrap:wrap;max-width:calc(100vw - 20px)}
+.install-guide {position:fixed;inset:0;z-index:110;background:rgba(22,19,17,.64);display:grid;place-items:center;padding:16px}
+.install-guide-card {width:min(100%,390px);border:1px solid #c5a365;border-radius:20px;background:#f7f4ee;color:#251f21;box-shadow:0 15px 45px rgba(0,0,0,.35);padding:25px 22px;text-align:center}
+.install-guide-card .guide-icon {display:block;width:65px;height:65px;margin:0 auto;border-radius:16px;object-fit:cover}
+.install-guide-card h2 {font:700 22px Georgia,serif;margin:12px 0 9px}
+.install-guide-card p {font:15px/1.55 -apple-system,'Segoe UI',Roboto,sans-serif}
+.install-guide-card button {width:100%;margin-top:20px;min-height:46px;border:0;border-radius:10px;background:#161311;color:#fff;font:600 15px -apple-system,'Segoe UI',Roboto,sans-serif;cursor:pointer}
+@media(max-width:410px) {.topbar {gap:5px}.rbh-install-top {padding:7px 8px;font-size:10px}}
+</style>
+</head>
+<body>
+<div class="splash" id="splash">
+  <img src="1-icon-192.png" alt="RBH logo">
+  <div class="splash-name">RAJA BOOT HOUSE</div>
+  <div class="splash-sub">RBH</div>
+  <div class="splash-tag">Walk With Quality</div>
+</div>
+<div class="topbar">
+  <button class="rbh-install rbh-install-top" type="button" data-install-app aria-label="Download Raja Boot House app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 18v3h14v-3"/></svg> Download App</button>
+  <button class="tb-btn" id="login-btn" type="button">Login</button>
+  <button class="tb-btn tb-ic" id="bell-btn" type="button" aria-label="Notifications" title="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#f6efe2;"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><span class="tb-badge" id="bell-badge" hidden>0</span></button>
+</div>
+<div class="umenu" id="usermenu" hidden>
+  <p id="umenu-email"></p>
+  <a href="#" id="umenu-profile">My profile &amp; settings</a>
+  <a href="#admin" id="umenu-admin" hidden>Owner panel</a>
+  <button type="button" id="umenu-logout">Logout</button>
+</div>
+<main class="page">
+  <div class="festive-lights" id="festive-lights"></div>
+  <p class="topline">RAJA BOOT HOUSE &bull; DHARNI</p>
+  <header class="hero">
+    <h1>Raja Boot House</h1>
+    <p class="tag">Walk With Quality</p>
+    <p class="addr">Tingray Road, Dharni, Maharashtra</p>
+    <p class="sub">Men &bull; Women &bull; Kids<br>Casual &bull; Sports &bull; Fancy Footwear<br>Quality Footwear at the Right Price.</p>
+    <p class="sub strong">Order online - confirm size &amp; delivery on WhatsApp.</p>
+    <button class="rbh-install rbh-install-hero" type="button" data-install-app><span class="rbh-install-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 18v3h14v-3"/></svg></span><span>Download App</span></button>
+  </header>
+  <div class="carousel" aria-label="Shop and latest offers">
+    <div class="ctrack" id="ctrack">
+      <img src="11-b01.jpg" alt="Raja Boot House shop front" loading="eager">
+      <img src="12-b02.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="13-b03.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="14-b04.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="15-b05.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="16-b06.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="17-b07.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="18-b08.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="19-b09.jpg" alt="Raja Boot House offer poster" loading="lazy">
+      <img src="20-b10.jpg" alt="Raja Boot House offer poster" loading="lazy">
+    </div>
+    <div class="cdots" id="cdots"></div>
+  </div>
+  <nav class="catrow" aria-label="Categories">
+    <a href="#sec-sports"><img src="121-cat-shoes.jpg" alt="Sports Shoes category"><span>Sports<br>Shoes</span></a>
+    <a href="#sec-sandals"><img src="120-cat-sandals.jpg" alt="Sandals category"><span>Sandals</span></a>
+    <a href="#sec-sliders"><img src="122-cat-sliders.jpg" alt="Sliders category"><span>Sliders</span></a>
+    <a href="#sec-flipflops"><img src="119-cat-flipflops.jpg" alt="Flip-flops category"><span>Flip-flops</span></a>
+    <a href="#sec-shoes"><img src="12-130-w31.jpg" alt="Shoes category"><span>Shoes</span></a>
+    <a href="#sec-school"><img src="55-174-cat-school.jpg" alt="School Shoes category"><span>School<br>Shoes</span></a>
+    <a href="#sec-ladies"><img src="48-134-w35.jpg" alt="Ladies category"><span>Ladies</span></a>
+  </nav>
+  <div class="diya-row"><i class="diya"></i><div class="banner" id="offer-banner" hidden></div><i class="diya"></i></div>
+  <div class="searchrow"><input type="search" id="q" placeholder="Search footwear - name, brand or colour..." aria-label="Search products"></div>
+  <div class="qchips" id="qchips" aria-label="Quick categories"></div>
+  <div class="fbar">
+    <div class="frow" id="frow">
+      <button class="fchip on" data-f="all" type="button">All</button>
+      <button class="fchip" data-f="200" type="button">Under &#8377;200</button>
+      <button class="fchip" data-f="500" type="button">Under &#8377;500</button>
+      <button class="fchip" data-f="501" type="button">&#8377;500+</button>
+    </div>
+    <div class="frow2">
+      <select class="fsel" id="f-cat" aria-label="Category filter">
+        <option value="all">Everyone</option>
+        <option value="men">Men</option>
+        <option value="women">Women</option>
+        <option value="kids">Kids</option>
+      </select>
+      <select class="fsel" id="f-size" aria-label="Size filter">
+        <option value="all">Any size</option>
+        <option value="5">UK 5</option><option value="6">UK 6</option><option value="7">UK 7</option>
+        <option value="8">UK 8</option><option value="9">UK 9</option><option value="10">UK 10</option>
+      </select>
+      <select class="fsel" id="f-sort" aria-label="Sort by price">
+        <option value="feat">Sort: Featured</option>
+        <option value="lo">Price: Low to High</option>
+        <option value="hi">Price: High to Low</option>
+      </select>
+    </div>
+  </div>
+    <section id="sec-new" hidden><h2 class="sec-bar">&#127881; New Arrivals</h2><div class="hrow" id="row-new"></div></section>
+  <section id="sec-best" hidden><h2 class="sec-bar">&#127942; Best Sellers</h2><div class="hrow" id="row-best"></div></section>
+  <section id="sec-recent" hidden><h2 class="sec-bar">&#128064; Recently Viewed</h2><div class="hrow" id="row-recent"></div></section>
+  <section id="sec-reco" hidden><h2 class="sec-bar">&#10024; Recommended For You</h2><div class="hrow" id="row-reco"></div></section>
+  <section id="sec-fancy" hidden><h2 class="sec-bar">&#128096; Fancy &amp; Formal</h2><div class="hrow" id="row-fancy"></div></section>
+  <section id="sec-trending"><h2 class="sec-bar">Trending</h2><div class="grid" id="grid-trending"></div></section>
+  <section class="howto">
+    <h2 class="sec-bar">How to Order</h2>
+    <ol>
+      <li>Choose your favourite footwear.</li>
+      <li>Tap 'Order on WhatsApp'.</li>
+      <li>Confirm size, stock &amp; delivery details on WhatsApp.</li>
+    </ol>
+  </section>
+  <section class="reviews" id="reviews">
+    <p class="reels-sub" style="margin-top:16px">Connect with us:</p>
+    <div class="socialrow" style="display:flex;gap:18px;justify-content:center;margin:12px 0 4px;">
+      <a href="https://www.instagram.com/raja.boot.house_rbh" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#f6efe2" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.4" fill="#f6efe2"/></svg></span>Instagram</a>
+      <a href="https://youtube.com/@raja.boot.house_rbh" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="2" y="5" width="20" height="14" rx="4" fill="none" stroke="#f6efe2" stroke-width="2"/><path d="M10 9.2v5.6l5-2.8z" fill="#f6efe2"/></svg></span>YouTube</a>
+      <a href="https://www.facebook.com/share/1Dw8Jw3onz/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#251f21;font-size:11.5px;font-weight:600;"><span class="sicon" style="width:50px;height:50px;border-radius:50%;border:2px solid #8a6d1f;background:#161311;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(37,31,33,0.12);"><svg width="24" height="24" viewBox="0 0 24 24" style="width:24px;height:24px;fill:#f6efe2;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span>Facebook</a>
+    </div>
+  </section>
+  <section id="sec-sports"><h2 class="sec-bar">Sports Shoes</h2><div class="grid" id="grid-shoes"></div></section>
+  <section id="sec-sandals"><h2 class="sec-bar">Sandals</h2><div class="grid" id="grid-sandals"></div></section>
+  <section id="sec-sliders"><h2 class="sec-bar">Sliders</h2><div class="grid" id="grid-sliders"></div></section>
+  <section id="sec-flipflops"><h2 class="sec-bar">Flip-flops</h2><div class="grid" id="grid-flipflops"></div></section>
+  <section id="sec-shoes"><h2 class="sec-bar">Shoes</h2><div class="grid" id="grid-shoes2"></div></section>
+  <section id="sec-school"><h2 class="sec-bar">School Shoes</h2><div class="grid" id="grid-school"></div></section>
+  <section id="sec-ladies"><h2 class="sec-bar">Ladies</h2><div class="grid" id="grid-ladies"></div></section>
+  <section class="sizechart">
+    <h2 class="sec-bar">Size Guide</h2>
+    <table>
+      <tr><th>UK / IND Size</th><th>Foot length (approx.)</th></tr>
+      <tr><td>6</td><td>25 cm</td></tr>
+      <tr><td>7</td><td>25.5 cm</td></tr>
+      <tr><td>8</td><td>26.5 cm</td></tr>
+      <tr><td>9</td><td>27 cm</td></tr>
+      <tr><td>10</td><td>28 cm</td></tr>
+    </table>
+    <p class="reels-sub">This is an estimate - it can vary a little by brand. Confirm the exact fit on WhatsApp.</p>
+  </section>
+  <section class="shopinfo">
+    <h2 class="sec-bar">Raja Boot House</h2>
+    <p>A House of Quality Footwear</p>
+    <p>Tingray Road, Dharni, Maharashtra</p>
+    <p>Men | Women | Kids</p>
+    <p>Casual | Sports | Fancy Footwear</p>
+    <p>Timing: 9 AM - 8 PM daily (Wed till 8:30 PM, Fri till 10:30 PM)</p>
+    <p>WhatsApp to Order: <a href="https://wa.me/919022150546">+91 90221 50546</a></p>
+    <p>Instagram: <a href="https://www.instagram.com/raja.boot.house_rbh">@raja.boot.house_rbh</a></p>
+    <p>YouTube: <a href="https://youtube.com/@raja.boot.house_rbh">@raja.boot.house_rbh</a></p>
+    <p>Facebook: <a href="https://www.facebook.com/share/1Dw8Jw3onz/">Raja Boot House Dharni</a></p>
+    <a class="btn btn-dark" href="https://wa.me/919022150546?text=Hi+Raja+Boot+House%21+I+saw+your+website+and+have+a+question.">WhatsApp to Order</a>
+    <a class="btn btn-dark" href="https://maps.app.goo.gl/eQ2NU3e2YMCHUP7F6" target="_blank" rel="noopener">Shop Location</a>
+    <a class="btn btn-dark" id="install-btn" hidden>Install App</a>
+    <p class="reels-sub" id="apptip" hidden>To install the app, open this site in Chrome - tap the 3 dots (&hellip;) &gt; "Open in Chrome".</p>
+  </section>
+  <footer class="note">Prices are from the shop posters dated 26 September 2026. Stock is limited - confirm size and availability on WhatsApp. No online payment here - fill your bag and the order is finalized on WhatsApp.</footer>
+  <div class="flinks"><a href="terms.html">Terms &amp; Policies</a></div>
+  <p class="visline" id="visline" hidden></p>
+</main>
+<nav class="bnav" id="bnav" aria-label="Main navigation">
+  <button class="btab on" id="bt-home" type="button"><span class="bt-ic">&#127968;</span>Home</button>
+  <button class="btab" id="bt-search" type="button"><span class="bt-ic">&#128269;</span>Search</button>
+  <button class="btab" id="bt-wish" type="button"><span class="bt-ic">&#10084;&#65039;</span>Wishlist<span class="bt-n" id="bt-wish-n" hidden>0</span></button>
+  <button class="btab" id="bt-cart" type="button"><span class="bt-ic">&#128722;</span>Cart<span class="bt-n" id="bt-cart-n" hidden>0</span></button>
+  <button class="btab" id="bt-acct" type="button"><span class="bt-ic">&#128100;</span>Account</button>
+</nav>
+<div class="pdp" id="pdp" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="pdp-close" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Product Details</span>
+    <button class="pdp-share" id="pdp-share" aria-label="Share with a friend" title="Share with a friend"><svg width="20" height="20" viewBox="0 0 24 24" style="width:20px;height:20px;fill:#8a6d1f;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></button>
+  </div>
+  <div class="pdp-body">
+    <div class="pdp-gallery">
+      <img id="pdp-img" alt="">
+      <div class="pdp-thumbs" id="pdp-thumbs"></div>
+    </div>
+    <h2 class="pdp-name" id="pdp-name"></h2>
+    <div class="pdp-pricerow">
+      <span class="pdp-price" id="pdp-price"></span>
+      <s class="pdp-mrp" id="pdp-mrp"></s>
+      <span class="offpill" id="pdp-off"></span>
+    </div>
+    <p class="ship-note">Price is for the pair only - shipping charges extra.</p>
+    <div class="instock" id="pdp-stock">&#9679; IN STOCK</div>
+    <div class="pdp-label">Colour</div>
+    <div class="chips" id="pdp-colours"></div>
+    <div class="pdp-label">Size (UK / IND)</div>
+    <div class="chips" id="pdp-sizes"></div>
+    <div class="pdp-label">Quantity</div>
+    <div class="qty"><button type="button" id="q-minus" aria-label="Less">&minus;</button><span id="q-val">1</span><button type="button" id="q-plus" aria-label="More">+</button></div>
+    <button class="btn pdp-addbag" id="pdp-addbag" type="button">Add to Bag</button>
+    <a class="btn pdp-cta" id="pdp-order" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+    <div class="offers-box" id="pdp-offers"><b>Available offers</b><p>&#129344; Diwali Offer - Coming Soon!</p></div>
+    <div class="steps-box">
+      <b>How to order</b>
+      <ol class="steps">
+        <li><span>1</span>Order on WhatsApp</li>
+        <li><span>2</span>See the product on a video call</li>
+        <li><span>3</span>Make the payment</li>
+        <li><span>4</span>Order dispatch</li>
+      </ol>
+    </div>
+    <div class="trust-row">
+      <div class="trust"><b>100% Genuine</b><span>brands</span></div>
+      <div class="trust"><b>No exchange / No return / No COD</b><span>confirm your order on WhatsApp</span></div>
+      <div class="trust"><b>Local shop</b><span>Tingray Road, Dharni</span></div>
+    </div>
+    <div class="pdp-label">You may also like</div>
+    <div class="rel-row" id="pdp-rel"></div>
+  </div>
+</div>
+<div class="pdp" id="bag" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="bag-close" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Your Bag</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <div id="bag-items"></div>
+    <div class="bag-total" id="bag-total"></div>
+    <div class="bag-addr" id="bag-addr"></div>
+    <a class="btn pdp-cta btn-wa" id="bag-order" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+    <p class="bag-note">The order is confirmed on WhatsApp - size, stock and payment are finalized there.</p>
+    <p class="ship-note">Shoe price is separate - shipping charges extra.</p>
+  </div>
+</div>
+<div class="pdp" id="admin" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="admin-close" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Owner Panel</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="admin-body"></div>
+</div>
+<div class="pdp" id="wish" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="wish-close" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Your Wishlist</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="wish-body"></div>
+</div>
+<div class="pdp" id="notif" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="notif-close" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Notifications</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="notif-body"></div>
+</div>
+<div class="pdp" id="profile" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="profile-close" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">My Profile</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <div class="prof-body">
+      <div class="prof-head">
+        <label class="prof-ava" title="Change photo">
+          <span id="prof-ava-img"></span>
+          <input type="file" id="prof-photo" accept="image/*" hidden>
+          <span class="ava-edit">EDIT</span>
+        </label>
+        <input class="rin" id="prof-name" type="text" placeholder="Your name" maxlength="40" aria-label="Your name">
+      </div>
+      <h4 class="prof-sec">Delivery address</h4>
+      <input class="rin" id="addr-line" type="text" placeholder="House no / street / area" maxlength="120" aria-label="House, street, area">
+      <div class="prof-grid">
+        <input class="rin" id="addr-city" type="text" placeholder="City" maxlength="40" aria-label="City">
+        <input class="rin" id="addr-pin" type="text" inputmode="numeric" placeholder="PIN code" maxlength="6" aria-label="PIN code">
+      </div>
+      <input class="rin" id="addr-phone" type="tel" inputmode="numeric" placeholder="Phone number" maxlength="10" aria-label="Phone number">
+      <button class="btn pdp-cta addr-save" id="addr-save" type="button">Save details</button>
+      <p class="ship-note">Shoe prices are shown separately - shipping charges extra.</p>
+      <h4 class="prof-sec">Settings</h4>
+      <div class="setrow"><span>Dark mode</span><button class="set-tog" id="tog-dark" type="button" aria-pressed="false" aria-label="Dark mode"><span></span></button></div>
+      <div class="setrow"><span>Offer notifications</span><button class="set-tog" id="tog-notif" type="button" aria-pressed="false" aria-label="Offer notifications"><span></span></button></div>
+      <div class="setrow"><span>Diwali festive theme</span><button class="set-tog" id="tog-festive" type="button" aria-pressed="false" aria-label="Diwali festive theme"><span></span></button></div>
+    </div>
+  </div>
+</div>
+<div class="pdp" id="account" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">My Account</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="account-body"></div>
+</div>
+<div class="pdp" id="orders" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128230; My Orders</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="orders-body"></div>
+</div>
+<div class="pdp" id="recentov" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128064; Recently Viewed</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="recentov-body"></div>
+</div>
+<div class="pdp" id="mysizes" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128095; My Sizes</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="mysizes-body"></div>
+</div>
+<div class="pdp" id="faq" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#10067; Help &amp; FAQ</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="faq-body"></div>
+</div>
+<div class="pdp" id="finder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128095; Find Your Footwear</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="finder-body"></div>
+</div>
+<div class="pdp" id="quickorder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#9889; Quick Order</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="qo-body"></div>
+</div>
+<div class="pdp" id="contact" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128222; Contact RBH</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <div class="ct-grid">
+      <a class="ct-btn" id="ct-wa">&#128172; WhatsApp</a>
+      <a class="ct-btn" id="ct-call">&#128222; Call</a>
+      <a class="ct-btn" id="ct-insta">&#128248; Instagram</a>
+      <a class="ct-btn" id="ct-yt">&#9654;&#65039; YouTube</a>
+      <a class="ct-btn" id="ct-fb">&#128216; Facebook</a>
+      <a class="ct-btn" id="ct-map">&#128205; Store Location</a>
+    </div>
+    <p class="ship-note" style="margin-top:12px">Raja Boot House, Tingray Road, Dharni. Open 9 AM - 8 PM daily (Wed till 8:30 PM, Fri till 10:30 PM).</p>
+  </div>
+</div>
+<div class="pdp" id="finder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128095; Find Your Footwear</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="finder-body"></div>
+</div>
+<div class="pdp" id="quickorder" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#9889; Quick Order</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body" id="qo-body"></div>
+</div>
+<div class="pdp" id="stylehelp" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#127912; Style Help</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <p class="ship-note">Need Help Choosing? &#128095; Upload a footwear / outfit / reference photo and ask RBH what matches.</p>
+    <label class="btn btn-mini" for="sh-photo">&#128247; Choose photo</label>
+    <input type="file" id="sh-photo" accept="image/*" hidden>
+    <img id="sh-prev" class="sh-prev" hidden alt="Your reference photo">
+    <textarea class="rin" id="sh-msg" rows="3" maxlength="300">What footwear will match this?</textarea>
+    <button class="btn pdp-cta" id="sh-send" type="button">Send on WhatsApp</button>
+    <p class="ship-note">WhatsApp opens with your message - attach the same photo there before pressing Send.</p>
+  </div>
+</div>
+<div class="pdp" id="pincheck" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128205; Delivery Checker</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <p class="ship-note">Enter your 6-digit PIN code to check if RBH delivers to you.</p>
+    <div class="pin-row">
+      <input class="rin" id="pin-in" type="text" inputmode="numeric" maxlength="6" placeholder="PIN code">
+      <button class="btn btn-mini" id="pin-go" type="button">Check</button>
+    </div>
+    <div class="pin-out" id="pin-out"></div>
+  </div>
+</div>
+<div class="pdp" id="sizeguide" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">&#128207; Size Guide</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <table class="sg-table">
+      <tr><th>UK / IND Size</th><th>Foot length (approx.)</th></tr>
+      <tr><td>6</td><td>25 cm</td></tr>
+      <tr><td>7</td><td>25.5 cm</td></tr>
+      <tr><td>8</td><td>26.5 cm</td></tr>
+      <tr><td>9</td><td>27 cm</td></tr>
+      <tr><td>10</td><td>28 cm</td></tr>
+    </table>
+    <p class="reels-sub">This is an estimate - it can vary a little by brand. Confirm the exact fit on WhatsApp.</p>
+  </div>
+</div>
+<div class="pdp" id="revmodal" hidden>
+  <div class="pdp-top">
+    <button class="pdp-close" id="revm-close" type="button" aria-label="Close">&times;</button>
+    <span class="pdp-toptitle">Write a review</span>
+    <span class="pdp-topsp"></span>
+  </div>
+  <div class="pdp-body">
+    <p class="find-step" id="revm-prod"></p>
+    <div id="revm-stars" class="revm-stars"></div>
+    <input class="rin" id="revm-name" type="text" placeholder="Your name" maxlength="40">
+    <textarea class="rin" id="revm-text" rows="4" placeholder="How was the product? (min 10 letters)" maxlength="600"></textarea>
+    <button class="btn pdp-cta" id="revm-submit" type="button">Submit review</button>
+    <p class="lpop-msg" id="revm-msg"></p>
+  </div>
+</div>
+<div class="install-guide" id="install-guide" hidden role="dialog" aria-modal="true" aria-labelledby="install-guide-title">
+  <div class="install-guide-card"><img class="guide-icon" src="1-icon-192.png" alt="Raja Boot House" width="65" height="65"><h2 id="install-guide-title">Raja Boot House app</h2><p id="install-guide-text"></p><button type="button" id="install-guide-close">Samajh gaya</button></div>
+</div>
+<div class="ipop" id="ipop" hidden>
+  <div class="ipop-card">
+    <p>Dear customer, please install our app for better experience</p>
+    <div class="ipop-btns">
+      <button class="ipop-main" id="ipop-install" type="button">Install</button>
+      <button class="ipop-skip" id="ipop-later" type="button">Not now</button>
+    </div>
+  </div>
+</div>
+<div class="lpop" id="loginpop" hidden>
+  <div class="lpop-card">
+    <img src="1-logo-new.jpg" alt="Raja Boot House logo" class="lpop-logo">
+    <h2>Login to Raja Boot House</h2>
+    <p>for best quality footwear</p>
+    <button class="btn lpop-g" id="lpop-google" type="button"><svg width="18" height="18" viewBox="0 0 24 24" style="width:18px;height:18px;"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l3.7 2.9c2.3-2.1 3.7-5.2 3.7-8.6z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.7-2.9c-1 .7-2.4 1.2-4.2 1.2-3.2 0-5.9-2.1-6.8-5H1.3v3C3.3 21.3 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.3 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.7.4-2.4v-3H1.3C.5 8.2 0 10 0 12s.5 3.8 1.3 5.4l4-3z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.3 2.7 1.3 6.6l4 3c.9-2.8 3.6-4.9 6.7-4.9z"/></svg>Sign in with Google</button>
+    <p class="lpop-note">We only receive your name and email.</p>
+    <button class="lpop-skip" id="lpop-skip" type="button">Maybe later</button>
+    <p class="lpop-msg" id="lpop-msg"></p>
+  </div>
+</div>
+<div class="lb" id="lb" hidden>
+  <div class="lb-top">
+    <span class="lb-title" id="lb-title"></span>
+    <button class="lb-close" id="lb-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="lb-stage" id="lb-stage">
+    <img class="lb-img" id="lb-img" alt="">
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">&#8249;</button>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next photo">&#8250;</button>
+  </div>
+  <div class="lb-cap" id="lb-cap"></div>
+  <a class="btn btn-wa" id="lb-wa" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="42-app.js?v=21"></script>
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
+window.deferredPrompt = null;
+(function () {
+  var buttons = Array.from(document.querySelectorAll('[data-install-app]'));
+  var footer = document.getElementById('install-btn');
+  var guide = document.getElementById('install-guide');
+  var guideText = document.getElementById('install-guide-text');
+  var ua = navigator.userAgent;
+  var inApp = /FBAN|FBAV|Instagram|WhatsApp|; wv\)/i.test(ua);
+  var isAndroid = /Android/i.test(ua);
+  var isIOS = /iPhone|iPad|iPod/i.test(ua);
+  var installed = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  function hideInstalled() {
+    buttons.forEach(function (button) { button.hidden = true; });
+    if (footer) footer.hidden = true;
+    var pop = document.getElementById('ipop'); if (pop) pop.hidden = true;
+  }
+  if (installed) hideInstalled();
+  window.addEventListener('beforeinstallprompt', function (event) {
+    event.preventDefault(); window.deferredPrompt = event;
+    if (footer && !installed) footer.hidden = false;
+  });
+  window.addEventListener('appinstalled', function () {
+    installed = true; window.deferredPrompt = null; hideInstalled();
+  });
+  function showGuide(text) { guideText.textContent = text; guide.hidden = false; }
+  function install(event) {
+    event.preventDefault();
+    if (installed) return;
+    if (inApp && isAndroid) {
+      location.href = 'intent://burhanuddinraja008-alt.github.io/raja-boot-house/#Intent;scheme=https;package=com.android.chrome;end';
+      return;
+    }
+    if (isIOS) {
+      showGuide(inApp ? 'Pehle Safari mein yeh link kholo. Phir Safari mein Share (square + arrow) dabao aur Add to Home Screen chuno.' : 'Safari mein Share (square + arrow) dabao, phir Add to Home Screen chuno. App phone ki home screen par aa jayega.');
+      return;
+    }
+    if (window.deferredPrompt) {
+      var prompt = window.deferredPrompt; window.deferredPrompt = null;
+      prompt.prompt();
+      prompt.userChoice.catch(function () {});
+      return;
+    }
+    if (inApp) {
+      showGuide('Browser menu se Open in Chrome chuno, phir Chrome menu mein Install App ya Add to Home Screen dabao.');
+    } else {
+      showGuide('Chrome menu (3 dots) kholo aur Install App ya Add to Home Screen chuno. Agar option abhi na dikhe, page reload karke dekho.');
+    }
+  }
+  buttons.forEach(function (button) { button.addEventListener('click', install); });
+  if (footer) { footer.hidden = installed; footer.textContent = 'Download App'; footer.removeAttribute('href'); footer.addEventListener('click', install); }
+  document.getElementById('install-guide-close').addEventListener('click', function () { guide.hidden = true; });
+  guide.addEventListener('click', function (event) { if (event.target === guide) guide.hidden = true; });
+  document.addEventListener('keydown', function (event) { if (event.key === 'Escape') guide.hidden = true; });
+})();
+</script>
+</body>
+</html>
