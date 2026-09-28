@@ -1047,6 +1047,1158 @@
   var _openPdp = openPdp;
   openPdp = function (it) { markBrowsed(); _openPdp(it); };
 
+
+  /* ================= v20 FINAL MASTER UPGRADE ================= */
+  /* Config + overrides (admin-controlled, loaded from Firestore) */
+  var CFG = { pins: [], newCount: 6, best: [], lowStock: 2, faqs: [], banner: null };
+  var OVR = {};
+  var RECENT_KEY = 'rbhRecent', SIZES_KEY = 'rbhMySizes', ORDERS_KEY = 'rbhOrders', WISH2_KEY = 'rbhWish2';
+
+  function h(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function money(n) { return 'Rs ' + n; }
+
+  /* --- item helpers respecting admin overrides --- */
+  function effStock(it) { var o = OVR[it.n]; return o && o.stock != null && o.stock !== '' ? +o.stock : null; }
+  function effOos(it) { var o = OVR[it.n]; return it.oos || !!(o && o.oos); }
+  function isNewItem(it) {
+    var k = Math.max(0, Math.min(items.length, +CFG.newCount || 0));
+    if (!k) return false;
+    return items.indexOf(it) >= items.length - k;
+  }
+  function isBest(it) { return (CFG.best || []).map(Number).indexOf(+it.n) !== -1; }
+  var FANCY_RE = /formal|loafer|chelsea|dulhan|horsebit|charli|gum boot|belly|fancy/i;
+  function isFancy(it) { return FANCY_RE.test(it.name + ' ' + (it.colour || '')); }
+
+  /* --- mini horizontal cards for home rows --- */
+  function hcard(it) {
+    var b = h('button', 'hcard'); b.type = 'button';
+    var im = h('img'); im.src = it.c; im.alt = it.name; im.loading = 'lazy';
+    b.appendChild(im);
+    if (isNewItem(it)) b.appendChild(h('span', 'newpill', 'NEW'));
+    var st = effStock(it);
+    if (st != null && st <= (+CFG.lowStock || 2) && st > 0) b.appendChild(h('span', 'lowpill', 'Only ' + st + ' left'));
+    if (effOos(it)) b.appendChild(h('span', 'lowpill', 'Out of stock'));
+    b.appendChild(h('span', 'hname', it.name));
+    var pr = h('b', 'hprice', it.offer ? it.offer : 'Ask price'); b.appendChild(pr);
+    b.addEventListener('click', function () { openPdp(it); });
+    return b;
+  }
+  function fillRow(id, list) {
+    var row = document.getElementById(id); if (!row) return;
+    row.innerHTML = '';
+    list.forEach(function (it) { row.appendChild(hcard(it)); });
+  }
+  function setSecVisible(secId, on) { var s = document.getElementById(secId); if (s) s.hidden = !on; }
+
+  /* --- Recently viewed --- */
+  function getRecent() { return lsGet(RECENT_KEY, []); }
+  function trackRecent(n) {
+    var r = getRecent().filter(function (x) { return x !== n; });
+    r.unshift(n); if (r.length > 20) r.length = 20;
+    lsSet(RECENT_KEY, r);
+  }
+  function lastViewed() { var r = getRecent(); return r.length ? byN[r[0]] : null; }
+
+  /* --- Home rows --- */
+  function renderHomeRows() {
+    var k = Math.max(0, Math.min(items.length, +CFG.newCount || 0));
+    var newItems = k ? items.slice(items.length - k) : [];
+    setSecVisible('sec-new', newItems.length > 0);
+    fillRow('row-new', newItems.slice().reverse());
+    var best = items.filter(isBest);
+    setSecVisible('sec-best', best.length > 0);
+    fillRow('row-best', best);
+    var rec = getRecent().map(function (n) { return byN[n]; }).filter(Boolean);
+    setSecVisible('sec-recent', rec.length > 0);
+    fillRow('row-recent', rec.slice(0, 20));
+    var lv = lastViewed(), reco = [];
+    if (lv) reco = items.filter(function (o) { return o !== lv && o.cat === lv.cat; }).slice(0, 10);
+    setSecVisible('sec-reco', reco.length > 0);
+    fillRow('row-reco', reco);
+    var fancy = items.filter(isFancy);
+    setSecVisible('sec-fancy', fancy.length > 0);
+    fillRow('row-fancy', fancy);
+  }
+
+  /* --- Apply admin overrides to items + live cards --- */
+  function applyOverrides() {
+    items.forEach(function (it) {
+      var o = OVR[it.n]; if (!o) return;
+      if (o.offer) it.offer = o.offer;
+      if (o.mrp) it.mrp = o.mrp;
+      var el = it._el; if (!el) return;
+      var offEl = el.querySelector('.offer');
+      if (offEl && o.offer) offEl.textContent = 'Offer Price ' + it.offer;
+      var mrpEl = el.querySelector('.mrp');
+      if (mrpEl && o.mrp) mrpEl.textContent = 'MRP ' + it.mrp;
+      var pill = el.querySelector('.stockpill');
+      var st = effStock(it);
+      if (pill) {
+        if (effOos(it)) { pill.textContent = 'OUT OF STOCK'; pill.classList.add('oos-pill'); }
+        else if (st != null && st <= (+CFG.lowStock || 2)) { pill.textContent = 'ONLY ' + st + ' LEFT'; pill.classList.add('low-pill'); }
+      }
+      if (isNewItem(it) && !el.querySelector('.newpill-card')) {
+        var iw = el.querySelector('.imgwrap');
+        if (iw) iw.appendChild(h('span', 'newpill-card', 'NEW'));
+      }
+    });
+  }
+
+  /* --- Config / overrides remote load --- */
+  function applyConfig() {
+    if (CFG.banner != null) {
+      var ob = document.getElementById('offer-banner');
+      if (ob) { ob.textContent = CFG.banner; ob.hidden = !CFG.banner; }
+      if (pdpOffers) pdpOffers.hidden = !CFG.banner;
+      if (CFG.banner && pdpOffers) pdpOffers.innerHTML = '<b>Available offers</b><p>' + esc(CFG.banner) + '</p>';
+    }
+    renderHomeRows();
+    applyOverrides();
+  }
+  function loadRemote() {
+    if (!db) return;
+    db.collection('config').doc('app').get().then(function (s) {
+      if (s.exists) {
+        var d = s.data();
+        ['pins', 'newCount', 'best', 'lowStock', 'faqs', 'banner'].forEach(function (k) {
+          if (d[k] !== undefined) CFG[k] = d[k];
+        });
+      }
+      applyConfig();
+    }).catch(function () { applyConfig(); });
+    db.collection('overrides').get().then(function (snap) {
+      snap.forEach(function (d) { OVR[+d.id] = d.data(); });
+      applyOverrides();
+      renderHomeRows();
+    }).catch(function () {});
+  }
+
+  /* --- PDP decorations --- */
+  var pdpBadges = null, pdpExtra = null, pdpRev = null;
+  function buildPdpExtras() {
+    var stock = document.getElementById('pdp-stock');
+    pdpBadges = h('div', 'pdp-badges'); stock.parentNode.insertBefore(pdpBadges, stock.nextSibling);
+    pdpExtra = h('div', 'pdp-extra');
+    var orderBtn = document.getElementById('pdp-order');
+    orderBtn.parentNode.insertBefore(pdpExtra, orderBtn.nextSibling);
+    var talk = h('a', 'btn btn-talk', '💬 Talk to RBH - ask about this product');
+    talk.id = 'pdp-talk'; talk.target = '_blank'; talk.rel = 'noopener';
+    var sg = h('button', 'btn btn-sg', '📏 Size Guide'); sg.type = 'button'; sg.id = 'pdp-sizeguide';
+    sg.addEventListener('click', function () { openOverlay(document.getElementById('sizeguide')); });
+    var ms = h('p', 'mysz-note'); ms.id = 'pdp-mysz'; ms.hidden = true;
+    pdpExtra.appendChild(talk); pdpExtra.appendChild(sg); pdpExtra.appendChild(ms);
+    pdpRev = h('div', 'pdp-rev'); pdpRev.id = 'pdp-rev';
+    var relLabel = pdpRel.previousElementSibling;
+    pdpRel.parentNode.insertBefore(pdpRev, relLabel);
+  }
+  function talkLink(it, col, size, q) {
+    var t = 'Hello Raja Boot House 👋\n\nI am interested in:\n\nProduct: ' + it.name +
+      '\nBrand: ' + it.brand + '\nSize: ' + (size || 'to be confirmed') +
+      '\nQuantity: ' + (q || 1) + '\nPrice: ' + (it.offer ? it.offer.replace('₹', 'Rs ') : 'please share') +
+      '\n\nPlease confirm availability and delivery details.';
+    return WA(encodeURIComponent(t));
+  }
+  var revCache = {};
+  function decoratePdp(it) {
+    if (!pdpBadges) buildPdpExtras();
+    /* badges: NEW + real low stock */
+    pdpBadges.innerHTML = '';
+    if (isNewItem(it)) pdpBadges.appendChild(h('span', 'newpill', '🆕 NEW ARRIVAL'));
+    if (isBest(it)) pdpBadges.appendChild(h('span', 'bestpill', '🏆 BEST SELLER'));
+    var st = effStock(it), stock = document.getElementById('pdp-stock');
+    if (effOos(it)) {
+      stock.hidden = false; stock.textContent = '● OUT OF STOCK - ask on WhatsApp for new stock'; stock.className = 'instock oos-txt';
+    } else if (st != null) {
+      stock.hidden = false;
+      if (st <= 0) { stock.textContent = '● OUT OF STOCK - ask on WhatsApp'; stock.className = 'instock oos-txt'; }
+      else if (st <= (+CFG.lowStock || 2)) { stock.textContent = '🔥 ONLY ' + st + ' LEFT'; stock.className = 'instock low-txt'; }
+      else { stock.textContent = '● IN STOCK'; stock.className = 'instock'; }
+    }
+    /* talk link */
+    document.getElementById('pdp-talk').href = talkLink(it, curCol, curSize, qty);
+    /* my size */
+    var sizes = sizeList(it), saved = lsGet(SIZES_KEY, {})[itemGender(it)];
+    var msNote = document.getElementById('pdp-mysz');
+    if (saved && sizes.indexOf(saved) !== -1) {
+      var chips = pdpSizes.querySelectorAll('.chip');
+      chips.forEach(function (c) { if (c.textContent === saved) c.classList.add('mysz'); });
+      msNote.textContent = '👟 My Size: UK ' + saved + ' - tap it above. Change it anytime in Account > My Sizes.';
+      msNote.hidden = false;
+    } else { msNote.hidden = true; }
+    /* reviews summary */
+    loadPdpReviews(it);
+  }
+  function loadPdpReviews(it) {
+    pdpRev.innerHTML = '';
+    var head = h('div', 'pdp-label', '⭐ Reviews'); pdpRev.appendChild(head);
+    var body = h('div', 'rev-body', 'Loading reviews...'); pdpRev.appendChild(body);
+    function renderList(docs) {
+      body.innerHTML = '';
+      var vis = docs.filter(function (d) { var v = d.data ? d.data() : d; return !v.hidden; });
+      if (!vis.length) {
+        body.appendChild(h('p', 'rev-none', 'No reviews for this product yet - be the first!'));
+      } else {
+        var sum = 0; vis.forEach(function (d) { sum += +(d.data ? d.data() : d).rating || 0; });
+        var avg = (sum / vis.length);
+        body.appendChild(h('p', 'rev-avg', '★ ' + avg.toFixed(1) + ' (' + vis.length + ' review' + (vis.length > 1 ? 's' : '') + ')'));
+        vis.slice(0, 4).forEach(function (d) {
+          var v = d.data ? d.data() : d;
+          var r = h('div', 'rev-item');
+          r.appendChild(h('div', 'rev-head', '★'.repeat(Math.max(1, Math.min(5, +v.rating || 1))) + '  ' + (v.name || 'Customer')));
+          r.appendChild(h('div', 'rev-text', v.text || ''));
+          body.appendChild(r);
+        });
+      }
+      var wr = h('button', 'btn btn-rev', '✍️ Write a review'); wr.type = 'button';
+      wr.addEventListener('click', function () { openRevModal(it); });
+      body.appendChild(wr);
+    }
+    if (revCache[it.n]) { renderList(revCache[it.n]); }
+    if (!db) { body.textContent = 'Reviews need internet - please try again online.'; return; }
+    db.collection('reviews').where('itemN', '==', it.n).limit(30).get().then(function (snap) {
+      var docs = snap.docs.slice().sort(function (a, b) {
+        var ta = a.data().createdAt, tb = b.data().createdAt;
+        return (tb && tb.seconds || 0) - (ta && ta.seconds || 0);
+      });
+      revCache[it.n] = docs; renderList(docs);
+    }).catch(function () { if (!revCache[it.n]) body.textContent = 'Could not load reviews right now.'; });
+  }
+
+  /* --- review write modal --- */
+  function openRevModal(it) {
+    var m = document.getElementById('revmodal'); if (!m) return;
+    m.hidden = false;
+    document.getElementById('revm-prod').textContent = it.name + ' (#' + it.n + ')';
+    var nm = document.getElementById('revm-name');
+    if (curUser && curUser.displayName && !nm.value) nm.value = curUser.displayName;
+    m._item = it; m._rating = 0;
+    var stars = document.getElementById('revm-stars');
+    stars.innerHTML = '';
+    for (var i = 1; i <= 5; i++) {
+      var b = h('button', 'star', '★'); b.type = 'button'; b.dataset.s = i;
+      b.addEventListener('click', function () {
+        m._rating = +this.dataset.s;
+        stars.querySelectorAll('.star').forEach(function (x) { x.classList.toggle('on', +x.dataset.s <= m._rating); });
+      });
+      stars.appendChild(b);
+    }
+    document.getElementById('revm-msg').textContent = '';
+  }
+  function wireRevModal() {
+    var m = document.getElementById('revmodal'); if (!m) return;
+    document.getElementById('revm-close').addEventListener('click', function () { m.hidden = true; });
+    document.getElementById('revm-submit').addEventListener('click', function () {
+      var it = m._item, msg = document.getElementById('revm-msg');
+      var name = document.getElementById('revm-name').value.trim();
+      var text = document.getElementById('revm-text').value.trim();
+      if (name.length < 2) { msg.textContent = 'Apna naam likhein.'; return; }
+      if (!m._rating) { msg.textContent = 'Stars chunein (1 se 5).'; return; }
+      if (text.length < 10) { msg.textContent = 'Review thoda lamba likhein (kam se kam 10 letters).'; return; }
+      if (!db) { msg.textContent = 'No internet - try again later.'; return; }
+      msg.textContent = 'Bhej rahe hain...';
+      db.collection('reviews').add({
+        itemN: it.n, product: it.name + ' (#' + it.n + ')', name: name, text: text,
+        rating: m._rating, hidden: false, uid: curUser ? curUser.uid : null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function () {
+        msg.textContent = 'Shukriya! Aapka review add ho gaya.';
+        delete revCache[it.n];
+        document.getElementById('revm-text').value = '';
+        setTimeout(function () { m.hidden = true; loadPdpReviews(it); }, 900);
+      }).catch(function () { msg.textContent = 'Could not save - check internet and try again.'; });
+    });
+  }
+
+  /* --- Search upgrade: suggestions + smart parse + no-results --- */
+  var noresEl = null;
+  function wireSearch() {
+    var q = document.getElementById('q'); if (!q) return;
+    q.placeholder = 'Search shoes, sandals, brands…';
+    var sr = q.closest('.searchrow');
+    var sug = h('div', 'qsug'); sug.id = 'qsug';
+    [['Sports Shoes', 'sports'], ['Paragon', 'paragon'], ['School Shoes', 'school'], ['Size 8', 'size:8'], ['Under ₹500', 'under:500'], ['Sandals', 'sandal'], ['Sliders', 'slide']]
+      .forEach(function (s) {
+        var b = h('button', 'qchip', s[0]); b.type = 'button';
+        b.addEventListener('click', function () {
+          if (s[1].indexOf('size:') === 0) { var fs = document.getElementById('f-size'); fs.value = s[1].slice(5); fs.dispatchEvent(new Event('change')); }
+          else if (s[1].indexOf('under:') === 0) { setPriceChip(s[1].slice(5)); }
+          else { q.value = s[1]; applyFilter(); }
+          q.focus();
+        });
+        sug.appendChild(b);
+      });
+    sr.parentNode.insertBefore(sug, sr.nextSibling);
+    noresEl = h('div', 'noresult'); noresEl.hidden = true;
+    noresEl.innerHTML = '<p>Product nahi mila? 💬</p>';
+    var waB = h('a', 'btn btn-wa btn-talk', 'Ask RBH on WhatsApp'); waB.target = '_blank'; waB.rel = 'noopener';
+    waB.href = WA(encodeURIComponent('Hi Raja Boot House! I searched your app but could not find what I want. Please help:'));
+    noresEl.appendChild(waB);
+    var tr = document.getElementById('sec-trending');
+    tr.parentNode.insertBefore(noresEl, tr);
+    q.addEventListener('input', function () {
+      var v = q.value;
+      var ms = v.match(/\bsize\s*(\d{1,2})\b/i);
+      if (ms) { var fs = document.getElementById('f-size'); if (fs.value !== ms[1]) { fs.value = ms[1]; curSize = ms[1]; } }
+      var mu = v.match(/under\s*(?:₹|rs\.?\s*)?(\d+)/i);
+      if (mu) setPriceChip(mu[1], true);
+    });
+  }
+  function setPriceChip(max, silent) {
+    var frow = document.getElementById('frow'); if (!frow) return;
+    var map = { '200': '200', '500': '500' };
+    var chip = map[max];
+    if (chip) { curF = chip; frow.querySelectorAll('.fchip').forEach(function (c) { c.classList.toggle('on', c.dataset.f === chip); }); }
+    else { curF = 'all'; frow.querySelectorAll('.fchip').forEach(function (c) { c.classList.toggle('on', c.dataset.f === 'all'); }); }
+    if (!silent) applyFilter();
+  }
+  /* wrap applyFilter: smart query + no-results detection */
+  var _applyFilter = applyFilter;
+  applyFilter = function () {
+    var q = document.getElementById('q');
+    var mu = q && q.value.match(/under\s*(?:₹|rs\.?\s*)?(\d+)/i);
+    if (mu) {
+      var max = +mu[1];
+      curF = max <= 200 ? '200' : (max <= 500 ? '500' : '501');
+      document.querySelectorAll('#frow .fchip').forEach(function (c) { c.classList.toggle('on', c.dataset.f === curF); });
+      q.value = q.value.replace(/under\s*(?:₹|rs\.?\s*)?\d+/i, '').trim();
+    }
+    if (q && /\bsize\s*\d{1,2}\b/i.test(q.value)) q.value = q.value.replace(/\bsize\s*\d{1,2}\b/ig, '').trim();
+    _applyFilter();
+    var visible = 0;
+    items.forEach(function (it) { if (it._el && it._el.style.display !== 'none') visible++; });
+    var searching = (q && q.value.trim()) || curF !== 'all' || curCat !== 'all' || curSize !== 'all';
+    if (noresEl) noresEl.hidden = !(searching && visible === 0);
+  };
+
+  /* --- Quick category chips --- */
+  function wireQuickChips() {
+    var bar = document.getElementById('qchips'); if (!bar) return;
+    function scrollToId(id) { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    function gender(g) {
+      return function () {
+        var fc = document.getElementById('f-cat'); fc.value = g; fc.dispatchEvent(new Event('change'));
+        scrollToId('sec-trending');
+      };
+    }
+    [['Men', gender('men')], ['Women', gender('women')], ['Kids', gender('kids')],
+     ['Sports', function () { scrollToId('sec-sports'); }], ['School', function () { scrollToId('sec-school'); }],
+     ['Fancy', function () { scrollToId('sec-fancy'); }]].forEach(function (c) {
+      var b = h('button', 'qchip big', c[0]); b.type = 'button';
+      b.addEventListener('click', c[1]);
+      bar.appendChild(b);
+    });
+  }
+
+  /* --- openPdp wrap: recent + decorate --- */
+  var _opUp = openPdp;
+  openPdp = function (it) {
+    trackRecent(it.n);
+    _opUp(it);
+    decoratePdp(it);
+    renderHomeRows();
+  };
+
+  /* --- Bottom nav --- */
+  function wireBnav() {
+    var bn = document.getElementById('bnav'); if (!bn) return;
+    document.body.classList.add('has-bnav');
+    var tabs = bn.querySelectorAll('.btab');
+    function activate(id) { tabs.forEach(function (t) { t.classList.toggle('on', t.id === id); }); }
+    document.getElementById('bt-home').addEventListener('click', function () {
+      ['bag', 'wish', 'notif', 'profile', 'admin', 'account', 'orders', 'faq', 'contact', 'finder', 'quickorder', 'stylehelp', 'pincheck', 'sizeguide', 'mysizes'].forEach(function (i) {
+        var el = document.getElementById(i); if (el) el.hidden = true;
+      });
+      document.body.style.overflow = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      activate('bt-home');
+    });
+    document.getElementById('bt-search').addEventListener('click', function () {
+      var q = document.getElementById('q');
+      q.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function () { q.focus(); }, 350);
+      activate('bt-search');
+    });
+    document.getElementById('bt-wish').addEventListener('click', function () { renderWish(); openOverlay(document.getElementById('wish')); activate('bt-wish'); });
+    document.getElementById('bt-cart').addEventListener('click', function () { openBag(); activate('bt-cart'); });
+    document.getElementById('bt-acct').addEventListener('click', function () { renderAccount(); openOverlay(document.getElementById('account')); activate('bt-acct'); });
+    syncBnavBadges();
+  }
+  function syncBnavBadges() {
+    var n = 0; getBag().forEach(function (x) { n += x.qty; });
+    var cb = document.getElementById('bt-cart-n');
+    if (cb) { cb.hidden = n === 0; cb.textContent = n; }
+    var w = getWish().length, wb = document.getElementById('bt-wish-n');
+    if (wb) { wb.hidden = w === 0; wb.textContent = w; }
+  }
+  var _refreshBadge = refreshBadge;
+  refreshBadge = function () { _refreshBadge(); syncBnavBadges(); };
+  var _syncWishUI = syncWishUI;
+  syncWishUI = function () { _syncWishUI(); syncBnavBadges(); };
+
+  /* --- Splash --- */
+  function wireSplash() {
+    var sp = document.getElementById('splash'); if (!sp) return;
+    function hide() { sp.classList.add('gone'); setTimeout(function () { sp.hidden = true; }, 450); }
+    sp.addEventListener('click', hide);
+    setTimeout(hide, 1400);
+  }
+
+  /* --- Wishlist collections (migrates old list, keeps hearts working) --- */
+  function wishData() {
+    var d = lsGet(WISH2_KEY, null);
+    if (!d) {
+      var old = lsGet(WISHKEY, []);
+      d = { cur: 'I Want This', cols: [{ name: 'I Want This', items: old.slice() }] };
+      lsSet(WISH2_KEY, d);
+    }
+    return d;
+  }
+  function saveWishData(d) { lsSet(WISH2_KEY, d); }
+  getWish = function () {
+    var all = [];
+    wishData().cols.forEach(function (c) { c.items.forEach(function (n) { if (all.indexOf(n) === -1) all.push(n); }); });
+    return all;
+  };
+  toggleWish = function (n) {
+    var d = wishData(), col = d.cols[0], i = col.items.indexOf(n);
+    if (i === -1) {
+      d.cols.forEach(function (c) { var j = c.items.indexOf(n); if (j !== -1) c.items.splice(j, 1); });
+    } else { col.items.splice(i, 1); }
+    saveWishData(d); syncWishUI();
+  };
+  renderWish = function () {
+    var body = document.getElementById('wish-body'); if (!body) return;
+    var d = wishData();
+    body.innerHTML = '';
+    var tabs = h('div', 'wl-tabs');
+    d.cols.forEach(function (c, ci) {
+      var t = h('button', 'wl-tab' + (d.cur === c.name ? ' on' : ''), c.name + ' (' + c.items.length + ')');
+      t.type = 'button';
+      t.addEventListener('click', function () { d.cur = c.name; saveWishData(d); renderWish(); });
+      tabs.appendChild(t);
+    });
+    body.appendChild(tabs);
+    var cur = d.cols.filter(function (c) { return c.name === d.cur; })[0] || d.cols[0];
+    d.cur = cur.name;
+    var tools = h('div', 'wl-tools');
+    var ni = h('input', 'rin wl-new'); ni.placeholder = 'New collection name'; ni.maxLength = 24;
+    var nb = h('button', 'btn btn-mini', '+ Create'); nb.type = 'button';
+    nb.addEventListener('click', function () {
+      var v = ni.value.trim(); if (!v) return;
+      if (d.cols.some(function (c) { return c.name === v; })) return;
+      d.cols.push({ name: v, items: [] }); d.cur = v; saveWishData(d); renderWish();
+    });
+    tools.appendChild(ni); tools.appendChild(nb);
+    if (d.cols.length > 1) {
+      var del = h('button', 'btn btn-mini btn-danger', 'Delete this collection'); del.type = 'button';
+      del.addEventListener('click', function () {
+        cur.items.forEach(function (n) { if (d.cols[0].items.indexOf(n) === -1) d.cols[0].items.push(n); });
+        d.cols = d.cols.filter(function (c) { return c !== cur; });
+        d.cur = d.cols[0].name; saveWishData(d); renderWish();
+      });
+      tools.appendChild(del);
+    }
+    body.appendChild(tools);
+    if (!cur.items.length) {
+      body.appendChild(h('p', 'bag-empty', 'This collection is empty - tap the ❤️ on any product to save it here.'));
+      return;
+    }
+    cur.items.forEach(function (n) {
+      var it = byN[n]; if (!it) return;
+      var row = h('div', 'bagrow wishrow');
+      var img = h('img'); img.src = it.c; img.alt = it.name;
+      var bi = h('div', 'bi');
+      bi.appendChild(h('b', null, it.name));
+      bi.appendChild(h('span', null, it.colour + ' (#' + it.n + ')'));
+      var pr = h('div', 'bprice', it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp');
+      bi.appendChild(pr);
+      var right = h('div', 'bright');
+      if (d.cols.length > 1) {
+        var mv = h('select', 'fsel wl-move');
+        mv.appendChild(h('option', null, 'Move to…'));
+        d.cols.forEach(function (c) {
+          if (c === cur) return;
+          var o = h('option', null, c.name); o.value = c.name; mv.appendChild(o);
+        });
+        mv.addEventListener('change', function () {
+          if (!mv.value || mv.value === 'Move to…') return;
+          cur.items.splice(cur.items.indexOf(n), 1);
+          d.cols.forEach(function (c) { if (c.name === mv.value && c.items.indexOf(n) === -1) c.items.push(n); });
+          saveWishData(d); syncWishUI(); renderWish();
+        });
+        mv.addEventListener('click', function (e) { e.stopPropagation(); });
+        right.appendChild(mv);
+      }
+      var rm = h('button', 'bag-rm', 'Remove'); rm.type = 'button';
+      rm.addEventListener('click', function (e) {
+        e.stopPropagation();
+        cur.items.splice(cur.items.indexOf(n), 1);
+        saveWishData(d); syncWishUI(); renderWish();
+      });
+      right.appendChild(rm);
+      row.appendChild(img); row.appendChild(bi); row.appendChild(right);
+      row.addEventListener('click', function () { closeOverlay(document.getElementById('wish')); openPdp(it); });
+      body.appendChild(row);
+    });
+  };
+
+  /* --- Orders: record on WhatsApp order tap, My Orders, Buy Again --- */
+  var STATUS = {
+    received: ['🟡', 'Order Received'], confirmed: ['🔵', 'Confirmed'], packed: ['📦', 'Packed'],
+    shipped: ['🚚', 'Shipped'], delivered: ['✅', 'Delivered'], cancelled: ['❌', 'Cancelled']
+  };
+  function localOrders() { return lsGet(ORDERS_KEY, []); }
+  function saveLocalOrder(o) { var l = localOrders(); l.unshift(o); if (l.length > 50) l.length = 50; lsSet(ORDERS_KEY, l); }
+  function recordOrder(lines, total) {
+    if (!lines.length) return;
+    var o = {
+      id: 'RBH-' + Date.now().toString(36).toUpperCase(),
+      items: lines, total: total, status: 'received', at: Date.now()
+    };
+    saveLocalOrder(o);
+    pushNotif('🧾 Order ' + o.id + ' noted - RBH will confirm on WhatsApp.');
+    syncBell();
+    if (db && curUser) {
+      var doc = {
+        oid: o.id, uid: curUser.uid, name: curUser.displayName || '', email: curUser.email || '',
+        items: lines, total: total, status: 'received',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      db.collection('orders').add(doc).catch(function () {});
+    }
+    return o;
+  }
+  function bagLines() {
+    var lines = [], total = 0;
+    getBag().forEach(function (x) {
+      var it = byN[x.n]; if (!it) return;
+      var p = priceNum(it); total += p * x.qty;
+      lines.push({ n: it.n, name: it.name, col: x.col, size: x.size || '', qty: x.qty, price: p });
+    });
+    return { lines: lines, total: total };
+  }
+  function wireOrderRecord() {
+    if (bagOrder) bagOrder.addEventListener('click', function () {
+      var b = bagLines(); recordOrder(b.lines, b.total);
+    });
+    if (pdpOrder) pdpOrder.addEventListener('click', function () {
+      if (!curIt) return;
+      var p = priceNum(curIt);
+      recordOrder([{ n: curIt.n, name: curIt.name, col: curCol, size: curSize || '', qty: qty, price: p }], p * qty);
+    });
+  }
+  function renderOrders() {
+    var body = document.getElementById('orders-body'); if (!body) return;
+    body.innerHTML = '';
+    var list = localOrders();
+    function draw(all) {
+      body.innerHTML = '';
+      if (!all.length) {
+        body.appendChild(h('p', 'bag-empty', 'No orders yet - order on WhatsApp and it will show here.'));
+        return;
+      }
+      all.forEach(function (o) {
+        var cardEl = h('div', 'ord-card');
+        var st = STATUS[o.status] || STATUS.received;
+        cardEl.appendChild(h('div', 'ord-head', st[0] + ' ' + st[1] + '  •  ' + o.id));
+        cardEl.appendChild(h('div', 'ord-date', new Date(o.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })));
+        o.items.forEach(function (x) {
+          var it = byN[x.n];
+          var row = h('div', 'ord-item');
+          if (it) { var im = h('img'); im.src = it.c; im.alt = x.name; row.appendChild(im); }
+          var tx = h('div', 'bi');
+          tx.appendChild(h('b', null, x.name));
+          tx.appendChild(h('span', null, (x.size ? 'Size ' + x.size + ' • ' : '') + 'Qty ' + x.qty + (x.price ? ' • Rs ' + (x.price * x.qty) : '')));
+          row.appendChild(tx);
+          cardEl.appendChild(row);
+        });
+        if (o.total) cardEl.appendChild(h('div', 'ord-total', 'Total: Rs ' + o.total + ' (shipping extra)'));
+        if (o.status !== 'cancelled') {
+          var ba = h('button', 'btn btn-mini', 'BUY AGAIN ↻'); ba.type = 'button';
+          ba.addEventListener('click', function () {
+            o.items.forEach(function (x) {
+              var it = byN[x.n]; if (it) addToBag(it, x.col || colList(it)[0], x.size || '', x.qty || 1);
+            });
+            closeOverlay(document.getElementById('orders'));
+            openBag();
+          });
+          cardEl.appendChild(ba);
+        }
+        body.appendChild(cardEl);
+      });
+    }
+    draw(list);
+    if (db && curUser) {
+      db.collection('orders').where('uid', '==', curUser.uid).limit(50).get().then(function (snap) {
+        if (!snap.size) return;
+        var remote = snap.docs.map(function (d) {
+          var v = d.data();
+          return { id: v.oid || d.id.slice(0, 8).toUpperCase(), items: v.items || [], total: v.total || 0,
+            status: v.status || 'received', at: v.createdAt && v.createdAt.toMillis ? v.createdAt.toMillis() : Date.now() };
+        });
+        var merged = remote.concat(list.filter(function (lo) { return !remote.some(function (r) { return r.id === lo.id; }); }));
+        merged.sort(function (a, b) { return b.at - a.at; });
+        draw(merged);
+      }).catch(function () {});
+    }
+  }
+
+  /* --- Account page --- */
+  function renderAccount() {
+    var body = document.getElementById('account-body'); if (!body) return;
+    body.innerHTML = '';
+    var prof = lsGet(PROFKEY, {});
+    var nm = (curUser && curUser.displayName) || prof.name || '';
+    body.appendChild(h('h3', 'acct-hi', 'Hello' + (nm ? ', ' + nm.split(' ')[0] : '') + ' 👋'));
+    var grid = h('div', 'acct-grid');
+    function cardBtn(icon, label, fn) {
+      var b = h('button', 'acct-card'); b.type = 'button';
+      b.appendChild(h('span', 'acct-ic', icon));
+      b.appendChild(h('span', 'acct-lb', label));
+      b.addEventListener('click', fn);
+      grid.appendChild(b);
+    }
+    function openId(id, pre) { return function () { closeOverlay(document.getElementById('account')); if (pre) pre(); openOverlay(document.getElementById(id)); }; }
+    cardBtn('📦', 'My Orders', openId('orders', renderOrders));
+    cardBtn('❤️', 'Wishlist', function () { closeOverlay(document.getElementById('account')); renderWish(); openOverlay(document.getElementById('wish')); });
+    cardBtn('👟', 'My Sizes', openId('mysizes', renderMySizes));
+    cardBtn('👀', 'Recently Viewed', openId('recentov', renderRecentOv));
+    cardBtn('📍', 'Delivery Checker', openId('pincheck'));
+    cardBtn('❓', 'Help & FAQ', openId('faq', renderFaq));
+    cardBtn('📞', 'Contact RBH', openId('contact'));
+    cardBtn('👟', 'Footwear Finder', openId('finder'));
+    cardBtn('⚡', 'Quick Order', openId('quickorder'));
+    cardBtn('🎨', 'Style Help', openId('stylehelp'));
+    cardBtn('⚙️', 'Profile & Settings', function () { closeOverlay(document.getElementById('account')); openProfile(); });
+    body.appendChild(grid);
+    body.appendChild(h('h4', 'prof-sec', 'Follow RBH'));
+    var soc = h('div', 'acct-soc');
+    [['Instagram', 'https://www.instagram.com/raja.boot.house_rbh'], ['YouTube', 'https://youtube.com/@raja.boot.house_rbh'], ['Facebook', 'https://www.facebook.com/share/1Dw8Jw3onz/']].forEach(function (s) {
+      var a = h('a', 'btn btn-mini btn-soc', s[0]); a.href = s[1]; a.target = '_blank'; a.rel = 'noopener';
+      soc.appendChild(a);
+    });
+    body.appendChild(soc);
+  }
+
+  /* --- Recently Viewed overlay --- */
+  function renderRecentOv() {
+    var body = document.getElementById('recentov-body'); if (!body) return;
+    body.innerHTML = '';
+    var rec = getRecent().map(function (n) { return byN[n]; }).filter(Boolean);
+    if (!rec.length) { body.appendChild(h('p', 'bag-empty', 'Products you open will show here.')); return; }
+    var g = h('div', 'hrow wrap');
+    rec.forEach(function (it) { g.appendChild(hcard(it)); });
+    body.appendChild(g);
+  }
+
+  /* --- My Sizes --- */
+  function renderMySizes() {
+    var body = document.getElementById('mysizes-body'); if (!body) return;
+    var saved = lsGet(SIZES_KEY, {});
+    body.innerHTML = '';
+    body.appendChild(h('p', 'ship-note', 'Save your sizes once - we will highlight them on every product.'));
+    [['men', 'Men (UK/IND)'], ['women', 'Women (UK/IND)'], ['kids', 'Kids']].forEach(function (g) {
+      var row = h('div', 'setrow');
+      row.appendChild(h('span', null, g[1]));
+      var sel = h('select', 'fsel');
+      sel.appendChild(h('option', null, 'Not set'));
+      var opts = g[0] === 'kids' ? ['5-10', '11-13', '1-8', '1-10'] : ['5', '6', '7', '8', '9', '10'];
+      opts.forEach(function (s) { var o = h('option', null, s); o.value = s; sel.appendChild(o); });
+      if (saved[g[0]]) sel.value = saved[g[0]];
+      sel.addEventListener('change', function () {
+        var d = lsGet(SIZES_KEY, {});
+        if (sel.value === 'Not set') delete d[g[0]]; else d[g[0]] = sel.value;
+        lsSet(SIZES_KEY, d);
+      });
+      row.appendChild(sel);
+      body.appendChild(row);
+    });
+  }
+
+  /* --- FAQ --- */
+  var DEFAULT_FAQS = [
+    ['How do I place an order?', 'Add footwear to your bag (or tap Order on WhatsApp on any product). Your order is finalized on WhatsApp - size, stock and payment are confirmed there.'],
+    ['How do I confirm my size?', 'Check the Size Guide on any product page. Still unsure? Order on WhatsApp - RBH shows the exact product on a video call before dispatch.'],
+    ['What are the delivery charges?', 'Shoe prices are for the pair only - shipping charges are extra and confirmed on WhatsApp before dispatch.'],
+    ['How long does delivery take?', 'Delivery time depends on your location - confirm it on WhatsApp when you order.'],
+    ['Is store pickup available?', 'Yes - visit Raja Boot House, Tingray Road, Dharni. Open 9 AM - 8 PM daily (Wed till 8:30 PM, Fri till 10:30 PM).'],
+    ['What is the exchange policy?', 'No exchange, no return, no COD. Every order is confirmed on WhatsApp with a video call of the genuine product before payment.'],
+    ['How can I contact RBH?', 'WhatsApp or call +91 90221 50546. You can also message on Instagram @raja.boot.house_rbh.'],
+    ['How do I check product availability?', 'Stock moves fast - tap Order on WhatsApp on the product and RBH will confirm availability and sizes.']
+  ];
+  function renderFaq() {
+    var body = document.getElementById('faq-body'); if (!body) return;
+    body.innerHTML = '';
+    var faqs = DEFAULT_FAQS.concat(CFG.faqs || []);
+    faqs.forEach(function (f) {
+      var d = h('details', 'faq-item');
+      d.appendChild(h('summary', null, f[0]));
+      d.appendChild(h('p', null, f[1]));
+      body.appendChild(d);
+    });
+  }
+
+  /* --- Delivery PIN checker --- */
+  function wirePinCheck() {
+    var btn = document.getElementById('pin-go'); if (!btn) return;
+    btn.addEventListener('click', function () {
+      var v = document.getElementById('pin-in').value.trim();
+      var out = document.getElementById('pin-out');
+      if (!/^\d{6}$/.test(v)) { out.className = 'pin-out'; out.textContent = 'Enter a 6-digit PIN code.'; return; }
+      var pins = CFG.pins || [];
+      if (!pins.length) {
+        out.className = 'pin-out';
+        out.innerHTML = '';
+        out.appendChild(h('p', null, 'Delivery areas are being updated - please confirm your PIN on WhatsApp.'));
+        var a = h('a', 'btn btn-wa btn-talk', 'Check on WhatsApp');
+        a.href = WA(encodeURIComponent('Hi Raja Boot House! Do you deliver to PIN ' + v + '?'));
+        a.target = '_blank'; a.rel = 'noopener';
+        out.appendChild(a);
+        return;
+      }
+      if (pins.map(String).indexOf(v) !== -1) { out.className = 'pin-out ok'; out.textContent = '✅ Delivery Available to ' + v; }
+      else { out.className = 'pin-out no'; out.textContent = '❌ Delivery Currently Unavailable to ' + v + ' - confirm on WhatsApp, new areas are added often.'; }
+    });
+  }
+
+  /* --- Footwear Finder --- */
+  function wireFinder() {
+    var body = document.getElementById('finder-body'); if (!body) return;
+    var state = {};
+    function step1() {
+      state = {}; body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'STEP 1 - Who is it for?'));
+      var r = h('div', 'find-opts');
+      [['Men', 'men'], ['Women', 'women'], ['Kids', 'kids']].forEach(function (o) {
+        var b = h('button', 'find-opt', o[0]); b.type = 'button';
+        b.addEventListener('click', function () { state.who = o[1]; step2(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function step2() {
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'STEP 2 - What do you need?'));
+      var r = h('div', 'find-opts');
+      [['Daily Wear', 'daily'], ['Sports', 'sports'], ['School', 'school'], ['Function / Fancy', 'function'], ['Rain', 'rain'], ['Casual', 'casual']].forEach(function (o) {
+        var b = h('button', 'find-opt', o[0]); b.type = 'button';
+        b.addEventListener('click', function () { state.need = o[1]; step3(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function step3() {
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'STEP 3 - Budget'));
+      var r = h('div', 'find-opts');
+      [['Under ₹200', 200], ['₹200–₹500', 500], ['₹500–₹1000', 1000], ['₹1000+', 99999]].forEach(function (o) {
+        var b = h('button', 'find-opt', o[0]); b.type = 'button';
+        b.addEventListener('click', function () { state.budget = o[1]; step4(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function matches(it) {
+      if (state.who && itemGender(it) !== state.who) return false;
+      var cat = it.cat || '';
+      if (state.need === 'sports' && cat !== 'grid-shoes') return false;
+      if (state.need === 'school' && cat !== 'grid-school') return false;
+      if (state.need === 'daily' && ['grid-sandals', 'grid-flipflops', 'grid-sliders'].indexOf(cat) === -1) return false;
+      if (state.need === 'function' && !isFancy(it)) return false;
+      if (state.need === 'rain' && !/gum boot|clog|crocs|eva/i.test(it.name)) return false;
+      var p = priceNum(it);
+      if (p) {
+        if (state.budget === 200 && p > 200) return false;
+        if (state.budget === 500 && (p < 200 || p > 500)) return false;
+        if (state.budget === 1000 && (p <= 500 || p > 1000)) return false;
+        if (state.budget === 99999 && p <= 1000) return false;
+      }
+      if (state.size && itemSizes(it).indexOf(state.size) === -1) return false;
+      return true;
+    }
+    function step4() {
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'STEP 4 - Size'));
+      var avail = {};
+      items.filter(function (it) { var s = state.size; state.size = null; var ok = matches(it); state.size = s; return ok; })
+        .forEach(function (it) { itemSizes(it).forEach(function (s) { avail[s] = 1; }); });
+      var r = h('div', 'find-opts');
+      var any = h('button', 'find-opt', 'Any size'); any.type = 'button';
+      any.addEventListener('click', function () { state.size = null; results(); });
+      r.appendChild(any);
+      Object.keys(avail).sort().forEach(function (s) {
+        var b = h('button', 'find-opt', s); b.type = 'button';
+        b.addEventListener('click', function () { state.size = s; results(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function results() {
+      var found = items.filter(matches);
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'We found ' + found.length + ' footwear option' + (found.length === 1 ? '' : 's') + ' for you 👟'));
+      if (found.length) {
+        var g = h('div', 'hrow wrap');
+        found.forEach(function (it) { g.appendChild(hcard(it)); });
+        body.appendChild(g);
+      } else {
+        var a = h('a', 'btn btn-wa btn-talk', 'Ask RBH on WhatsApp'); a.target = '_blank'; a.rel = 'noopener';
+        a.href = WA(encodeURIComponent('Hi Raja Boot House! I used the Footwear Finder but found no match. I need: ' + (state.who || '') + ' / ' + (state.need || '') + ' footwear. Please help.'));
+        body.appendChild(a);
+      }
+      var again = h('button', 'btn btn-mini', '↻ Start again'); again.type = 'button';
+      again.addEventListener('click', step1);
+      body.appendChild(again);
+    }
+    document.getElementById('finder')._start = step1;
+    step1();
+  }
+
+  /* --- Quick Order --- */
+  function wireQuickOrder() {
+    var body = document.getElementById('qo-body'); if (!body) return;
+    var state = {};
+    function s1() {
+      state = {}; body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'Category'));
+      var r = h('div', 'find-opts');
+      [['Men', 'men'], ['Women', 'women'], ['Kids', 'kids']].forEach(function (o) {
+        var b = h('button', 'find-opt', o[0]); b.type = 'button';
+        b.addEventListener('click', function () { state.who = o[1]; s2(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function s2() {
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'Type'));
+      var types = state.who === 'women'
+        ? [['Sandals / Chappals', ['grid-sandals', 'grid-flipflops']], ['Fancy', ['fancy']], ['Clogs', ['clogs']]]
+        : state.who === 'kids'
+          ? [['School Shoes', ['grid-school']]]
+          : [['Shoes', ['grid-shoes2']], ['Sports Shoes', ['grid-shoes']], ['Sandals', ['grid-sandals']], ['Sliders', ['grid-sliders']], ['Flip-Flops', ['grid-flipflops']]];
+      var r = h('div', 'find-opts');
+      types.forEach(function (o) {
+        var b = h('button', 'find-opt', o[0]); b.type = 'button';
+        b.addEventListener('click', function () { state.cats = o[1]; s3(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function s3() {
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'Size'));
+      var r = h('div', 'find-opts');
+      var any = h('button', 'find-opt', 'Any size'); any.type = 'button';
+      any.addEventListener('click', function () { state.size = null; s4(); });
+      r.appendChild(any);
+      ['5', '6', '7', '8', '9', '10'].forEach(function (s) {
+        var b = h('button', 'find-opt', s); b.type = 'button';
+        b.addEventListener('click', function () { state.size = s; s4(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function s4() {
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', 'Budget'));
+      var r = h('div', 'find-opts');
+      [['Under ₹200', 200], ['₹200–₹500', 500], ['₹500+', 99999], ['Any budget', 0]].forEach(function (o) {
+        var b = h('button', 'find-opt', o[0]); b.type = 'button';
+        b.addEventListener('click', function () { state.budget = o[1]; res(); });
+        r.appendChild(b);
+      });
+      body.appendChild(r);
+    }
+    function res() {
+      var found = items.filter(function (it) {
+        if (itemGender(it) !== state.who) return false;
+        if (state.cats[0] === 'fancy' && !isFancy(it)) return false;
+        if (state.cats[0] === 'clogs' && !/clog|crocs/i.test(it.name)) return false;
+        if (['fancy', 'clogs'].indexOf(state.cats[0]) === -1 && state.cats.indexOf(it.cat) === -1) return false;
+        if (state.size && itemSizes(it).indexOf(state.size) === -1) return false;
+        var p = priceNum(it);
+        if (p && state.budget) {
+          if (state.budget === 200 && p > 200) return false;
+          if (state.budget === 500 && (p < 200 || p > 500)) return false;
+          if (state.budget === 99999 && p <= 500) return false;
+        }
+        return true;
+      });
+      body.innerHTML = '';
+      body.appendChild(h('p', 'find-step', found.length + ' match' + (found.length === 1 ? '' : 'es') + ' - tap one to order:'));
+      var g = h('div', 'hrow wrap');
+      found.forEach(function (it) { g.appendChild(hcard(it)); });
+      body.appendChild(g);
+      if (!found.length) {
+        var a = h('a', 'btn btn-wa btn-talk', 'Ask RBH on WhatsApp'); a.target = '_blank'; a.rel = 'noopener';
+        a.href = WA(encodeURIComponent('Hi Raja Boot House! Quick Order found no match for me. Please help.'));
+        body.appendChild(a);
+      }
+      var again = h('button', 'btn btn-mini', '↻ Start again'); again.type = 'button';
+      again.addEventListener('click', s1);
+      body.appendChild(again);
+    }
+    document.getElementById('quickorder')._start = s1;
+    s1();
+  }
+
+  /* --- Style Help --- */
+  function wireStyleHelp() {
+    var fi = document.getElementById('sh-photo'); if (!fi) return;
+    var prev = document.getElementById('sh-prev'), btn = document.getElementById('sh-send');
+    fi.addEventListener('change', function () {
+      var f = fi.files && fi.files[0]; if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () { prev.src = rd.result; prev.hidden = false; };
+      rd.readAsDataURL(f);
+    });
+    btn.addEventListener('click', function () {
+      var msg = document.getElementById('sh-msg').value.trim() || 'What footwear will match this?';
+      var t = 'Hi Raja Boot House! I need style help 👟 ' + msg + ' (I will attach my photo in this chat.)';
+      window.open(WA(encodeURIComponent(t)), '_blank');
+    });
+  }
+
+  /* --- Contact hub (static content wired once) --- */
+  function wireContact() {
+    var map = {
+      'ct-wa': 'https://wa.me/919022150546?text=' + encodeURIComponent('Hi Raja Boot House! I have a question.'),
+      'ct-call': 'tel:+919022150546',
+      'ct-insta': 'https://www.instagram.com/raja.boot.house_rbh',
+      'ct-yt': 'https://youtube.com/@raja.boot.house_rbh',
+      'ct-fb': 'https://www.facebook.com/share/1Dw8Jw3onz/',
+      'ct-map': 'https://maps.app.goo.gl/eQ2NU3e2YMCHUP7F6'
+    };
+    Object.keys(map).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) { el.href = map[id]; if (id !== 'ct-call') { el.target = '_blank'; el.rel = 'noopener'; } }
+    });
+  }
+
+  /* --- Cart summary polish --- */
+  var _renderBag = renderBag;
+  renderBag = function () {
+    _renderBag();
+    var b = getBag();
+    var old = document.getElementById('cart-summary'); if (old) old.remove();
+    if (!b.length) return;
+    var total = 0, unsure = 0;
+    b.forEach(function (x) { var it = byN[x.n]; if (!it) return; var p = priceNum(it); total += p * x.qty; if (!p) unsure++; });
+    var box = h('div', 'cart-summary'); box.id = 'cart-summary';
+    box.appendChild(h('div', 'cs-row', ''));
+    var r1 = h('div', 'cs-row'); r1.appendChild(h('span', null, 'Subtotal')); r1.appendChild(h('b', null, 'Rs ' + total + (unsure ? ' (+ some prices on WhatsApp)' : '')));
+    var r2 = h('div', 'cs-row'); r2.appendChild(h('span', null, 'Delivery charges')); r2.appendChild(h('b', null, 'Extra - confirm on WhatsApp'));
+    var r3 = h('div', 'cs-row cs-total'); r3.appendChild(h('span', null, 'TOTAL (items)')); r3.appendChild(h('b', null, 'Rs ' + total));
+    box.appendChild(r1); box.appendChild(r2); box.appendChild(r3);
+    bagTotal.parentNode.insertBefore(box, bagTotal.nextSibling);
+  };
+
+  /* --- Admin dashboard extras --- */
+  function adminSec(title) {
+    var s = h('div', 'adm-sec');
+    s.appendChild(h('h3', null, title));
+    return s;
+  }
+  function saveConfig(patch, done) {
+    if (!db) { if (done) done('No internet.'); return; }
+    db.collection('config').doc('app').set(patch, { merge: true }).then(function () {
+      Object.keys(patch).forEach(function (k) { CFG[k] = patch[k]; });
+      applyConfig();
+      if (done) done(null);
+    }).catch(function () { if (done) done('Could not save - check internet.'); });
+  }
+  function renderAdminExtra() {
+    if (!adminBody || !curUser || curUser.email !== OWNER || !db) return;
+    /* Orders */
+    var sOrd = adminSec('📦 Orders (latest 50)');
+    sOrd.appendChild(h('p', 'adm-load', 'Loading...'));
+    adminBody.appendChild(sOrd);
+    db.collection('orders').orderBy('createdAt', 'desc').limit(50).get().then(function (snap) {
+      sOrd.innerHTML = ''; sOrd.appendChild(h('h3', null, '📦 Orders (latest 50) - ' + snap.size));
+      if (!snap.size) { sOrd.appendChild(h('p', 'adm-load', 'No orders yet.')); return; }
+      snap.forEach(function (d) {
+        var v = d.data();
+        var row = h('div', 'adm-ord');
+        var st = STATUS[v.status] || STATUS.received;
+        row.appendChild(h('b', null, (v.oid || d.id.slice(0, 8)) + ' - ' + (v.name || v.email || 'customer')));
+        row.appendChild(h('div', 'adm-ord-items', (v.items || []).map(function (x) {
+          return x.name + (x.size ? ' (Size ' + x.size + ')' : '') + ' x' + x.qty;
+        }).join(', ') + (v.total ? ' - Rs ' + v.total : '')));
+        row.appendChild(h('div', 'adm-ord-date', fmtTs(v.createdAt)));
+        var sel = h('select', 'fsel');
+        Object.keys(STATUS).forEach(function (k) {
+          var o = h('option', null, STATUS[k][0] + ' ' + STATUS[k][1]); o.value = k;
+          if (k === (v.status || 'received')) o.selected = true;
+          sel.appendChild(o);
+        });
+        sel.addEventListener('change', function () {
+          d.ref.set({ status: sel.value }, { merge: true }).catch(function () {});
+        });
+        row.appendChild(sel);
+        sOrd.appendChild(row);
+      });
+    }).catch(function () { sOrd.innerHTML = '<h3>📦 Orders</h3><p class="adm-load">Could not load orders.</p>'; });
+
+    /* Store settings */
+    var sSet = adminSec('⚙️ Store settings');
+    function field(label, val, ph) {
+      var w = h('div', 'adm-field');
+      w.appendChild(h('label', null, label));
+      var i = h('input', 'rin'); i.value = val == null ? '' : val; if (ph) i.placeholder = ph;
+      w.appendChild(i);
+      sSet.appendChild(w);
+      return i;
+    }
+    var fBanner = field('Offer banner text (empty = hidden)', CFG.banner != null ? CFG.banner : OFFER);
+    var fNew = field('New Arrivals - how many latest products show as NEW', CFG.newCount, '6');
+    var fLow = field('Low stock threshold (show "Only X left" at or below)', CFG.lowStock, '2');
+    var fBest = field('Best Sellers - product numbers, comma separated', (CFG.best || []).join(', '), 'e.g. 6, 7, 23');
+    var fPins = field('Delivery PIN codes - comma separated (empty = ask on WhatsApp)', (CFG.pins || []).join(', '), 'e.g. 444702, 444701');
+    var saveB = h('button', 'btn pdp-cta', 'Save settings'); saveB.type = 'button';
+    var saveMsg = h('p', 'adm-load');
+    saveB.addEventListener('click', function () {
+      saveMsg.textContent = 'Saving...';
+      saveConfig({
+        banner: fBanner.value.trim(),
+        newCount: Math.max(0, Math.min(20, +fNew.value || 0)),
+        lowStock: Math.max(1, +fLow.value || 2),
+        best: fBest.value.split(',').map(function (x) { return +x.trim(); }).filter(function (x) { return x > 0 && byN[x]; }),
+        pins: fPins.value.split(',').map(function (x) { return x.trim(); }).filter(function (x) { return /^\d{6}$/.test(x); })
+      }, function (err) { saveMsg.textContent = err || 'Saved! Customer app updated.'; });
+    });
+    sSet.appendChild(saveB); sSet.appendChild(saveMsg);
+    adminBody.appendChild(sSet);
+
+    /* Product manager */
+    var sProd = adminSec('🛠️ Products - price / MRP / stock overrides');
+    sProd.appendChild(h('p', 'adm-load', 'Overrides update the live app for every customer. Leave blank to keep the original.'));
+    var pSearch = h('input', 'rin'); pSearch.placeholder = 'Filter products...';
+    sProd.appendChild(pSearch);
+    var pList = h('div', 'adm-plist');
+    sProd.appendChild(pList);
+    function drawProds(f) {
+      pList.innerHTML = '';
+      items.forEach(function (it) {
+        if (f && (it.name + ' ' + it.brand + ' #' + it.n).toLowerCase().indexOf(f) === -1) return;
+        var o = OVR[it.n] || {};
+        var row = h('div', 'adm-prod');
+        row.appendChild(h('b', null, '#' + it.n + ' ' + it.name));
+        var g = h('div', 'adm-prod-grid');
+        function pin(ph, val) { var i = h('input', 'rin'); i.placeholder = ph; i.value = val || ''; g.appendChild(i); return i; }
+        var iOffer = pin('Offer ' + (it.offer || '-'), o.offer);
+        var iMrp = pin('MRP ' + (it.mrp || '-'), o.mrp);
+        var iStock = pin('Stock qty', o.stock != null ? o.stock : '');
+        var oosL = h('label', 'adm-oos');
+        var oosC = h('input'); oosC.type = 'checkbox'; oosC.checked = !!o.oos;
+        oosL.appendChild(oosC); oosL.appendChild(h('span', null, 'Out of stock'));
+        g.appendChild(oosL);
+        var sv = h('button', 'btn btn-mini', 'Save'); sv.type = 'button';
+        var msg = h('span', 'adm-mini-msg');
+        sv.addEventListener('click', function () {
+          var data = {};
+          if (iOffer.value.trim()) data.offer = iOffer.value.trim();
+          if (iMrp.value.trim()) data.mrp = iMrp.value.trim();
+          if (iStock.value.trim() !== '') data.stock = +iStock.value.trim();
+          data.oos = oosC.checked;
+          db.collection('overrides').doc(String(it.n)).set(data, { merge: true }).then(function () {
+            OVR[it.n] = data; applyOverrides(); renderHomeRows();
+            msg.textContent = ' Saved ✓';
+          }).catch(function () { msg.textContent = ' Failed'; });
+        });
+        g.appendChild(sv); g.appendChild(msg);
+        row.appendChild(g);
+        pList.appendChild(row);
+      });
+    }
+    pSearch.addEventListener('input', function () { drawProds(pSearch.value.trim().toLowerCase()); });
+    drawProds('');
+    adminBody.appendChild(sProd);
+
+    /* FAQ editor */
+    var sFaq = adminSec('❓ Extra FAQs (shown after the default ones)');
+    (CFG.faqs || []).forEach(function (f, i) {
+      var row = h('div', 'adm-faq');
+      row.appendChild(h('b', null, f[0]));
+      row.appendChild(h('p', null, f[1]));
+      var del = h('button', 'btn btn-mini btn-danger', 'Delete'); del.type = 'button';
+      del.addEventListener('click', function () {
+        var faqs = (CFG.faqs || []).slice(); faqs.splice(i, 1);
+        saveConfig({ faqs: faqs }, function () { });
+        row.remove();
+      });
+      row.appendChild(del);
+      sFaq.appendChild(row);
+    });
+    var fqQ = h('input', 'rin'); fqQ.placeholder = 'Question';
+    var fqA = h('input', 'rin'); fqA.placeholder = 'Answer';
+    var fqB = h('button', 'btn btn-mini', '+ Add FAQ'); fqB.type = 'button';
+    fqB.addEventListener('click', function () {
+      if (!fqQ.value.trim() || !fqA.value.trim()) return;
+      var faqs = (CFG.faqs || []).concat([[fqQ.value.trim(), fqA.value.trim()]]);
+      saveConfig({ faqs: faqs }, function (err) { if (!err) { fqQ.value = ''; fqA.value = ''; } });
+    });
+    sFaq.appendChild(fqQ); sFaq.appendChild(fqA); sFaq.appendChild(fqB);
+    adminBody.appendChild(sFaq);
+
+    /* Reviews moderation */
+    var sRev = adminSec('⭐ Reviews moderation (latest 30)');
+    sRev.appendChild(h('p', 'adm-load', 'Loading...'));
+    adminBody.appendChild(sRev);
+    db.collection('reviews').orderBy('createdAt', 'desc').limit(30).get().then(function (snap) {
+      sRev.innerHTML = ''; sRev.appendChild(h('h3', null, '⭐ Reviews moderation (latest 30)'));
+      if (!snap.size) { sRev.appendChild(h('p', 'adm-load', 'No reviews yet.')); return; }
+      snap.forEach(function (d) {
+        var v = d.data();
+        var row = h('div', 'adm-faq');
+        row.appendChild(h('b', null, (v.hidden ? '🚫 ' : '') + (v.product || 'Site') + ' - ' + (v.name || '') + ' (' + (v.rating || '-') + '⭐)'));
+        row.appendChild(h('p', null, v.text || ''));
+        var tb = h('button', 'btn btn-mini', v.hidden ? 'Unhide' : 'Hide'); tb.type = 'button';
+        tb.addEventListener('click', function () {
+          d.ref.set({ hidden: !v.hidden }, { merge: true }).then(function () {
+            v.hidden = !v.hidden;
+            tb.textContent = v.hidden ? 'Unhide' : 'Hide';
+            revCache = {};
+          });
+        });
+        row.appendChild(tb);
+        sRev.appendChild(row);
+      });
+    }).catch(function () { sRev.innerHTML = '<h3>⭐ Reviews moderation</h3><p class="adm-load">Could not load reviews.</p>'; });
+  }
+  var _renderAdmin = renderAdmin;
+  renderAdmin = function () {
+    _renderAdmin();
+    renderAdminExtra();
+  };
+
+  /* --- v20 init --- */
+  wireSearch();
+  wireQuickChips();
+  wireBnav();
+  wireSplash();
+  wireOrderRecord();
+  wirePinCheck();
+  wireFinder();
+  wireQuickOrder();
+  wireStyleHelp();
+  wireContact();
+  wireRevModal();
+  renderHomeRows();
+  loadRemote();
+
+  /* --- generic close wiring for v20 overlays --- */
+  ['account', 'orders', 'recentov', 'mysizes', 'faq', 'contact', 'finder', 'quickorder', 'stylehelp', 'pincheck', 'sizeguide'].forEach(function (id) {
+    var el = document.getElementById(id); if (!el) return;
+    var cb = el.querySelector('.pdp-close');
+    if (cb) cb.addEventListener('click', function () { closeOverlay(el); });
+  });
+
   /* --- init --- */
   syncWishUI(); syncBell(); applyFestive(); syncTogs(); sparkStart();
 
