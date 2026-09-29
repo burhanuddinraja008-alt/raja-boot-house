@@ -5,12 +5,16 @@
 
   /* 1) image skeleton markers: clear shimmer once each image paints */
   function markImg(img){
-    if (img.dataset.pvLoaded) return;
+    if (img.dataset.pvLoaded || img.dataset.pvPending) return;
     if (img.complete && img.naturalWidth > 0) { img.dataset.pvLoaded = '1'; return; }
-    img.addEventListener('load', function(){ img.dataset.pvLoaded = '1'; }, {once:true});
-    img.addEventListener('error', function(){ img.dataset.pvLoaded = '1'; }, {once:true});
+    img.dataset.pvPending = '1';
+    img.addEventListener('load', function(){ img.dataset.pvLoaded = '1'; delete img.dataset.pvPending; }, {once:true});
+    img.addEventListener('error', function(){ img.dataset.pvLoaded = '1'; delete img.dataset.pvPending; }, {once:true});
   }
-  function scanImgs(root){ (root||document).querySelectorAll('.imgwrap img,.hcard img,.ctrack img,#pdp-img').forEach(markImg); }
+  function scanImgs(root){
+    if (root.matches && root.matches('.imgwrap img,.hcard img,.ctrack img,#pdp-img')) markImg(root);
+    root.querySelectorAll('.imgwrap img,.hcard img,.ctrack img,#pdp-img').forEach(markImg);
+  }
 
   /* 2) scroll reveal */
   var REVEAL_SEL = '.sec-bar,.banner,.catrow,.searchrow,.qchips,.card,.hcard,.steps-box,.revcta,.review-grid,.sizechart,.shopinfo,#rbh-share-app,.reels-h3,.reel-grid-embed';
@@ -27,7 +31,9 @@
   function scanReveal(root){
     if (!io) return;
     var i = 0;
-    (root||document).querySelectorAll(REVEAL_SEL).forEach(function(el){
+    var nodes = Array.from(root.querySelectorAll(REVEAL_SEL));
+    if (root.matches && root.matches(REVEAL_SEL)) nodes.unshift(root);
+    nodes.forEach(function(el){
       if (el.classList.contains('pv-rv') || el.classList.contains('pv-in')) return;
       el.classList.add('pv-rv');
       el.style.transitionDelay = ((i++ % 4) * 55) + 'ms';
@@ -41,9 +47,12 @@
   else boot();
 
   var mo = new MutationObserver(function(muts){
-    var added = false;
-    for (var i = 0; i < muts.length; i++){ if (muts[i].addedNodes.length){ added = true; break; } }
-    if (added){ scanImgs(document); scanReveal(document); }
+    muts.forEach(function(mut){
+      mut.addedNodes.forEach(function(node){
+        if (node.nodeType !== 1) return;
+        scanImgs(node); scanReveal(node);
+      });
+    });
   });
   mo.observe(document.documentElement, {childList:true, subtree:true});
 
