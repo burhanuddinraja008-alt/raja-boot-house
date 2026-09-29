@@ -348,7 +348,11 @@
       '. Size: ' + (pdpSelectedSize || 'to be confirmed') + '. Qty: ' + qty + '. (#' + curIt.n + ')';
     return WA(encodeURIComponent(t));
   }
-  function refreshCta() { pdpOrder.href = orderLink(); }
+  function refreshCta() {
+    pdpOrder.href = orderLink();
+    var talk = document.getElementById('pdp-talk');
+    if (talk && curIt) talk.href = talkLink(curIt, curCol, pdpSelectedSize, qty);
+  }
 
   function chipRow(box, labels, onPick, active) {
     box.innerHTML = '';
