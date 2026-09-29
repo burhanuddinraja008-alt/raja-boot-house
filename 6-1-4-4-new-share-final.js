@@ -430,8 +430,7 @@
     messagingSenderId: '983191567554',
     appId: '1:983191567554:web:8feb614da884b5df29cf5b'
   };
-  var WELCOME_URL = 'https://script.google.com/macros/s/AKfycbxRU5fvZotAVKIPZgWcg2wlwRhWO1tJQS_KEKqezf9K2K4MXnIGzSGNxKAVrHgKETc/exec';
-  var WELCOME_TOKEN = 'bcd5d5fde8bc6dcb855f5a0faaad7035';
+  var WELCOME_URL = 'https://script.google.com/macros/s/AKfycby984QuJAD2suVdwzpYTuFFDCkJApqYjvIo8z1jSrk7LIfevLAHTihjFw2VBD_sKhBL5Q/exec';
   var revOpen = document.getElementById('rev-open'),
       revForm = document.getElementById('revform'),
       revName = document.getElementById('rev-name'),
@@ -551,7 +550,7 @@
   });
 
   /* ---------- A+B: bag, Google login, visitor counter, owner panel ---------- */
-  var OWNER = 'bh4738255@gmail.com',
+  var OWNER_UID = 'fCdTcM2FncQ5ngHH0IfMS6QLPXx1',
       SITE = 'https://burhanuddinraja008-alt.github.io/raja-boot-house/',
       auth, authReady = false, curUser = null;
 
@@ -603,31 +602,32 @@
   function onUser(u) {
     curUser = u;
     if (u) {
-      hideLpop();
+      if (u.emailVerified) hideLpop();
       if (loginBtn) loginBtn.textContent = (u.displayName || 'Account').split(' ')[0];
       if (umEmail) umEmail.textContent = u.email || '';
-      if (umAdmin) umAdmin.hidden = (u.email !== OWNER);
-      if (u.email === OWNER) { try { localStorage.setItem('rbhOwner', '1'); } catch (e) {} }
-      if (db) {
+      if (umAdmin) umAdmin.hidden = (u.uid !== OWNER_UID);
+      try { if (u.uid === OWNER_UID) localStorage.setItem('rbhOwner', '1'); else localStorage.removeItem('rbhOwner'); } catch (e) {}
+      if (db && u.emailVerified) {
         var ref = db.collection('customers').doc(u.uid);
         ref.get().then(function (s) {
           var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
           if (!s.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
           return ref.set(d, { merge: true }).then(function () {
-            if (!s.exists && u.email) sendWelcome(u.displayName || '', u.email);
+            if (!s.exists && u.email && u.emailVerified) sendWelcome(u);
           });
         }).catch(function () {});
       }
       var adm = document.getElementById('admin');
       if (adm && !adm.hidden) renderAdmin();
-    } else if (loginBtn) { loginBtn.textContent = 'Login'; }
+    } else if (loginBtn) { loginBtn.textContent = 'Login'; try { localStorage.removeItem('rbhOwner'); } catch (e) {} }
   }
 
   /* --- Welcome email (first login only) --- */
-  function sendWelcome(name, email) {
-    try {
-      fetch(WELCOME_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ token: WELCOME_TOKEN, name: name, email: email }) });
-    } catch (e) {}
+  function sendWelcome(user) {
+    user.getIdToken().then(function (idToken) {
+      return fetch(WELCOME_URL, { method: 'POST', mode: 'no-cors',
+        body: new URLSearchParams({ idToken: idToken }) });
+    }).catch(function (e) { console.warn('Welcome request could not be submitted', e); });
   }
 
   /* --- Visitor counter (Firestore daily) --- */
@@ -762,15 +762,15 @@
     adminBody.innerHTML = '';
     if (!curUser) {
       var p0 = document.createElement('p'); p0.className = 'bag-empty';
-      p0.textContent = 'Sign in with Google first to see the owner panel.';
+      p0.textContent = 'Sign in first to see the owner panel.';
       adminBody.appendChild(p0);
       var lb = document.createElement('button'); lb.className = 'btn pdp-cta'; lb.type = 'button';
-      lb.textContent = 'Sign in with Google';
-      lb.addEventListener('click', googleLogin);
+      lb.textContent = 'Sign in';
+      lb.addEventListener('click', function () { adminEl.hidden = true; document.body.style.overflow = ''; if (lpop) lpop.hidden = false; });
       adminBody.appendChild(lb);
       return;
     }
-    if (curUser.email !== OWNER) {
+    if (curUser.uid !== OWNER_UID) {
       var p1 = document.createElement('p'); p1.className = 'bag-empty';
       p1.textContent = 'This page is only for the shop owner.';
       adminBody.appendChild(p1);
@@ -779,7 +779,7 @@
     var s1 = document.createElement('div'); s1.className = 'adm-sec';
     s1.innerHTML = '<h3>Today\'s summary</h3><p class="adm-load">Loading...</p>';
     var s2 = document.createElement('div'); s2.className = 'adm-sec';
-    s2.innerHTML = '<h3>Customers (Google login)</h3><p class="adm-load">Load ho raha hai...</p>';
+    s2.innerHTML = '<h3>Customers (signed in)</h3><p class="adm-load">Load ho raha hai...</p>';
     var s3 = document.createElement('div'); s3.className = 'adm-sec';
     s3.innerHTML = '<h3>Visitors - daily count</h3><p class="adm-load">Loading...</p>';
     adminBody.appendChild(s1); adminBody.appendChild(s2); adminBody.appendChild(s3);
@@ -791,7 +791,7 @@
         snap.forEach(function (d) { var v = d.data(); html += '<tr><td>' + esc(v.name) + '</td><td>' + esc(v.email) + '</td><td>' + fmtTs(v.lastLoginAt) + '</td></tr>'; });
         html += '</table>';
       }
-      s2.innerHTML = '<h3>Customers (Google login) - ' + snap.size + '</h3>' + html;
+      s2.innerHTML = '<h3>Customers (signed in) - ' + snap.size + '</h3>' + html;
       return db.collection('visitors').get();
     }).then(function (vs) {
       var docs = vs.docs.sort(function (a, b) { return a.id < b.id ? 1 : -1; }).slice(0, 14);
@@ -2074,7 +2074,7 @@
     }).catch(function () { if (done) done('Could not save - check internet.'); });
   }
   function renderAdminExtra() {
-    if (!adminBody || !curUser || curUser.email !== OWNER || !db) return;
+    if (!adminBody || !curUser || curUser.uid !== OWNER_UID || !db) return;
     /* Orders */
     var sOrd = adminSec('📦 Orders (latest 50)');
     sOrd.appendChild(h('p', 'adm-load', 'Loading...'));
