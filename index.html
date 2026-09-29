@@ -70,15 +70,35 @@
 #rbh-confirm-wrap[hidden],#rbh-email-reset[hidden]{display:none!important}
 .rbh-email-actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:10px}
 .rbh-email-actions button{border:0;background:none;color:#19345f;text-decoration:underline;font-size:13px;cursor:pointer;padding:6px}
+/* Short, once-per-session festive opening, with motion kept subtle. */
+#rbh-diwali-splash{background:radial-gradient(circle at 50% 37%,#223d68 0%,#101b32 65%,#0b1324 100%);gap:7px;box-shadow:inset 0 0 100px rgba(213,163,60,.09)}
+#rbh-diwali-splash::before,#rbh-diwali-splash::after{content:'✦';position:absolute;color:#dbb862;text-shadow:0 0 24px #ebbd68;animation:rbhTwinkle 1.2s ease-in-out infinite alternate}
+#rbh-diwali-splash::before{left:20%;top:29%;font-size:25px}#rbh-diwali-splash::after{right:20%;bottom:29%;font-size:19px;animation-delay:.4s}
+#rbh-diwali-splash .splash-name{color:#f9e7aa}#rbh-diwali-splash .splash-sub{color:#cfab56}#rbh-diwali-splash .splash-tag{color:#e5d3a9}
+#rbh-diwali-splash[hidden]{display:none!important}
+@keyframes rbhTwinkle{from{opacity:.35;transform:scale(.75)}to{opacity:1;transform:scale(1.2)}}
+.rbh-festive-hero{display:block;width:100%;height:auto;max-height:390px;aspect-ratio:16/9;object-fit:contain;background:#0b1426;border:1px solid rgba(220,185,94,.55);border-radius:12px;margin:16px 0 0}
+@media(prefers-reduced-motion:reduce){#rbh-diwali-splash::before,#rbh-diwali-splash::after{animation:none}.rbh-festive-hero{animation:none}}
 </style>
 </head>
 <body>
-<div class="splash" id="splash">
+<div class="splash" id="rbh-diwali-splash" role="status" aria-label="Raja Boot House festive opening">
   <img src="1-icon-192.png" alt="RBH logo">
   <div class="splash-name">RAJA BOOT HOUSE</div>
   <div class="splash-sub">RBH</div>
   <div class="splash-tag">Walk With Quality</div>
 </div>
+<script>
+(function(){
+  var splash=document.getElementById('rbh-diwali-splash'); if(!splash)return;
+  var key='rbh-diwali-opening-v1';
+  try { if(sessionStorage.getItem(key)){splash.hidden=true;return;} sessionStorage.setItem(key,'1'); } catch(e) {}
+  var done=false;
+  function hide(){if(done)return;done=true;splash.classList.add('gone');setTimeout(function(){splash.hidden=true;},450);}
+  splash.addEventListener('click',hide,{once:true});
+  window.setTimeout(hide,window.matchMedia('(prefers-reduced-motion: reduce)').matches?800:2500);
+})();
+</script>
 <div class="topbar">
   <button class="rbh-install rbh-install-top" type="button" data-install-app aria-label="Download Raja Boot House app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 18v3h14v-3"/></svg> Download App</button>
   <button class="tb-btn" id="login-btn" type="button">Login</button>
@@ -96,6 +116,7 @@
   <header class="hero">
     <h1>Raja Boot House</h1>
     <p class="tag">Walk With Quality</p>
+    <video class="rbh-festive-hero" src="1-rbh-festive-sale-coming-soon-5s.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Raja Boot House festive sale coming soon"></video>
     <p class="addr">Tingray Road, Dharni, Maharashtra</p>
     <p class="sub">Men &bull; Women &bull; Kids<br>Casual &bull; Sports &bull; Fancy Footwear<br>Quality Footwear at the Right Price.</p>
     <p class="sub strong">Order online - confirm size &amp; delivery on WhatsApp.</p>
@@ -547,6 +568,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script src="6-1-4-4-new-share-final.js?v=7"></script>
+
   
 <script>
 (function () {
