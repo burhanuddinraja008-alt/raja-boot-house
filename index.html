@@ -320,6 +320,8 @@
       <h4 class="prof-sec">Settings</h4>
       <div class="setrow"><span>Dark mode</span><button class="set-tog" id="tog-dark" type="button" aria-pressed="false" aria-label="Dark mode"><span></span></button></div>
       <div class="setrow"><span>Offer notifications</span><button class="set-tog" id="tog-notif" type="button" aria-pressed="false" aria-label="Offer notifications"><span></span></button></div>
+      <div class="setrow"><span>New-stock push alerts</span><button class="set-tog" id="tog-stock-push" type="button" aria-pressed="false" aria-label="New-stock push alerts"><span></span></button></div>
+      <p id="stock-push-status" class="ship-note" role="status">Off. Choose this to get new-stock alerts on this device. You can turn them off here any time.</p>
       <div class="setrow"><span>Diwali festive theme</span><button class="set-tog" id="tog-festive" type="button" aria-pressed="false" aria-label="Diwali festive theme"><span></span></button></div>
     </div>
   </div>
@@ -517,6 +519,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script src="6-1-4-4-new-share-final.js?v=5"></script>
   
 <script>
@@ -550,6 +553,7 @@
 
 <script src="43-premium.js?v=2"></script>
 <script src="rbh-language.js?v=1" defer></script>
+<script src="rbh-push.js?v=1" defer></script>
 
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
