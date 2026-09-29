@@ -1,4 +1,4 @@
-var CACHE = 'rbh-v41';
+var CACHE = 'rbh-v42';
 var CORE = ['./', 'index.html', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', '42-app.js?v=22', 'terms.html', 'privacy.html', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE); }).then(function () { return self.skipWaiting(); }));
@@ -12,6 +12,7 @@ self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
   var url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
+  if (url.pathname.endsWith(".mp4") || e.request.headers.has("range")) return; // Let the browser handle media byte ranges directly.
   var isHtml = e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
   if (isHtml) {
     e.respondWith(
