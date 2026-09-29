@@ -519,6 +519,35 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="6-1-4-4-new-share-final.js?v=5"></script>
   
+<script>
+(function () {
+  var stock = document.getElementById('pdp-stock');
+  var sizes = document.getElementById('pdp-sizes');
+  var name = document.getElementById('pdp-name');
+  if (!stock || !sizes || !name) return;
+  var link = document.createElement('a');
+  link.id = 'pdp-notify';
+  link.textContent = 'Notify me on WhatsApp';
+  link.setAttribute('target', '_blank');
+  link.setAttribute('rel', 'noopener');
+  link.setAttribute('style', 'display:none;margin:12px 0;padding:12px 16px;border:1px solid #ba9c55;border-radius:10px;background:#fffaf0;color:#5e4516;font-weight:700;text-align:center;text-decoration:none;min-height:44px;box-sizing:border-box');
+  sizes.parentNode.insertBefore(link, sizes.nextSibling);
+  function refresh() {
+    var unavailable = /out of stock/i.test(stock.textContent);
+    link.style.display = unavailable ? 'block' : 'none';
+    if (!unavailable) return;
+    var chosen = sizes.querySelector('.chip.on');
+    var size = chosen ? chosen.textContent.trim() : '';
+    var text = 'Hi Raja Boot House! Please notify me on WhatsApp when ' + name.textContent.trim() + (size ? ' (size ' + size + ')' : ' (my size to be confirmed)') + ' is back in stock.';
+    link.href = 'https://wa.me/919022150546?text=' + encodeURIComponent(text);
+  }
+  new MutationObserver(refresh).observe(stock, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
+  sizes.addEventListener('click', function () { setTimeout(refresh, 0); });
+  document.getElementById('pdp').addEventListener('click', function () { setTimeout(refresh, 0); });
+  refresh();
+})();
+</script>
+
 <script src="43-premium.js?v=2"></script>
 
 <script>
