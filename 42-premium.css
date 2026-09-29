@@ -247,3 +247,11 @@ body.dark .pdp{background:#0e1118}
 .card .rlink,.rlink{color:var(--pv-navy)}
 .rlink svg{fill:var(--pv-navy)}
 .imgwrap .stockpill{top:38px;left:8px;right:auto}
+
+
+/* Mobile: avoid continuously animating hidden carousel slides and image placeholders. */
+@media (max-width: 600px){
+  .ctrack img{animation:none}
+  .imgwrap img:not([data-pv-loaded]),.hcard img:not([data-pv-loaded]),
+  .ctrack img:not([data-pv-loaded]),#pdp-img:not([data-pv-loaded]){animation:none}
+}
