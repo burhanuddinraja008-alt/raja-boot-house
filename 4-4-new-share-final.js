@@ -54,7 +54,10 @@
     { n: 49, brand: 'Paragon', name: 'Paragon Sandal', colour: 'Green / Grey', offer: '₹350', mrp: '₹650', sizes: 'Confirm on WhatsApp', tag2: 'Limited Sale', c: '4-49-white-1.jpg', f: ['4-49-white-1.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Paragon%20Sandal%20%28Green%20/%20Grey%29%20on%20your%20website%20for%20Rs%20350%20%28MRP%20Rs%20650%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2349%29' },
     { n: 50, brand: 'RBH', name: 'Pink Ladies Sandal', colour: 'Pink', offer: '₹199', mrp: '₹320', sizes: '5-8', szarr: ['5', '6', '7', '8'], tag: 'Ladies', tag2: 'Limited Sale', c: '5-50-white-1.jpg', f: ['5-50-white-1.jpg','6-50-white-2.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Pink%20Ladies%20Sandal%20%28Pink%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20320%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2350%29' },
     { n: 51, brand: 'Walkaroo', name: 'Walkaroo Clog', colour: 'Grey / Olive', offer: '₹199', mrp: '₹339', sizes: '8', szarr: ['8'], tag2: 'Limited Sale', c: '7-51-white-1.jpg', f: ['7-51-white-1.jpg','8-51-white-2.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Walkaroo%20Clog%20%28Grey%20/%20Olive%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20339%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2351%29' },
-    { n: 52, brand: 'Walkaroo', name: 'Walkaroo Slider', colour: 'White print', offer: '₹199', mrp: '₹290', sizes: '6-8', szarr: ['6', '7', '8'], tag2: 'Limited Sale', c: '9-52-white-1.jpg', f: ['9-52-white-1.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Walkaroo%20Slider%20%28White%20print%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20290%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2352%29' }
+    { n: 52, brand: 'Walkaroo', name: 'Walkaroo Slider', colour: 'White print', offer: '₹199', mrp: '₹290', sizes: '6-8', szarr: ['6', '7', '8'], tag2: 'Limited Sale', c: '9-52-white-1.jpg', f: ['9-52-white-1.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Walkaroo%20Slider%20%28White%20print%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20290%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2352%29' },
+    { n: 53, brand: 'Paragon', name: 'Paragon Kids Sandal', colour: 'Navy / Orange', offer: '₹199', mrp: '₹309', sizes: '2-5', szarr: ['2', '3', '4', '5'], tag: 'Kids', c: '1-53-paragon-kids-sandal-navy-front.jpg', f: ['1-53-paragon-kids-sandal-navy-front.jpg', '2-53-paragon-kids-sandal-navy-side.jpg', '3-53-paragon-kids-sandal-navy-top.jpg', '4-53-paragon-kids-sandal-navy-sole.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Paragon%20Kids%20Sandal%20%28Navy%20/%20Orange%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20309%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2353%29' },
+    { n: 54, brand: 'Paragon', name: 'Paragon Kids Sandal', colour: 'Black / Red', offer: '₹199', mrp: '₹309', sizes: '2-5', szarr: ['2', '3', '4', '5'], tag: 'Kids', c: '5-54-paragon-kids-sandal-black-front.jpg', f: ['5-54-paragon-kids-sandal-black-front.jpg', '6-54-paragon-kids-sandal-black-side.jpg', '7-54-paragon-kids-sandal-black-sole.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Paragon%20Kids%20Sandal%20%28Black%20/%20Red%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20309%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2354%29' },
+    { n: 55, brand: 'Paragon', name: 'Paragon Kids Chappal', colour: 'Green', offer: '₹199', mrp: '₹309', sizes: '2-5', szarr: ['2', '3', '4', '5'], tag: 'Kids', c: '8-55-paragon-kids-chappal-green-top.jpg', f: ['8-55-paragon-kids-chappal-green-top.jpg', '9-55-paragon-kids-chappal-green-side.jpg', '10-55-paragon-kids-chappal-green-sole.jpg'], wa: 'https://wa.me/919022150546?text=Hi%20Raja%20Boot%20House%21%20I%20saw%20Paragon%20Kids%20Chappal%20%28Green%29%20on%20your%20website%20for%20Rs%20199%20%28MRP%20Rs%20309%29.%20Please%20confirm%20available%20size%20and%20stock.%20%28%2355%29' }
   ];
 
   function offPct(it) {
@@ -119,6 +122,7 @@
   fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
   fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37, 45]));
   fill('grid-school', pick([33, 34]));
+  fill('grid-kids', pick([53, 54, 55]));
   fill('grid-ladies', pick([35, 46]));
 
   /* ---------- Lightbox ---------- */
@@ -163,15 +167,15 @@
 
   // search + filters (price, category, size) + sort
   var curF = 'all', curCat = 'all', curSize = 'all', curSort = 'feat';
-  var GENDER_BY_GRID = { 'grid-shoes': 'men', 'grid-shoes2': 'men', 'grid-sandals': 'men', 'grid-sliders': 'men', 'grid-flipflops': 'men', 'grid-ladies': 'women', 'grid-school': 'kids' };
+  var GENDER_BY_GRID = { 'grid-shoes': 'men', 'grid-shoes2': 'men', 'grid-sandals': 'men', 'grid-sliders': 'men', 'grid-flipflops': 'men', 'grid-ladies': 'women', 'grid-school': 'kids', 'grid-kids': 'kids' };
   function priceNum(it) { var m = (it.offer || '').replace(/[^0-9]/g, ''); return m ? parseInt(m, 10) : null; }
   function itemGender(it) { return GENDER_BY_GRID[it.cat] || 'men'; }
   function itemSizes(it) {
     if (it.szarr && it.szarr.length) return it.szarr.map(String);
     var m = (it.sizes || '').match(/\d+/g); return m || ['6', '7', '8', '9', '10'];
   }
-  var SORT_GRIDS = ['grid-shoes', 'grid-sandals', 'grid-sliders', 'grid-flipflops', 'grid-shoes2', 'grid-school', 'grid-ladies'];
-  var SORT_SECS = ['sec-sports', 'sec-sandals', 'sec-sliders', 'sec-flipflops', 'sec-shoes', 'sec-school', 'sec-ladies'];
+  var SORT_GRIDS = ['grid-shoes', 'grid-sandals', 'grid-sliders', 'grid-flipflops', 'grid-shoes2', 'grid-school', 'grid-kids', 'grid-ladies'];
+  var SORT_SECS = ['sec-sports', 'sec-sandals', 'sec-sliders', 'sec-flipflops', 'sec-shoes', 'sec-school', 'sec-kids', 'sec-ladies'];
   function applyFilter() {
     var q = (document.getElementById('q').value || '').toLowerCase().trim();
     var shown = {};
@@ -1934,7 +1938,7 @@
       var types = state.who === 'women'
         ? [['Sandals / Chappals', ['grid-sandals', 'grid-flipflops']], ['Fancy', ['fancy']], ['Clogs', ['clogs']]]
         : state.who === 'kids'
-          ? [['School Shoes', ['grid-school']]]
+          ? [['School Shoes', ['grid-school']], ['Sandals / Chappals', ['grid-kids']]]
           : [['Shoes', ['grid-shoes2']], ['Sports Shoes', ['grid-shoes']], ['Sandals', ['grid-sandals']], ['Sliders', ['grid-sliders']], ['Flip-Flops', ['grid-flipflops']]];
       var r = h('div', 'find-opts');
       types.forEach(function (o) {
