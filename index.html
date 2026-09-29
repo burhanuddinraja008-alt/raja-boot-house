@@ -60,6 +60,13 @@
 .rbh-email-form label{font-size:13px;font-weight:650;color:#18345d}
 .rbh-email-form input{min-height:43px;border:1px solid #cfb881;border-radius:9px;padding:9px 11px;font-size:15px;background:#fff;color:#142b4f;width:100%;box-sizing:border-box}
 .rbh-email-form button{min-height:45px;margin-top:8px}
+.rbh-password-field{position:relative}
+.rbh-password-field input{padding-right:53px}
+.rbh-email-form .rbh-password-toggle{position:absolute;right:3px;top:3px;width:39px;height:37px;min-height:37px;margin:0;padding:7px;border:0;border-radius:7px;background:transparent;color:#19345f;cursor:pointer;display:grid;place-items:center}
+.rbh-password-toggle:hover,.rbh-password-toggle:focus-visible{background:#f3ebd9;outline-offset:1px}
+.rbh-password-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rbh-password-toggle .rbh-eye-slash{display:none}
+.rbh-password-toggle[aria-pressed="true"] .rbh-eye-slash{display:block}
 #rbh-confirm-wrap[hidden],#rbh-email-reset[hidden]{display:none!important}
 .rbh-email-actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:10px}
 .rbh-email-actions button{border:0;background:none;color:#19345f;text-decoration:underline;font-size:13px;cursor:pointer;padding:6px}
@@ -512,8 +519,8 @@
       <label for="rbh-email">Email address</label>
       <input id="rbh-email" type="email" autocomplete="email" inputmode="email" required maxlength="254">
       <label for="rbh-password">Password (at least 6 characters)</label>
-      <input id="rbh-password" type="password" autocomplete="current-password" required maxlength="128">
-      <div id="rbh-confirm-wrap" hidden><label for="rbh-password-confirm">Confirm password</label><input id="rbh-password-confirm" type="password" autocomplete="new-password" maxlength="128"></div>
+      <div class="rbh-password-field"><input id="rbh-password" type="password" autocomplete="current-password" required maxlength="128"><button class="rbh-password-toggle" type="button" data-for="rbh-password" aria-label="Show password" aria-pressed="false" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="rbh-eye-slash" d="M3 21 21 3"/></svg></button></div>
+      <div id="rbh-confirm-wrap" hidden><label for="rbh-password-confirm">Confirm password</label><div class="rbh-password-field"><input id="rbh-password-confirm" type="password" autocomplete="new-password" maxlength="128"><button class="rbh-password-toggle" type="button" data-for="rbh-password-confirm" aria-label="Show confirm password" aria-pressed="false" title="Show confirm password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="rbh-eye-slash" d="M3 21 21 3"/></svg></button></div></div>
       <button class="btn" id="rbh-email-submit" type="submit">Sign in with email</button>
     </form>
     <div class="rbh-email-actions"><button id="rbh-email-mode" type="button">New here? Create an account</button><button id="rbh-email-reset" type="button">Forgot password?</button></div>
