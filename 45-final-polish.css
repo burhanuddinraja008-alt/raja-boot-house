@@ -1,0 +1,143 @@
+/* Raja Boot House - FINAL premium polish layer (visual only). Loads after 44-polish.css.
+   Same features, same data: only surfaces, spacing, type and micro-interactions. */
+:root{
+  --fp-navy:#19345f;
+  --fp-navy-2:#22406f;
+  --fp-gold:#c9a44a;
+  --fp-gold-deep:#8a6d1f;
+  --fp-gold-soft:#ead9ab;
+  --fp-gold-tint:#f7eed6;
+  --fp-hairline:#e3e9f2;
+  --fp-shadow-card:0 4px 18px rgba(20,44,80,.07);
+  --fp-shadow-lift:0 10px 26px rgba(20,44,80,.12);
+  --fp-ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* ---------- 1. Brand hero: one impressive navy banner ---------- */
+.page>.topline{color:var(--fp-gold-deep);font-weight:700;text-align:center}
+.hero{
+  position:relative;overflow:hidden;
+  margin:0 0 26px;padding:30px 22px 24px;
+  border-radius:22px;
+  background:linear-gradient(152deg,#1e3d6d 0%,#16305a 52%,#0f1f38 100%);
+  box-shadow:0 16px 36px rgba(15,31,56,.24);
+  color:#f4f7fc;
+}
+.hero::before{content:'';position:absolute;top:0;left:18%;right:18%;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,transparent,var(--fp-gold),transparent)}
+.hero::after{content:'';position:absolute;width:240px;height:240px;right:-80px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,74,.30),transparent 68%);pointer-events:none}
+.hero h1{color:#fff;text-shadow:0 1px 2px rgba(9,18,34,.35)}
+.hero h1::after{content:'';display:block;width:54px;height:3px;margin-top:11px;border-radius:2px;background:linear-gradient(90deg,var(--fp-gold),var(--fp-gold-deep))}
+.hero .tag{color:var(--fp-gold-soft);font-weight:600}
+.hero .addr{color:#b7c7de}
+.hero .rbh-install-hero{
+  background:linear-gradient(120deg,#dcb95e,#b48c2e)!important;color:#1d1606!important;
+  box-shadow:0 6px 16px rgba(9,18,34,.35)!important;border:0!important;
+  font-weight:750!important;letter-spacing:.02em;position:relative;z-index:1;
+}
+.hero .rbh-install-hero .rbh-install-icon{color:#1d1606!important}
+
+/* ---------- 2. Section rhythm: gold-tick headings ---------- */
+.sec-bar{position:relative;padding-left:15px}
+.sec-bar::before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:4px;border-radius:3px;background:linear-gradient(180deg,var(--fp-gold),var(--fp-gold-deep))}
+.page>section,.page>.howto,.page>.sizechart,.page>.shopinfo{min-width:0}
+
+/* ---------- 3. Carousel: framed campaign stage ---------- */
+.carousel{border:1px solid var(--fp-hairline);box-shadow:0 12px 32px rgba(21,45,84,.13)}
+.cdots i.on{background:linear-gradient(90deg,var(--fp-gold),var(--fp-gold-deep))}
+
+/* ---------- 4. Category tiles ---------- */
+.catrow a{transition:transform .18s var(--fp-ease)}
+.catrow img{border:1px solid var(--fp-hairline);border-radius:18px;box-shadow:0 3px 12px rgba(20,44,80,.09)}
+.catrow a:active{transform:scale(.95)}
+
+/* ---------- 5. Search and filters ---------- */
+.searchrow input{box-shadow:0 2px 10px rgba(20,44,80,.05);transition:border-color .2s ease,box-shadow .2s ease}
+.searchrow input:focus{border-color:var(--fp-gold);box-shadow:0 0 0 3px rgba(201,164,74,.20)}
+.fchip{border-radius:999px;transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,transform .15s ease}
+.fchip.on{background:var(--fp-navy);border-color:var(--fp-navy);color:#fff;box-shadow:0 3px 10px rgba(21,45,84,.22)}
+.fchip:active{transform:scale(.96)}
+.fsel{border-radius:11px;box-shadow:0 1px 6px rgba(20,44,80,.05)}
+
+/* ---------- 6. Premium product cards ---------- */
+.card{border:1px solid var(--fp-hairline);border-radius:18px;box-shadow:var(--fp-shadow-card);background:#fff}
+.card .imgwrap{background:linear-gradient(180deg,#fbfcfe,#f0f3f8)}
+.card .offpill-card{background:var(--fp-navy);color:var(--fp-gold-soft);border-radius:7px;letter-spacing:.03em;box-shadow:0 2px 7px rgba(16,34,63,.28)}
+.card .stockpill{box-shadow:0 1px 4px rgba(20,44,80,.10)}
+.card .offer{font-size:20px}
+.card .facts{color:#5f6c82}
+.card .btn{
+  background:linear-gradient(165deg,var(--fp-navy-2),var(--fp-navy));
+  border-radius:11px;font-weight:650;letter-spacing:.02em;
+  box-shadow:0 5px 14px rgba(21,45,84,.20);
+  transition:transform .16s var(--fp-ease),box-shadow .2s ease,filter .2s ease;
+}
+.card .btn:active{transform:scale(.97)}
+.card button.wish-heart,.imgwrap span.rbh-product-share{border:1px solid var(--fp-hairline);background:rgba(255,255,255,.96)}
+.card button.wish-heart:active,.imgwrap span.rbh-product-share:active{transform:scale(.9)}
+@media (hover:hover) and (pointer:fine){
+  .card:hover{transform:translateY(-3px);box-shadow:var(--fp-shadow-lift)}
+  .card:hover .imgwrap img{transform:scale(1.02)}
+  .card .imgwrap img{transition:transform .35s var(--fp-ease)}
+  .hcard:hover{transform:translateY(-2px)}
+}
+
+/* ---------- 7. Buttons and bottom navigation ---------- */
+.pdp-cta,.pdp-addbag,.btn-dark{letter-spacing:.02em;transition:transform .16s var(--fp-ease),box-shadow .2s ease,filter .2s ease}
+.pdp-cta{background:linear-gradient(165deg,var(--fp-navy-2),var(--fp-navy));box-shadow:0 6px 16px rgba(21,45,84,.24)}
+.pdp-addbag{border:1.5px solid var(--fp-navy);font-weight:650}
+.bnav{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(20,44,80,.08);box-shadow:0 -8px 24px rgba(20,44,80,.07)}
+.btab .bt-ic{display:grid;place-items:center;width:46px;height:27px;margin:0 auto;border-radius:999px;transition:background-color .22s ease,color .2s ease}
+.btab .bt-ic svg{width:21px;height:21px}
+.btab.on .bt-ic{background:var(--pv-navy-soft)}
+.btab.on::before{background:linear-gradient(90deg,var(--fp-gold),var(--fp-gold-deep));height:3px}
+.btab:active .bt-ic{transform:scale(.92)}
+.bt-n{box-shadow:0 1px 4px rgba(21,45,84,.35)}
+
+/* ---------- 8. PDP: calm, premium reading flow ---------- */
+#pdp .pdp-top{background:rgba(245,247,251,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(20,44,80,.07)}
+.pdp:not([hidden]){animation:fpPanelIn .32s var(--fp-ease)}
+@keyframes fpPanelIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.pdp-name{letter-spacing:-.01em}
+.offpill{background:var(--fp-gold-tint);color:var(--fp-gold-deep);font-weight:750}
+.chips .chip{transition:transform .15s var(--fp-ease),background-color .2s ease,border-color .2s ease,box-shadow .2s ease}
+.chips .chip:active{transform:scale(.94)}
+.chips .chip.on{border-color:var(--fp-navy);box-shadow:0 3px 9px rgba(21,45,84,.20)}
+.offers-box{border:1px solid #ecdfc2;background:#fdfaf2;border-radius:14px}
+.steps-box{background:#fff}
+.steps li span{font-weight:750}
+.trust{border:1px solid var(--fp-hairline);border-radius:12px;background:#fff}
+#pdp-img{box-shadow:0 4px 16px rgba(20,44,80,.06)}
+.pdp-thumbs img{transition:border-color .2s ease,transform .15s ease}
+.pdp-thumbs img:active{transform:scale(.94)}
+
+/* ---------- 9. Info sections: consistent white cards ---------- */
+.sizechart,.shopinfo{background:#fff;border:1px solid var(--fp-hairline);border-radius:18px;padding:22px 20px;box-shadow:var(--fp-shadow-card)}
+.sizechart table{border-radius:12px;overflow:hidden}
+.shopinfo .btn.btn-dark{background:linear-gradient(165deg,var(--fp-navy-2),var(--fp-navy));color:#fff;border:0;border-radius:11px;box-shadow:0 5px 14px rgba(21,45,84,.20)}
+.howto li::before{background:var(--fp-gold-tint);color:var(--fp-gold-deep)}
+.note{color:#6c7889}
+.flinks a{color:var(--fp-navy);font-weight:600}
+
+/* ---------- 10. Topbar pills ---------- */
+.topbar .tb-btn,.topbar .rbh-install-top{border:1px solid rgba(20,44,80,.10);box-shadow:0 3px 12px rgba(20,44,80,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.topbar .tb-btn:active,.topbar .rbh-install-top:active{transform:scale(.95)}
+.tb-badge{box-shadow:0 1px 4px rgba(21,45,84,.35)}
+
+/* ---------- Dark theme parity ---------- */
+body.dark .hero{background:linear-gradient(152deg,#203a66 0%,#16294a 55%,#0d1830 100%);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+body.dark .hero .addr{color:#93a5c4}
+body.dark .card{background:#182338;border-color:#2a3850}
+body.dark .card .imgwrap{background:linear-gradient(180deg,#223047,#1d2a3e)}
+body.dark .card .btn{background:linear-gradient(165deg,#2b4d8f,#22406f)}
+body.dark .btab.on .bt-ic{background:#22395f}
+body.dark .bnav{background:rgba(18,28,45,.93);border-top-color:#232f45}
+body.dark .sizechart,body.dark .shopinfo,body.dark .trust{background:#182338;border-color:#2a3850}
+body.dark .offers-box{background:#1d2a3e;border-color:#33445f}
+body.dark #pdp .pdp-top{background:rgba(16,24,37,.9);border-bottom-color:#232f45}
+body.dark .topbar .tb-btn{border-color:#2a3850}
+
+/* ---------- Motion safety ---------- */
+@media (prefers-reduced-motion:reduce){
+  .pdp:not([hidden]){animation:none}
+  .card,.card .imgwrap img,.catrow a,.fchip,.chips .chip{transition:none}
+}
