@@ -68,7 +68,7 @@
     return Math.round((m - o) / m * 100);
   }
   function shareProduct(it, imageUrl) {
-    var base='https://burhanuddinraja008-alt.github.io/raja-boot-house/', url=base+'#item-'+it.n;
+    var base='https://burhanuddinraja008-alt.github.io/raja-boot-house/', url=base+'p/'+it.n+'.html';
     var price=it.offer?' - '+it.offer:'', text='Check out '+it.name+(it.colour?' ('+it.colour+')':'')+price+' at Raja Boot House, Dharni: '+url;
     var photo=new URL(imageUrl||it.c,base).href;
     if(navigator.share){var data={title:it.name,text:text,url:url};return fetch(photo).then(function(r){if(!r.ok)throw Error('photo');return r.blob()}).then(function(blob){var file=new File([blob],(it.name||'product').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.jpg',{type:blob.type||'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[file]}))data.files=[file];return navigator.share(data)}).catch(function(err){if(err&&err.name==='AbortError')return;if(err&&err.name==='NotAllowedError')return;return navigator.share(data)})}
