@@ -414,8 +414,7 @@
     messagingSenderId: '983191567554',
     appId: '1:983191567554:web:8feb614da884b5df29cf5b'
   };
-  var WELCOME_URL = 'https://script.google.com/macros/s/AKfycbxRU5fvZotAVKIPZgWcg2wlwRhWO1tJQS_KEKqezf9K2K4MXnIGzSGNxKAVrHgKETc/exec';
-  var WELCOME_TOKEN = 'bcd5d5fde8bc6dcb855f5a0faaad7035';
+  var WELCOME_URL = 'https://script.google.com/macros/s/AKfycby984QuJAD2suVdwzpYTuFFDCkJApqYjvIo8z1jSrk7LIfevLAHTihjFw2VBD_sKhBL5Q/exec';
   var revOpen = document.getElementById('rev-open'),
       revForm = document.getElementById('revform'),
       revName = document.getElementById('rev-name'),
@@ -598,7 +597,7 @@
           var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
           if (!s.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
           return ref.set(d, { merge: true }).then(function () {
-            if (!s.exists && u.email) sendWelcome(u.displayName || '', u.email);
+            if (!s.exists && u.email && u.emailVerified) sendWelcome(u);
           });
         }).catch(function () {});
       }
@@ -608,10 +607,11 @@
   }
 
   /* --- Welcome email (first login only) --- */
-  function sendWelcome(name, email) {
-    try {
-      fetch(WELCOME_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ token: WELCOME_TOKEN, name: name, email: email }) });
-    } catch (e) {}
+  function sendWelcome(user) {
+    user.getIdToken().then(function (idToken) {
+      return fetch(WELCOME_URL, { method: 'POST', mode: 'no-cors',
+        body: new URLSearchParams({ idToken: idToken }) });
+    }).catch(function (e) { console.warn('Welcome request could not be submitted', e); });
   }
 
   /* --- Visitor counter (Firestore daily) --- */
