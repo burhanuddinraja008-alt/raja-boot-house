@@ -1504,6 +1504,7 @@
     var d = wishData(), col = d.cols[0], i = col.items.indexOf(n);
     if (i === -1) {
       d.cols.forEach(function (c) { var j = c.items.indexOf(n); if (j !== -1) c.items.splice(j, 1); });
+      col.items.push(n);
     } else { col.items.splice(i, 1); }
     saveWishData(d); syncWishUI();
   };
