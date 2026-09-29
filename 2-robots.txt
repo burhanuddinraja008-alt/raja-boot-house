@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://burhanuddinraja008-alt.github.io/raja-boot-house/sitemap.xml
