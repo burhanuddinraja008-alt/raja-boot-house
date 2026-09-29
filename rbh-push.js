@@ -43,10 +43,11 @@
     var copy = document.createElement('button');
     copy.type = 'button'; copy.textContent = 'Copy test ID'; copy.hidden = true;
     copy.className = 'btn'; copy.style.cssText = 'margin-top:8px;min-height:40px;padding:8px 12px';
+    function syncCopy() { copy.style.display = enabled() ? 'inline-block' : 'none'; }
     status.parentNode.insertBefore(copy, status.nextSibling);
     var oldShow = show;
-    show = function (text) { oldShow(text); copy.hidden = !enabled(); };
-    copy.hidden = !enabled();
+    show = function (text) { oldShow(text); syncCopy(); };
+    syncCopy();
     copy.addEventListener('click', function () {
       if (!enabled() || Notification.permission !== 'granted') return;
       worker().then(function (registration) { return messaging().getToken(options(registration)); })
