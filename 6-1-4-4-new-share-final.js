@@ -334,7 +334,7 @@
       pdpOrder = document.getElementById('pdp-order'),
       pdpOffers = document.getElementById('pdp-offers'),
       qVal = document.getElementById('q-val'),
-      curIt = null, curCol = '', curSize = '', qty = 1;
+      curIt = null, curCol = '', pdpSelectedSize = '', qty = 1;
 
   function sizeList(it) { return it.szarr || ['6', '7', '8', '9', '10']; }
   function colList(it) {
@@ -345,7 +345,7 @@
     if (!curIt) return '#';
     var t = 'Hi Raja Boot House! I saw this on your website and want to order: ' + curIt.name +
       ' (' + curCol + ')' + (curIt.offer ? ' - ' + curIt.offer.replace('\u20b9', 'Rs ') : '') +
-      '. Size: ' + (curSize || 'to be confirmed') + '. Qty: ' + qty + '. (#' + curIt.n + ')';
+      '. Size: ' + (pdpSelectedSize || 'to be confirmed') + '. Qty: ' + qty + '. (#' + curIt.n + ')';
     return WA(encodeURIComponent(t));
   }
   function refreshCta() { pdpOrder.href = orderLink(); }
@@ -365,7 +365,7 @@
   function openPdp(it) {
     curIt = it; qty = 1; qVal.textContent = '1';
     curCol = colList(it)[0];
-    curSize = '';
+    pdpSelectedSize = '';
     pdpName.textContent = it.name + ' - ' + it.brand;
     pdpPrice.textContent = it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp';
     if (it.mrp) { pdpMrp.textContent = 'MRP ' + it.mrp; pdpMrp.hidden = false; } else { pdpMrp.hidden = true; }
@@ -396,7 +396,7 @@
       refreshCta();
     }, 0);
     chipRow(pdpSizes, sizeList(it), function (i, lb) {
-      curSize = lb;
+      pdpSelectedSize = lb;
       pdpSizes.querySelectorAll('.chip').forEach(function (x, j) { x.classList.toggle('on', j === i); });
       refreshCta();
     }, -1);
@@ -743,7 +743,7 @@
   if (bagClose) bagClose.addEventListener('click', closeBag);
   if (pdpAddbag) pdpAddbag.addEventListener('click', function () {
     if (!curIt) return;
-    addToBag(curIt, curCol, curSize, qty);
+    addToBag(curIt, curCol, pdpSelectedSize, qty);
     var btn = this, old = btn.textContent;
     btn.textContent = 'Added to bag ✓';
     setTimeout(function () { btn.textContent = old; }, 1500);
@@ -1262,7 +1262,7 @@
       else { stock.textContent = '● IN STOCK'; stock.className = 'instock'; }
     }
     /* talk link */
-    document.getElementById('pdp-talk').href = talkLink(it, curCol, curSize, qty);
+    document.getElementById('pdp-talk').href = talkLink(it, curCol, pdpSelectedSize, qty);
     /* my size */
     var sizes = sizeList(it), saved = lsGet(SIZES_KEY, {})[itemGender(it)];
     var msNote = document.getElementById('pdp-mysz');
@@ -1632,7 +1632,7 @@
     if (pdpOrder) pdpOrder.addEventListener('click', function () {
       if (!curIt) return;
       var p = priceNum(curIt);
-      recordOrder([{ n: curIt.n, name: curIt.name, col: curCol, size: curSize || '', qty: qty, price: p }], p * qty);
+      recordOrder([{ n: curIt.n, name: curIt.name, col: curCol, size: pdpSelectedSize || '', qty: qty, price: p }], p * qty);
     });
   }
   function renderOrders() {
@@ -2265,4 +2265,3 @@
   syncWishUI(); syncBell(); applyFestive(); syncTogs(); sparkStart();
 
 })();
-
