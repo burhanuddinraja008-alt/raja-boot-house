@@ -43,7 +43,7 @@
     var copy = document.createElement('button');
     copy.type = 'button'; copy.textContent = 'Copy test ID'; copy.hidden = true;
     copy.className = 'btn'; copy.style.cssText = 'margin-top:8px;min-height:40px;padding:8px 12px';
-    function syncCopy() { copy.style.display = enabled() ? 'inline-block' : 'none'; }
+    function syncCopy() { copy.hidden = !enabled(); copy.style.display = enabled() ? 'inline-block' : 'none'; }
     status.parentNode.insertBefore(copy, status.nextSibling);
     var oldShow = show;
     show = function (text) { oldShow(text); syncCopy(); };
@@ -59,13 +59,13 @@
   button.addEventListener('click', function () {
     if (busy) return;
     busy = true; button.disabled = true;
-    firebase.messaging.isSupported().then(function (supported) {
+    Promise.resolve(firebase.messaging.isSupported()).then(function (supported) {
       if (!supported) { show('Push alerts are not supported in this browser.'); return; }
       return enabled() ? unsubscribe() : subscribe();
     }).catch(function () { show('Push alerts could not start. Please try again later.'); }).finally(function () { busy = false; button.disabled = false; });
   });
   if (!basicSupport()) show('Push alerts are not supported in this browser. The site still works normally.');
-  else firebase.messaging.isSupported().then(function (supported) {
+  else Promise.resolve(firebase.messaging.isSupported()).then(function (supported) {
     if (!supported) { button.disabled = true; show('Push alerts are not supported in this browser. The site still works normally.'); return; }
     if (enabled() && Notification.permission === 'granted') {
       // Refresh an existing, deliberate opt-in only. Never seek permission or create a token for everyone.
