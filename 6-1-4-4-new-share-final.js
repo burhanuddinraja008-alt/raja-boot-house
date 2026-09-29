@@ -840,7 +840,7 @@
     var posters = [
       ['1-3-56-paragon-kolhapuri-poster.jpg', 'Paragon Office Footwear Kolhapuri Sandal blue offer poster'],
       ['11-11-sale-poster.jpg', 'Paragon blue sandal limited sale poster'],
-      ['12-12-sale-poster.jpg', 'Paragon green sandal limited sale poster'],
+      ['1-rbh-paragon-sandal-sale-20260929.jpg', 'Paragon premium comfort sandal offer poster'],
       ['13-13-sale-poster.jpg', 'Paragon Stimulus sandal limited sale poster'],
       ['14-14-sale-poster.jpg', 'Walkaroo clog limited sale poster'],
       ['1-15-sale-poster.jpg', 'Pink ladies sandal limited sale poster'],
