@@ -23,11 +23,34 @@
     password.autocomplete = next === 'signup' ? 'new-password' : 'current-password';
     confirm.value = '';
     password.value = '';
+    [password, confirm].forEach(function (field) {
+      field.type = 'password';
+      var button = form.querySelector('.rbh-password-toggle[data-for="' + field.id + '"]');
+      if (button) {
+        button.setAttribute('aria-pressed', 'false');
+        var label = field === confirm ? 'confirm password' : 'password';
+        button.setAttribute('aria-label', 'Show ' + label);
+        button.title = 'Show ' + label;
+      }
+    });
     submit.textContent = next === 'signup' ? 'Create account' : 'Sign in with email';
     switchMode.textContent = next === 'signup' ? 'Have an account? Sign in' : 'New here? Create an account';
     reset.hidden = next === 'signup';
     say('');
   }
+  Array.prototype.forEach.call(form.querySelectorAll('.rbh-password-toggle'), function (button) {
+    var field = document.getElementById(button.getAttribute('data-for'));
+    if (!field) return;
+    button.addEventListener('click', function () {
+      var show = field.type === 'password';
+      field.type = show ? 'text' : 'password';
+      button.setAttribute('aria-pressed', String(show));
+      var label = field === confirm ? 'confirm password' : 'password';
+      button.setAttribute('aria-label', (show ? 'Hide ' : 'Show ') + label);
+      button.title = (show ? 'Hide ' : 'Show ') + label;
+      field.focus();
+    });
+  });
   switchMode.addEventListener('click', function () { setMode(mode === 'signin' ? 'signup' : 'signin'); });
   form.addEventListener('submit', function (event) {
     event.preventDefault();
