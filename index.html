@@ -42,7 +42,7 @@
 
 <style>
 .rbh-install {font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:750;cursor:pointer;border:0}
-.rbh-install[hidden],#install-guide[hidden] {display:none!important}
+.rbh-install[hidden],#install-guide[hidden],.install-guide-card [hidden],#rbh-browser-note[hidden] {display:none!important}
 .rbh-install-hero {display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:400px;min-height:58px;margin-top:19px;padding:12px 18px;border-radius:14px;background:linear-gradient(120deg,#17130f,#46371b);color:#fff6df;font-size:18px;box-shadow:0 6px 18px rgba(65,46,15,.23);border:1px solid #ad8d41}
 .rbh-install-hero .rbh-install-icon {display:grid;place-items:center;width:35px;height:35px;border-radius:10px;background:#d1aa55;color:#17130f;flex:none}
 .rbh-install-top {display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:8px 10px;background:#8a6d1f;color:white;font-size:11px;white-space:nowrap;flex:none}
@@ -53,6 +53,9 @@
 .install-guide-card .guide-icon {display:block;width:65px;height:65px;margin:0 auto;border-radius:16px;object-fit:cover}
 .install-guide-card h2 {font:700 22px Georgia,serif;margin:12px 0 9px}
 .install-guide-card p {font:15px/1.55 -apple-system,'Segoe UI',Roboto,sans-serif}
+.install-guide-card .guide-link {display:block;margin-top:12px;padding:13px 15px;border-radius:10px;background:#19345f;color:#fff;font:600 15px -apple-system,Segoe UI,Roboto,sans-serif;text-decoration:none}
+.install-guide-card input {width:100%;box-sizing:border-box;margin-top:12px;padding:10px;border:1px solid #cfb881;border-radius:8px;background:white;color:#19345f;font-size:12px}
+#rbh-browser-note {max-width:400px;margin:8px auto 0;color:#e5d3a9;font-size:13px;line-height:1.5;text-align:center}
 .install-guide-card button {width:100%;margin-top:20px;min-height:46px;border:0;border-radius:10px;background:#161311;color:#fff;font:600 15px -apple-system,'Segoe UI',Roboto,sans-serif;cursor:pointer}
 @media(max-width:410px) {.topbar {gap:5px}.rbh-install-top {padding:7px 8px;font-size:10px}}
 .rbh-email-separator{text-align:center;margin:12px 0;color:#6a6a6a;font-size:13px}
@@ -528,7 +531,7 @@
   </div>
 </div>
 <div class="install-guide" id="install-guide" hidden role="dialog" aria-modal="true" aria-labelledby="install-guide-title">
-  <div class="install-guide-card"><img class="guide-icon" src="1-icon-192.png" alt="Raja Boot House" width="65" height="65"><h2 id="install-guide-title">Raja Boot House app</h2><p id="install-guide-text"></p><button type="button" id="install-guide-close">Samajh gaya</button></div>
+  <div class="install-guide-card"><img class="guide-icon" src="1-icon-192.png" alt="Raja Boot House" width="65" height="65"><h2 id="install-guide-title">Raja Boot House app</h2><p id="install-guide-text"></p><a id="install-guide-chrome" class="guide-link" hidden>Open in Chrome</a><button type="button" id="install-guide-copy">Copy app link</button><input id="install-guide-url" aria-label="App link: select and copy" readonly hidden><p id="install-guide-status" role="status" aria-live="polite"></p><button type="button" id="install-guide-close">Samajh gaya</button></div>
 </div>
 <div class="ipop" id="ipop" hidden>
   <div class="ipop-card">
@@ -628,14 +631,40 @@ window.deferredPrompt = null;
   var ua = navigator.userAgent;
   var inApp = /FBAN|FBAV|Instagram|WhatsApp|; wv\)/i.test(ua);
   var isAndroid = /Android/i.test(ua);
-  var isIOS = /iPhone|iPad|iPod/i.test(ua);
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var appUrl = 'https://burhanuddinraja008-alt.github.io/raja-boot-house/';
+  var chromeIntent = 'intent://burhanuddinraja008-alt.github.io/raja-boot-house/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(appUrl + '?install=1') + ';end';
+  var chromeLink = document.getElementById('install-guide-chrome');
+  var copyButton = document.getElementById('install-guide-copy');
+  var copyStatus = document.getElementById('install-guide-status');
+  var urlField = document.getElementById('install-guide-url');
+  chromeLink.href = chromeIntent; urlField.value = appUrl;
+  var heroButton = document.querySelector('.rbh-install-hero');
+
   var installed = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
   function hideInstalled() {
     buttons.forEach(function (button) { button.hidden = true; });
     if (footer) footer.hidden = true;
     var pop = document.getElementById('ipop'); if (pop) pop.hidden = true;
+    guide.hidden = true; var note = document.getElementById('rbh-browser-note'); if (note) note.hidden = true;
   }
   if (installed) hideInstalled();
+  else if (inApp && heroButton) {
+    var note = document.createElement('p'); note.id = 'rbh-browser-note';
+    note.textContent = isAndroid ? 'Instagram / Facebook se aaye? Chrome mein kholo, phir app install karo.' : 'App install karne ke liye yeh link Safari mein kholo.';
+    heroButton.insertAdjacentElement('afterend', note);
+    if (isAndroid) {
+      var label = heroButton.querySelector('span:last-child');
+      if (label) label.textContent = 'Open in Chrome';
+      heroButton.setAttribute('aria-label', 'Open in Chrome to install Raja Boot House');
+    }
+  }
+  copyButton.addEventListener('click', function () {
+    function manualCopy() { urlField.hidden = false; urlField.focus(); urlField.select(); copyStatus.textContent = 'Link select hai. Copy karo aur Chrome / Safari mein paste karo.'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(appUrl).then(function () { copyStatus.textContent = 'Link copied! Chrome / Safari mein paste karo.'; }, manualCopy);
+    } else manualCopy();
+  });
   window.addEventListener('beforeinstallprompt', function (event) {
     event.preventDefault(); window.deferredPrompt = event;
     if (footer && !installed) footer.hidden = false;
@@ -643,12 +672,13 @@ window.deferredPrompt = null;
   window.addEventListener('appinstalled', function () {
     installed = true; window.deferredPrompt = null; hideInstalled();
   });
-  function showGuide(text) { guideText.textContent = text; guide.hidden = false; }
+  function showGuide(text) { guideText.textContent = text; chromeLink.hidden = !(inApp && isAndroid); copyStatus.textContent = ''; urlField.hidden = true; guide.hidden = false; }
   function install(event) {
     event.preventDefault();
     if (installed) return;
     if (inApp && isAndroid) {
-      location.href = 'intent://burhanuddinraja008-alt.github.io/raja-boot-house/#Intent;scheme=https;package=com.android.chrome;end';
+      showGuide('Chrome khulne ke baad Install App dabao. Agar Chrome nahi khula: upar 3 dots (ya menu) mein Open in external browser / Open in Chrome chuno, ya neeche link copy karo.');
+      location.href = chromeIntent;
       return;
     }
     if (isIOS) {
@@ -657,14 +687,16 @@ window.deferredPrompt = null;
     }
     if (window.deferredPrompt) {
       var prompt = window.deferredPrompt; window.deferredPrompt = null;
-      prompt.prompt();
-      prompt.userChoice.catch(function () {});
+      try {
+        Promise.resolve(prompt.prompt()).catch(function () { showGuide('Browser menu mein Install App ya Add to Home Screen chuno.'); });
+        prompt.userChoice.catch(function () {});
+      } catch (error) { showGuide('Browser menu mein Install App ya Add to Home Screen chuno.'); }
       return;
     }
     if (inApp) {
       showGuide('Browser menu se Open in Chrome chuno, phir Chrome menu mein Install App ya Add to Home Screen dabao.');
     } else {
-      showGuide('Chrome menu (3 dots) kholo aur Install App ya Add to Home Screen chuno. Agar option abhi na dikhe, page reload karke dekho.');
+      showGuide('Browser menu (3 dots) mein Install App ya Add to Home Screen chuno. Install button abhi ready nahi? Thodi der browse karke phir dabao. Agar app pehle se installed hai, home screen se kholo.');
     }
   }
   buttons.forEach(function (button) { button.addEventListener('click', install); });
@@ -675,4 +707,4 @@ window.deferredPrompt = null;
 })();
 </script>
 </body>
-      </html>
+  </html>
