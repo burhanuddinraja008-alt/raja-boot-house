@@ -434,7 +434,7 @@
     messagingSenderId: '983191567554',
     appId: '1:983191567554:web:8feb614da884b5df29cf5b'
   };
-  var WELCOME_URL = 'https://script.google.com/macros/s/AKfycby984QuJAD2suVdwzpYTuFFDCkJApqYjvIo8z1jSrk7LIfevLAHTihjFw2VBD_sKhBL5Q/exec';
+  var WELCOME_URL = 'https://script.google.com/macros/s/AKfycbzc-FcXrtC3wlxnOcP3UG1zu7UArnwjnAZCC5-3AnFCXklEaeBW0ObzNZhhQkx8tFBnLQ/exec';
   var revOpen = document.getElementById('rev-open'),
       revForm = document.getElementById('revform'),
       revName = document.getElementById('rev-name'),
@@ -603,34 +603,67 @@
     if (umenu) umenu.hidden = true;
     if (location.hash === '#admin') { openAdmin(); } else { location.hash = 'admin'; }
   });
+  var welcomeCheckInFlight = {};
   function onUser(u) {
     curUser = u;
     if (u) {
-      if (u.emailVerified) hideLpop();
+      hideLpop();
       if (loginBtn) loginBtn.textContent = (u.displayName || 'Account').split(' ')[0];
       if (umEmail) umEmail.textContent = u.email || '';
       if (umAdmin) umAdmin.hidden = (u.uid !== OWNER_UID);
       try { if (u.uid === OWNER_UID) localStorage.setItem('rbhOwner', '1'); else localStorage.removeItem('rbhOwner'); } catch (e) {}
-      if (db && u.emailVerified) {
+      if (db && u.displayName && sessionStorage.getItem('rbhSignupInProgress') !== '1' && !welcomeCheckInFlight[u.uid]) {
+        welcomeCheckInFlight[u.uid] = true;
         var ref = db.collection('customers').doc(u.uid);
         ref.get().then(function (s) {
           var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
           if (!s.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
           return ref.set(d, { merge: true }).then(function () {
-            if (!s.exists && u.email && u.emailVerified) sendWelcome(u);
+            var created = Date.parse(u.metadata && u.metadata.creationTime || '');
+            if (!s.exists && u.email && created && Date.now() - created < 86400000) { sendWelcome(u); showWelcome(u); }
           });
-        }).catch(function () {});
+        }).catch(function (error) { console.warn('Customer profile could not be saved', error); })
+          .finally(function () { delete welcomeCheckInFlight[u.uid]; });
       }
       var adm = document.getElementById('admin');
       if (adm && !adm.hidden) renderAdmin();
     } else if (loginBtn) { loginBtn.textContent = 'Login'; try { localStorage.removeItem('rbhOwner'); } catch (e) {} }
   }
 
+  window.addEventListener('rbh-signup-ready', function () { if (auth && auth.currentUser) onUser(auth.currentUser); });
+  var welcomePriorFocus = null, welcomePriorOverflow = null;
+  function showWelcome(u) {
+    var box = document.getElementById('rbh-welcome');
+    if (!box) return;
+    document.getElementById('rbh-welcome-title').textContent = 'Welcome, ' + (u.displayName || 'friend') + '!';
+    if (sessionStorage.getItem('rbhWelcomeShown:' + u.uid)) return;
+    sessionStorage.setItem('rbhWelcomeShown:' + u.uid, '1');
+    welcomePriorFocus = document.activeElement; welcomePriorOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    box.hidden = false; document.getElementById('rbh-welcome-card').focus();
+  }
+  (function () {
+    var box = document.getElementById('rbh-welcome'); if (!box) return;
+    function close() { box.hidden = true; document.body.style.overflow = welcomePriorOverflow || ''; if (welcomePriorFocus && welcomePriorFocus.focus) welcomePriorFocus.focus(); }
+    document.getElementById('rbh-welcome-close').addEventListener('click', close);
+    document.getElementById('rbh-welcome-explore').addEventListener('click', close);
+    box.addEventListener('click', function (e) { if (e.target === box) close(); });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+      if (e.key === 'Tab') {
+        var focusable = Array.prototype.slice.call(box.querySelectorAll('button,a[href]'));
+        var first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === box.querySelector('#rbh-welcome-card'))) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+  })();
   /* --- Welcome email (first login only) --- */
   function sendWelcome(user) {
     user.getIdToken().then(function (idToken) {
       return fetch(WELCOME_URL, { method: 'POST', mode: 'no-cors',
-        body: new URLSearchParams({ idToken: idToken }) });
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify({ idToken: idToken }) });
     }).catch(function (e) { console.warn('Welcome request could not be submitted', e); });
   }
 
