@@ -67,7 +67,7 @@
 .rbh-password-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .rbh-password-toggle .rbh-eye-slash{display:none}
 .rbh-password-toggle[aria-pressed="true"] .rbh-eye-slash{display:block}
-#rbh-confirm-wrap[hidden],#rbh-email-reset[hidden]{display:none!important}
+#rbh-name-wrap[hidden],#rbh-confirm-wrap[hidden],#rbh-email-reset[hidden]{display:none!important}
 .rbh-email-actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:10px}
 .rbh-email-actions button{border:0;background:none;color:#19345f;text-decoration:underline;font-size:13px;cursor:pointer;padding:6px}
 /* Short, once-per-session festive opening, with motion kept subtle. */
@@ -79,6 +79,17 @@
 @keyframes rbhTwinkle{from{opacity:.35;transform:scale(.75)}to{opacity:1;transform:scale(1.2)}}
 .rbh-festive-hero{display:block;width:100%;height:auto;max-height:390px;aspect-ratio:16/9;object-fit:contain;background:#0b1426;border:1px solid rgba(220,185,94,.55);border-radius:12px;margin:16px 0 0}
 @media(prefers-reduced-motion:reduce){#rbh-diwali-splash::before,#rbh-diwali-splash::after{animation:none}.rbh-festive-hero{animation:none}}
+
+#loginpop .lpop-card{max-height:calc(100dvh - 24px);overflow:auto}
+#rbh-welcome[hidden]{display:none!important}
+#rbh-welcome{position:fixed;inset:0;z-index:3000;background:rgba(12,24,44,.83);display:flex;justify-content:center;align-items:center;padding:12px}
+#rbh-welcome-card{max-width:420px;width:100%;max-height:calc(100dvh - 24px);overflow:auto;background:#fff;border-radius:14px;color:#172843;box-shadow:0 12px 40px #05162a80;font:14px/1.5 Arial,sans-serif}
+#rbh-welcome-head{background:#132c52;border-bottom:5px solid #d5ad59;color:#fff;text-align:center;padding:20px 18px}
+#rbh-welcome-head strong{font-size:23px;display:block}#rbh-welcome-head small{letter-spacing:2px;color:#e6c579}
+#rbh-welcome-copy{padding:18px 23px}#rbh-welcome-copy h2{font-size:22px;color:#142e54;margin:2px 0 14px}#rbh-welcome-copy p{margin:0 0 9px}
+#rbh-welcome-close{float:right;color:#fff;background:transparent;border:0;font-size:24px;cursor:pointer;min-width:38px;min-height:38px}
+#rbh-welcome-explore{display:block;margin:18px auto 4px;text-align:center;background:#d5ad59;color:#142e54;border:0;border-radius:9px;padding:13px 28px;font-weight:bold;cursor:pointer}
+#rbh-welcome-social{text-align:center;background:#f7f9fc;padding:14px;line-height:1.7}
 </style>
 </head>
 <body>
@@ -537,6 +548,7 @@
     <p class="lpop-note">Google sign-in shares your name and email with RBH.</p>
     <div class="rbh-email-separator">or use email</div>
     <form id="rbh-email-form" class="rbh-email-form">
+      <div id="rbh-name-wrap" hidden><label for="rbh-name">Your name</label><input id="rbh-name" type="text" autocomplete="name" minlength="2" maxlength="60"></div>
       <label for="rbh-email">Email address</label>
       <input id="rbh-email" type="email" autocomplete="email" inputmode="email" required maxlength="254">
       <label for="rbh-password">Password (at least 6 characters)</label>
@@ -550,6 +562,7 @@
     <p class="lpop-msg" id="lpop-msg"></p>
   </div>
 </div>
+<div id="rbh-welcome" hidden role="dialog" aria-modal="true" aria-labelledby="rbh-welcome-title"><div id="rbh-welcome-card" tabindex="-1"><div id="rbh-welcome-head"><button id="rbh-welcome-close" type="button" aria-label="Close welcome message">×</button><small>DHARNI</small><strong>RAJA BOOT HOUSE</strong><small>WALK WITH QUALITY</small></div><div id="rbh-welcome-copy"><h2 id="rbh-welcome-title">Welcome!</h2><p>👑 Welcome to Raja Boot House<br>A Warm Welcome to RBH! ✨</p><p>We're delighted to have you with us.<br>You’re now a part of the Raja Boot House family — where style, quality and comfort come together.</p><p>Discover our latest footwear collections, explore exclusive offers, find your perfect pair and enjoy a smooth shopping experience designed especially for you. 👟✨</p><p>Whether you're looking for everyday comfort, sporty styles, elegant footwear or something special for the occasion — RBH is here to help you step forward with confidence.</p><p>Thank you for choosing Raja Boot House. ❤️<br>Walk With Quality.<br>Walk With Confidence.<br>Walk With RBH. 👑<br>Welcome to the family. Your journey starts here. ✨</p><button id="rbh-welcome-explore" type="button">EXPLORE RBH</button></div><div id="rbh-welcome-social"><b>Follow us</b><br><a href="https://www.instagram.com/raja.boot.house_rbh/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.youtube.com/@raja.boot.house_rbh" target="_blank" rel="noopener">YouTube</a> · <a href="https://www.facebook.com/share/1Dw8Jw3onz/" target="_blank" rel="noopener">Facebook</a></div></div></div>
 <div class="lb" id="lb" hidden>
   <div class="lb-top">
     <span class="lb-title" id="lb-title"></span>
@@ -567,7 +580,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
-<script src="6-1-4-4-new-share-final.js?v=8"></script>
+<script src="6-1-4-4-new-share-final.js?v=9"></script>
 
   
 <script>
@@ -602,7 +615,7 @@
 <script src="43-premium.js?v=2"></script>
 <script src="rbh-language.js?v=1" defer></script>
 <script src="rbh-push.js?v=4" defer></script>
-<script src="rbh-email-auth.js?v=1" defer></script>
+<script src="rbh-email-auth.js?v=2" defer></script>
 
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
@@ -662,4 +675,4 @@ window.deferredPrompt = null;
 })();
 </script>
 </body>
-</html>
+      </html>
