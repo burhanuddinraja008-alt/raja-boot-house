@@ -615,13 +615,16 @@
       if (db && u.displayName && sessionStorage.getItem('rbhSignupInProgress') !== '1' && !welcomeCheckInFlight[u.uid]) {
         welcomeCheckInFlight[u.uid] = true;
         var ref = db.collection('customers').doc(u.uid);
-        ref.get().then(function (s) {
-          var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
-          if (!s.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
-          return ref.set(d, { merge: true }).then(function () {
-            var created = Date.parse(u.metadata && u.metadata.creationTime || '');
-            if (!s.exists && u.email && created && Date.now() - created < 86400000) { sendWelcome(u); showWelcome(u); }
+        db.runTransaction(function (transaction) {
+          return transaction.get(ref).then(function (snapshot) {
+            var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
+            if (!snapshot.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
+            transaction.set(ref, d, { merge: true });
+            return !snapshot.exists;
           });
+        }).then(function (firstLogin) {
+          var created = Date.parse(u.metadata && u.metadata.creationTime || '');
+          if (firstLogin && u.email && created && Date.now() - created < 86400000) { sendWelcome(u); showWelcome(u); }
         }).catch(function (error) { console.warn('Customer profile could not be saved', error); })
           .finally(function () { delete welcomeCheckInFlight[u.uid]; });
       }
