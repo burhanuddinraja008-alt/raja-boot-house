@@ -7,6 +7,8 @@
   var auth;
   try { auth = firebase.auth(); } catch (e) { auth = null; }
   var mode = 'signin';
+  var name = document.getElementById('rbh-name');
+  var nameWrap = document.getElementById('rbh-name-wrap');
   var email = document.getElementById('rbh-email');
   var password = document.getElementById('rbh-password');
   var confirm = document.getElementById('rbh-password-confirm');
@@ -19,6 +21,8 @@
   function setMode(next) {
     mode = next;
     confirmWrap.hidden = next !== 'signup';
+    nameWrap.hidden = next !== 'signup';
+    name.required = next === 'signup';
     confirm.required = next === 'signup';
     password.autocomplete = next === 'signup' ? 'new-password' : 'current-password';
     confirm.value = '';
@@ -58,23 +62,23 @@
     var address = email.value.trim();
     var secret = password.value;
     if (!address || !email.validity.valid) { say('Enter a valid email address.'); return; }
+    if (mode === 'signup' && (name.value.trim().length < 2 || name.value.trim().length > 60)) { say('Enter your name (2 to 60 characters).'); return; }
     if (mode === 'signup' && secret.length < 6) { say('Password needs at least 6 characters.'); return; }
     if (mode === 'signup' && secret !== confirm.value) { say('Passwords do not match.'); return; }
     submit.disabled = true; switchMode.disabled = true; reset.disabled = true;
     say(mode === 'signup' ? 'Creating account...' : 'Signing in...');
-    var operation = mode === 'signup' ? auth.createUserWithEmailAndPassword(address, secret) : auth.signInWithEmailAndPassword(address, secret);
+    var signingUp = mode === 'signup';
+    if (signingUp) sessionStorage.setItem('rbhSignupInProgress', '1');
+    var signupName = name.value.trim();
+    var operation = signingUp ? auth.createUserWithEmailAndPassword(address, secret) : auth.signInWithEmailAndPassword(address, secret);
     operation.then(function () {
       password.value = ''; confirm.value = '';
-      if (mode === 'signup') {
-        return auth.currentUser.sendEmailVerification().then(function () {
-          say('Verification email sent. Open the link, then come back and sign in.');
-          return auth.signOut();
-        });
-      }
-      if (auth.currentUser && !auth.currentUser.emailVerified) {
-        return auth.currentUser.sendEmailVerification().then(function () {
-          say('Verification email sent. Open the link, then come back and sign in.');
-          return auth.signOut();
+      if (signingUp) {
+        return auth.currentUser.updateProfile({displayName:signupName}).then(function () {
+          sessionStorage.removeItem('rbhSignupInProgress');
+          window.dispatchEvent(new Event('rbh-signup-ready'));
+          say('Account created. Welcome to Raja Boot House!');
+          pop.hidden = true;
         });
       }
       say('Signed in.'); pop.hidden = true;
@@ -87,8 +91,9 @@
       else if (code === 'auth/invalid-credential') say('Sign-in did not work. Check your email and password.');
       else if (code === 'auth/operation-not-allowed') say('Email accounts are not available yet. Please try Google sign-in.');
       else if (code === 'auth/too-many-requests') say('Too many attempts. Wait a while before trying again.');
+      else if (signingUp && auth.currentUser && auth.currentUser.email === address) say('Account created, but your name could not be saved. Please retry or contact the shop.');
       else say('Sign-in did not work. Check your details, or reset your password.');
-    }).finally(function () { submit.disabled = false; switchMode.disabled = false; reset.disabled = false; });
+    }).finally(function () { if (signingUp) sessionStorage.removeItem('rbhSignupInProgress'); submit.disabled = false; switchMode.disabled = false; reset.disabled = false; });
   });
   reset.addEventListener('click', function () {
     if (!auth) { say('Password reset is unavailable right now.'); return; }
