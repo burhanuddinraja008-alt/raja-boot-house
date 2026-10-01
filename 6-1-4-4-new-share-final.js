@@ -75,6 +75,89 @@
     window.open('https://wa.me/?text='+encodeURIComponent(text+' Photo: '+photo),'_blank','noopener');
   }
   function addProductShare(el,it,imageUrl,mini){var b=document.createElement('span');b.setAttribute('role','button');b.setAttribute('tabindex','0');b.className='rbh-product-share'+(mini?' rbh-product-share-mini':' rbh-product-share-home');b.setAttribute('aria-label','Share '+it.name);b.title='Share product';b.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4m-6.8 7 6.8 4"/></svg>';b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();shareProduct(it,imageUrl).catch(function(){})});b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}});if(mini)el.querySelector('.imgwrap').appendChild(b);else el.appendChild(b)}
+
+  /* Catalogue photos: existing pictures only; request each extra on selection. */
+  function wireCardPhotos(el, it) {
+    var wrap = el.querySelector('.imgwrap'), img = wrap && wrap.querySelector('img');
+    var photos = [it.c].concat(it.f || []).filter(function(src,i,a){return src && a.indexOf(src) === i;});
+    if (!img || photos.length < 2) return;
+    wrap.classList.add('rbh-card-gallery');
+    var at = 0, pending = 0, suppressUntil = 0;
+    var count = document.createElement('span');
+    count.className = 'rbh-photo-count'; count.setAttribute('aria-live','polite');
+    wrap.appendChild(count);
+    function refresh() {
+      count.textContent = (at+1) + '/' + photos.length;
+      img.alt = it.name + ', ' + it.colour + ', photo ' + (at+1) + ' of ' + photos.length;
+    }
+    function select(next) {
+      var index = (next + photos.length) % photos.length;
+      var request = ++pending, loader = new Image();
+      wrap.setAttribute('aria-busy','true');
+      loader.onload = function(){
+        if (request !== pending) return;
+        at=index; img.src=photos[at]; refresh(); wrap.removeAttribute('aria-busy');
+      };
+      loader.onerror = function(){if(request===pending)wrap.removeAttribute('aria-busy');};
+      loader.src=photos[index];
+    }
+    [-1,1].forEach(function(direction){
+      var b=document.createElement('button'); b.type='button';
+      b.className='rbh-photo-arrow '+(direction<0?'rbh-photo-prev':'rbh-photo-next');
+      b.setAttribute('aria-label',(direction<0?'Previous':'Next')+' photo of '+it.name);
+      b.innerHTML=direction<0?'&#8249;':'&#8250;';
+      b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();select(at+direction);});
+      wrap.appendChild(b);
+    });
+    refresh();
+    var start=null;
+    wrap.addEventListener('pointerdown',function(e){
+      if(!e.isPrimary || e.target.closest('button,[role="button"]'))return;
+      start={x:e.clientX,y:e.clientY,id:e.pointerId};
+    });
+    wrap.addEventListener('pointerup',function(e){
+      if(!start||start.id!==e.pointerId)return;
+      var dx=e.clientX-start.x,dy=e.clientY-start.y; start=null;
+      if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy)*1.4){
+        suppressUntil=Date.now()+450;select(at+(dx<0?1:-1));
+      }
+    });
+    wrap.addEventListener('pointercancel',function(){start=null;});
+    wrap.addEventListener('click',function(e){
+      if(Date.now()<suppressUntil && !e.target.closest('button,[role="button"]')){e.preventDefault();e.stopImmediatePropagation();suppressUntil=0;}
+    },true);
+    img.draggable=false;
+  }
+
+  /* Small on-device dictionary. No server, query tracking or arbitrary fuzzy guesses. */
+  var RBH_SEARCH_WORDS = {
+    joota:'shoe', juta:'shoe', jutta:'shoe', jute:'shoe', joote:'shoe', jooota:'shoe',
+    'जूता':'shoe', 'जूते':'shoe', shoes:'shoe', sneakers:'shoe', sneaker:'shoe',
+    chappal:'sandal', chapal:'sandal', chappals:'sandal', chappale:'sandal',
+    'चप्पल':'sandal','चपल':'sandal','चप्पले':'sandal', sandals:'sandal',
+    slippers:'sandal', slipper:'sandal', sliders:'slider', slides:'slider',
+    'सैंडल':'sandal','सेंडल':'sandal','स्लाइडर':'slider',
+    walkaro:'walkaroo', wakaroo:'walkaroo', 'वॉकरू':'walkaroo',
+    paragone:'paragon', paregon:'paragon','पैरागॉन':'paragon',
+    sparks:'sparx', sparxs:'sparx','स्पार्क्स':'sparx',
+    addoxi:'addoxy', adoxy:'addoxy', xlarate:'xlerate'
+  };
+  function searchWords(text){
+    return (text||'').toLowerCase().normalize('NFKC').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim().split(/\s+/).filter(Boolean);
+  }
+  function matchesLocalSearch(it,query){
+    var raw=(it.name+' '+it.brand+' '+it.colour).toLowerCase();
+    if(raw.indexOf(query)!==-1)return true;
+    var words=searchWords(raw).map(function(w){return RBH_SEARCH_WORDS[w]||w;});
+    if(/shoe|sneaker|loafer|boot|belly/.test(raw))words.push('shoe');
+    if(/sandal|chappal|slider|flip.flop|kolhapuri/.test(raw))words.push('sandal');
+    if(/slider|slide/.test(raw))words.push('slider');
+    return searchWords(query).every(function(w){
+      var known=RBH_SEARCH_WORDS[w],key=known||w;
+      return words.some(function(v){return known?v===key:v.indexOf(key)!==-1;});
+    });
+  }
+
   function card(it) {
     var el = document.createElement('article');
     el.className = 'card' + (it.oos ? ' oos' : '');
@@ -90,7 +173,7 @@
       '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Check this out - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' for just ' + it.offer : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener" aria-label="Share with a friend" title="Share with a friend"><svg width="17" height="17" viewBox="0 0 24 24" style="width:17px;height:17px;fill:#8a6d1f;vertical-align:-3px;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></a>' +
       '</div>';
     el.addEventListener('click', function (e) {
-      if (e.target.closest('a') || e.target.closest('.wish-heart') || e.target.closest('.rbh-product-share')) return;
+      if (e.target.closest('.rbh-photo-arrow') || e.target.closest('a') || e.target.closest('.wish-heart') || e.target.closest('.rbh-product-share')) return;
       openPdp(it);
     });
     var iw = el.querySelector('.imgwrap');
@@ -103,6 +186,7 @@
       iw.appendChild(wh);
       addProductShare(el,it,it.c,true);
     }
+    wireCardPhotos(el, it);
     el._it = it;
     return el;
   }
@@ -170,7 +254,7 @@
   var curF = 'all', curCat = 'all', curSize = 'all', curSort = 'feat';
   var GENDER_BY_GRID = { 'grid-shoes': 'men', 'grid-shoes2': 'men', 'grid-sandals': 'men', 'grid-sliders': 'men', 'grid-flipflops': 'men', 'grid-ladies': 'women', 'grid-school': 'kids', 'grid-kids': 'kids' };
   function priceNum(it) { var m = (it.offer || '').replace(/[^0-9]/g, ''); return m ? parseInt(m, 10) : null; }
-  function itemGender(it) { return GENDER_BY_GRID[it.cat] || 'men'; }
+  function itemGender(it) { return it.n === 50 ? 'women' : (GENDER_BY_GRID[it.cat] || 'men'); }
   function itemSizes(it) {
     if (it.szarr && it.szarr.length) return it.szarr.map(String);
     var m = (it.sizes || '').match(/\d+/g); return m || ['6', '7', '8', '9', '10'];
@@ -180,14 +264,19 @@
   function applyFilter() {
     var q = (document.getElementById('q').value || '').toLowerCase().trim();
     var shown = {};
+    // Include products otherwise shown only in home rows, only while searching.
+    if(q){items.filter(function(it){return !it._el;}).forEach(function(it){
+      var grid=document.getElementById(it.n===50?'grid-ladies':it.n>=51?'grid-sliders':'grid-sandals');
+      it.cat=grid.id;var c=card(it);c._ord=ORD++;c.dataset.searchOnly='true';grid.appendChild(it._el=c);
+    });}
     items.forEach(function (it) {
       var el = it._el; if (!el) return;
       var p = priceNum(it);
       var okF = curF === 'all' || (curF === '200' ? (p !== null && p <= 200) : curF === '500' ? (p !== null && p <= 500) : (p !== null && p > 500));
-      var okQ = !q || (it.name + ' ' + it.brand + ' ' + it.colour).toLowerCase().indexOf(q) !== -1;
+      var okQ = !q || matchesLocalSearch(it,q);
       var okC = curCat === 'all' || itemGender(it) === curCat;
       var okS = curSize === 'all' || itemSizes(it).indexOf(curSize) !== -1;
-      var show = okF && okQ && okC && okS;
+      var show = okF && okQ && okC && okS && (q || !el.dataset.searchOnly);
       el.style.display = show ? '' : 'none';
       if (show && el.parentElement) shown[el.parentElement.id] = (shown[el.parentElement.id] || 0) + 1;
     });
@@ -210,7 +299,7 @@
     });
   }
   var qEl = document.getElementById('q');
-  if (qEl) qEl.addEventListener('input', applyFilter);
+  if (qEl) qEl.addEventListener('input', function(){applyFilter();});
   var frow = document.getElementById('frow');
   if (frow) frow.addEventListener('click', function (e) {
     var b = e.target.closest('.fchip'); if (!b) return;
@@ -1456,6 +1545,7 @@
     items.forEach(function (it) { if (it._el && it._el.style.display !== 'none') visible++; });
     var searching = (q && q.value.trim()) || curF !== 'all' || curCat !== 'all' || curSize !== 'all';
     if (noresEl) noresEl.hidden = !(searching && visible === 0);
+    ['sec-trending','sec-new','sec-best','sec-recent','sec-reco','sec-fancy'].forEach(function(id){var sec=document.getElementById(id);if(sec)sec.style.display=searching?'none':'';});
   };
 
   /* --- Quick category chips --- */
