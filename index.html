@@ -129,7 +129,6 @@
 </div>
 <main class="page">
   <div class="festive-lights" id="festive-lights"></div>
-  <p class="topline">RAJA BOOT HOUSE &bull; DHARNI</p>
   <header class="hero">
     <h1>Raja Boot House</h1>
     <p class="tag">Walk With Quality</p>
@@ -708,6 +707,19 @@ window.deferredPrompt = null;
   document.getElementById('install-guide-close').addEventListener('click', function () { guide.hidden = true; });
   guide.addEventListener('click', function (event) { if (event.target === guide) guide.hidden = true; });
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape') guide.hidden = true; });
+})();
+</script>
+<script>
+(function () {
+  var name = document.getElementById('pdp-name'); if (!name) return;
+  var box = document.createElement('div'); box.id = 'rbh-owner-highlights'; box.hidden = true;
+  box.style.cssText = 'margin:16px 17px;padding:14px 16px;border:1px solid #d6bb7c;border-radius:12px;background:#fffaf0;color:#19345f;font-size:14px;line-height:1.6';
+  var title = document.createElement('strong'); title.textContent = 'Key highlights'; box.appendChild(title);
+  var list = document.createElement('ul'); list.style.cssText = 'margin:8px 0 0;padding-left:18px';
+  ['EVA sole', 'Comfortable', 'Lightweight', 'Perfect for daily use'].forEach(function (text) { var li = document.createElement('li'); li.textContent = text; list.appendChild(li); });
+  box.appendChild(list); document.querySelector('.pdp-pricerow').after(box);
+  function update() { box.hidden = !['Addoxy Sneaker - Addoxy', 'Xlerate Sports Shoes - Xlerate', 'TRV Sports Shoes - TRV Sports', 'Sparx Sport Shoe - Sparx'].includes(name.textContent); }
+  new MutationObserver(update).observe(name, { childList: true, characterData: true, subtree: true }); update();
 })();
 </script>
 </body>
