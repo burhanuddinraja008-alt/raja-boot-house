@@ -1,7 +1,7 @@
-var CACHE = 'rbh-v43';
+var CACHE = 'rbh-v44';
 var CORE = ['./', 'index.html', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', '42-app.js?v=22', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
 self.addEventListener('install', function (e) {
-  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE); }).then(function () { return self.skipWaiting(); }));
+  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE.map(function (url) { return new Request(url, { cache: "reload" }); })); }).then(function () { return self.skipWaiting(); }));
 });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (keys) {
@@ -16,7 +16,7 @@ self.addEventListener('fetch', function (e) {
   var isHtml = e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
   if (isHtml) {
     e.respondWith(
-      fetch(e.request).then(function (res) {
+      fetch(e.request, { cache: "no-cache" }).then(function (res) {
         if (res && res.ok) {
           var copy = res.clone();
           caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
@@ -28,7 +28,7 @@ self.addEventListener('fetch', function (e) {
   }
   e.respondWith(
     caches.match(e.request).then(function (hit) {
-      var net = fetch(e.request).then(function (res) {
+      var net = fetch(e.request, { cache: "no-cache" }).then(function (res) {
         if (res && res.ok) {
           var copy = res.clone();
           caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
