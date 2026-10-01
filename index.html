@@ -95,6 +95,8 @@
 #rbh-welcome-social{text-align:center;background:#f7f9fc;padding:14px;line-height:1.7}
 </style>
 <link rel="stylesheet" href="rbh-catalogue.css?v=1">
+<style>.shop-hours{margin:14px auto 18px;padding:14px 18px;max-width:420px;border:1px solid #c7a96b;border-radius:14px;background:#fffaf0;color:#142544;text-align:center}.shop-hours>div{display:flex;align-items:center;justify-content:center;gap:9px;font-size:16px}.shop-hours-dot{width:8px;height:8px;border-radius:50%;background:#957239;flex-shrink:0}.shop-hours.is-open .shop-hours-dot{background:#28714d}.shop-hours p{margin:5px 0 0;font-size:12px;line-height:1.55;color:#5b6070}.shop-hours #shop-hours-notice{margin-top:10px;padding-top:9px;border-top:1px solid #e8dbbc}.adm-field input[type=date]{display:block;width:100%;box-sizing:border-box;margin-top:7px}.adm-ord .pdp-cta{margin:8px 0;min-height:44px}.adm-sec .btn-mini{margin:9px 0 0}.shop-hours [hidden]{display:none!important}#admin,#orders{background:#f7f8fb!important}#admin .pdp-top,#orders .pdp-top{background:#fff!important}#admin .pdp-body,#orders .pdp-body{background:#f7f8fb!important}#orders .ord-item .bi{display:flex;flex-direction:column;min-width:0;gap:4px}#orders .ord-item .bi b{font-size:14px;line-height:1.4}#orders .ord-item .bi span{font-size:12px;line-height:1.5}#orders .ord-head{line-height:1.5}#orders .ord-card{background:#fff}#admin .adm-load{line-height:1.5}#admin .adm-sec{padding-bottom:16px}
+</style>
 </head>
 <body>
 <div class="splash" id="rbh-diwali-splash" role="status" aria-label="Raja Boot House festive opening">
@@ -133,6 +135,7 @@
     <p class="tag">Walk With Quality</p>
     <video class="rbh-festive-hero" src="1-rbh-festive-sale-coming-soon-5s.mp4" poster="4-rbh-festive-video-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Raja Boot House festive sale coming soon"></video>
     <p class="addr">Tingray Road, Dharni, Maharashtra</p>
+    <div id="shop-hours" class="shop-hours" role="status" aria-live="polite"><div><span class="shop-hours-dot" aria-hidden="true"></span><strong id="shop-hours-label">Usual shop hours</strong></div><p id="shop-hours-detail">9 AM - 8 PM · India time</p><p id="shop-hours-notice" hidden></p></div>
     <p class="sub">Men &bull; Women &bull; Kids<br>Casual &bull; Sports &bull; Fancy Footwear<br>Quality Footwear at the Right Price.</p>
     <p class="sub strong">Order online - confirm size &amp; delivery on WhatsApp.</p>
     <button class="rbh-install rbh-install-hero" type="button" data-install-app><span class="rbh-install-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 18v3h14v-3"/></svg></span><span>Download App</span></button>
@@ -584,7 +587,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
-<script src="6-1-4-4-new-share-final.js?v=10"></script>
+<script src="rbh-hours-enquiries.js?v=1"></script>
 
   
 <script>
@@ -708,4 +711,4 @@ window.deferredPrompt = null;
 })();
 </script>
 </body>
-  </html>
+</html>
