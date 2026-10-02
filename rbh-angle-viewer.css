@@ -1,0 +1,8 @@
+.pdp-gallery.av-on{position:relative}
+.pdp-gallery.av-on #pdp-img{touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+.pdp-gallery.av-on #pdp-img:active{cursor:grabbing}
+.av-hint{position:absolute;left:50%;top:22px;transform:translateX(-50%);padding:6px 14px;border-radius:999px;background:rgba(20,44,80,.82);color:#fff;font:600 12px/1 system-ui,sans-serif;letter-spacing:.2px;white-space:nowrap;pointer-events:none;transition:opacity .4s}
+.av-hint.gone{opacity:0}
+.av-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.av-dots i{width:7px;height:7px;border-radius:50%;background:#c9d2e0;transition:background .2s,transform .2s}
+.av-dots i.on{background:#142c50;transform:scale(1.3)}
