@@ -508,6 +508,7 @@
     }, 0);
     chipRow(pdpSizes, sizeList(it), function (i, lb) {
       pdpSelectedSize = lb;
+      if (window.RBHClub) window.RBHClub.pdp(curIt, lb, OVR[curIt.n]);
       pdpSizes.querySelectorAll('.chip').forEach(function (x, j) { x.classList.toggle('on', j === i); });
       refreshCta();
     }, -1);
@@ -627,6 +628,7 @@
     if (window.firebase) {
       firebase.initializeApp(FBCFG);
       db = firebase.firestore();
+      if (window.RBHClub) window.RBHClub.connect({catalogue:items});
       loadRevs();
       if (firebase.auth) {
         auth = firebase.auth();
@@ -1146,7 +1148,7 @@
   function renderNotifs() {
     var body = document.getElementById('notif-body'); if (!body) return;
     var n = getNotifs(); body.innerHTML = '';
-    if (!n.length) { body.innerHTML = '<p class="bag-empty">No notifications yet - new offers will show up here.</p>'; return; }
+    if (!n.length) { body.innerHTML = '<p class="bag-empty">No notifications yet.</p>'; if (window.RBHClub) window.RBHClub.notifications(body); return; }
     n.forEach(function (x) {
       var r = document.createElement('div'); r.className = 'notifrow';
       r.appendChild(document.createTextNode(x.t));
@@ -1154,6 +1156,7 @@
       d.textContent = new Date(x.ts).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
       r.appendChild(d); body.appendChild(r);
     });
+    if (window.RBHClub) window.RBHClub.notifications(body);
   }
 
   /* Web push (preview) - OneSignal free tier wiring. To go live:
@@ -1650,6 +1653,7 @@
     trackRecent(it.n);
     _opUp(it);
     decoratePdp(it);
+    if (window.RBHClub) window.RBHClub.pdp(it, pdpSelectedSize, OVR[it.n]);
     renderHomeRows();
   };
 
@@ -1933,6 +1937,7 @@
       grid.appendChild(a);
     }
     var gShop = section('🛍️ Shopping');
+    if (window.RBHClub) window.RBHClub.account(gShop);
     cardBtn(gShop, '📦', 'My Orders', openId('orders', renderOrders));
     cardBtn(gShop, '❤️', 'Wishlist', function () { closeOverlay(document.getElementById('account')); renderWish(); openOverlay(document.getElementById('wish')); });
     cardBtn(gShop, '👟', 'My Sizes', openId('mysizes', renderMySizes));
@@ -2284,6 +2289,7 @@
   }
   function renderAdminExtra() {
     if (!adminBody || !curUser || curUser.uid !== OWNER_UID || !db) return;
+    if (window.RBHClub) window.RBHClub.owner(adminBody);
     /* Orders */
     var sOrd = adminSec('📦 Enquiries & orders (latest 50)');
     sOrd.appendChild(h('p', 'adm-load', 'Loading...'));
@@ -2413,14 +2419,14 @@
         var sv = h('button', 'btn btn-mini', 'Save'); sv.type = 'button';
         var msg = h('span', 'adm-mini-msg');
         sv.addEventListener('click', function () {
+          var secureStock = window.RBHClub && window.RBHClub.backendReady();
           var data = {};
           if (iOffer.value.trim()) data.offer = iOffer.value.trim();
           if (iMrp.value.trim()) data.mrp = iMrp.value.trim();
-          if (iStock.value.trim() !== '') data.stock = +iStock.value.trim();
-          data.oos = oosC.checked;
+          if (!secureStock) { if (iStock.value.trim() !== '') data.stock = +iStock.value.trim(); data.oos = oosC.checked; }
           db.collection('overrides').doc(String(it.n)).set(data, { merge: true }).then(function () {
-            OVR[it.n] = data; applyOverrides(); renderHomeRows();
-            msg.textContent = ' Saved ✓';
+            OVR[it.n] = Object.assign({}, OVR[it.n] || {}, data); applyOverrides(); renderHomeRows();
+            msg.textContent = secureStock ? ' Prices saved. Use verified stock controls above for stock.' : ' Saved ✓';
           }).catch(function () { msg.textContent = ' Failed'; });
         });
         g.appendChild(sv); g.appendChild(msg);
