@@ -965,7 +965,7 @@
     if (m && byN[+m[1]]) { openPdp(byN[+m[1]]); }
   }
   window.addEventListener('hashchange', handleHash);
-  handleHash();
+  // Resolve the initial deep link only after configuration and UI handlers are ready.
 
 
   /* ================= v19 PREVIEW FEATURES ================= */
@@ -2519,6 +2519,7 @@
 
   /* --- init --- */
   syncWishUI(); syncBell(); applyFestive(); syncTogs(); sparkStart();
+  handleHash();
 
 })();
 

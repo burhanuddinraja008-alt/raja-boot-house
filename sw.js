@@ -1,5 +1,5 @@
-var CACHE = 'rbh-v53-rewards-gated-2026';
-var CORE = ['rbh-spark-api.js?v=1','rbh-feature-config.js?v=1','rbh-rewards-alerts.js?v=1','rbh-rewards-alerts.css?v=1','./', 'index.html', 'rbh-diwali-2026.css?v=2', 'rbh-diwali-2026.js?v=1', '1-10-36-rbh-app-limited3.js?v=rewards-gated-20261010', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', '42-app.js?v=22', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
+var CACHE = 'rbh-v54-rewards-gated-fix-2026';
+var CORE = ['rbh-spark-api.js?v=1','rbh-feature-config.js?v=1','rbh-rewards-alerts.js?v=1','rbh-rewards-alerts.css?v=1','./', 'index.html', 'rbh-diwali-2026.css?v=2', 'rbh-diwali-2026.js?v=1', '1-10-36-rbh-app-limited3.js?v=rewards-gated-fix-20261010', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', '42-app.js?v=22', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE.map(function (url) { return new Request(url, { cache: "reload" }); })); }).then(function () { return self.skipWaiting(); }));
 });
