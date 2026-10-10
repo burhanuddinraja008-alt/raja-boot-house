@@ -713,6 +713,8 @@
     if (location.hash === '#admin') { openAdmin(); } else { location.hash = 'admin'; }
   });
   var welcomeCheckInFlight = {};
+  function chosenReferral(){try{return sessionStorage.getItem('rbhReferralConfirmed')||'';}catch(e){return '';}}
+
   function onUser(u) {
     curUser = u;
     if (u) {
@@ -723,19 +725,21 @@
       try { if (u.uid === OWNER_UID) localStorage.setItem('rbhOwner', '1'); else localStorage.removeItem('rbhOwner'); } catch (e) {}
       if (db && u.displayName && sessionStorage.getItem('rbhSignupInProgress') !== '1' && !welcomeCheckInFlight[u.uid]) {
         welcomeCheckInFlight[u.uid] = true;
-        var ref = db.collection('customers').doc(u.uid);
+        var ref = db.collection('customers').doc(u.uid), referralCode=chosenReferral();
         db.runTransaction(function (transaction) {
-          return transaction.get(ref).then(function (snapshot) {
+          return Promise.all([transaction.get(ref),referralCode?transaction.get(db.collection('clubReferralCodes').doc(referralCode)):Promise.resolve(null)]).then(function (result) {var snapshot=result[0],codeDoc=result[1];if(!snapshot.exists&&referralCode&&(!codeDoc||!codeDoc.exists||codeDoc.data().uid===u.uid))throw Error('Referral code is unavailable. Remove or check it before retrying signup.');
             var d = { name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
             if (!snapshot.exists) d.firstLoginAt = firebase.firestore.FieldValue.serverTimestamp();
             transaction.set(ref, d, { merge: true });
+            if(!snapshot.exists&&codeDoc&&codeDoc.exists&&codeDoc.data().uid!==u.uid)transaction.set(db.collection('clubReferrals').doc(u.uid),{uid:u.uid,referrer:codeDoc.data().uid,code:referralCode,status:'waiting-first-order',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
             return !snapshot.exists;
           });
         }).then(function (firstLogin) {
+          try{sessionStorage.removeItem('rbhReferralConfirmed');}catch(e){}
           if(window.RBHClub)window.RBHClub.bonus();
           var created = Date.parse(u.metadata && u.metadata.creationTime || '');
           if (firstLogin && u.email && created && Date.now() - created < 86400000) { sendWelcome(u); showWelcome(u); }
-        }).catch(function (error) { console.warn('Customer profile could not be saved', error); })
+        }).catch(function (error) { console.warn('Customer profile could not be saved', error);if(referralCode){var note=document.querySelector('.rbh-referral-choice p');if(note)note.textContent='Referral could not be linked. Check or remove the code and retry. No referral confirmed.';if(lpop)lpop.hidden=false;} })
           .finally(function () { delete welcomeCheckInFlight[u.uid]; });
       }
       var adm = document.getElementById('admin');
