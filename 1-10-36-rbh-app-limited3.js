@@ -177,12 +177,12 @@
     el.innerHTML =
       '<div class="num">' + it.n + ' &nbsp;<span class="brand">' + it.brand + '</span>' + (it.tag ? ' &nbsp;<span class="gtag">' + it.tag + '</span>' : '') + (it.tag2 ? ' &nbsp;<span class="gtag2">' + it.tag2 + '</span>' : '') + '</div>' +
       '<h3>' + it.name + '</h3>' +
-      '<div class="imgwrap">' + (offPct(it) ? '<span class="offpill-card">' + offPct(it) + '% off</span>' : '') + (!it.oos ? '<span class="stockpill">IN STOCK</span>' : '') + '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy"></div>' +
+      '<div class="imgwrap">' + (offPct(it) ? '<span class="offpill-card">' + offPct(it) + '% off</span>' : '') + '<span class="stockpill" hidden></span>' + '<img src="' + it.c + '" alt="' + it.name + ', ' + it.colour + '" loading="lazy"></div>' +
       (it.mrp ? '<div class="mrp">MRP ' + it.mrp + '</div>' : '') +
       '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp') + '</div>' +
       '<div class="facts"><div><b>Colour</b> ' + it.colour + '</div><div><b>Available Sizes</b> ' + it.sizes + '</div></div>' +
       (it.oos ? '<div class="oosnote">Out of stock - WhatsApp us for new stock</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
-      (it.oos ? '' : '<a class="btn btn-hold-card" href="' + holdLink(it) + '" target="_blank" rel="noopener">🤝 Hold this pair for me</a>') +
+      (it.oos ? '' : '<a class="btn btn-hold-card" href="' + holdLink(it) + '" target="_blank" rel="noopener">Hold this pair for me</a>') +
       '<div class="rrow">' +
       '<a class="rlink" href="https://wa.me/?text=' + encodeURIComponent('Check this out - ' + it.name + ' (' + it.colour + ')' + (it.offer ? ' for just ' + it.offer : '') + ', Raja Boot House Dharni: https://burhanuddinraja008-alt.github.io/raja-boot-house/') + '" target="_blank" rel="noopener" aria-label="Share with a friend" title="Share with a friend"><svg width="17" height="17" viewBox="0 0 24 24" style="width:17px;height:17px;fill:#8a6d1f;vertical-align:-3px;"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></a>' +
       '</div>';
@@ -222,7 +222,7 @@
   fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37, 45]));
   fill('grid-school', pick([33, 34]));
   fill('grid-kids', pick([53, 54, 55]));
-  (function(){ if(!document.getElementById('sec-limited')){ var tr0=document.getElementById('sec-trending'); if(tr0){ var sl=document.createElement('section'); sl.id='sec-limited'; sl.innerHTML='<h2 class="sec-bar">&#128293; Limited Sale</h2><div class="grid" id="grid-limited"></div>'; tr0.parentNode.insertBefore(sl,tr0); } } })();
+  (function(){ if(!document.getElementById('sec-limited')){ var tr0=document.getElementById('sec-trending'); if(tr0){ var sl=document.createElement('section'); sl.id='sec-limited'; sl.innerHTML='<h2 class="sec-bar">Limited Sale</h2><div class="grid" id="grid-limited"></div>'; tr0.parentNode.insertBefore(sl,tr0); } } })();
   fill('grid-limited', pick([58, 59, 60, 61, 62, 63, 64, 65, 66, 67]));
   fill('grid-ladies', pick([35, 46]));
 
@@ -630,8 +630,8 @@
       loadRevs();
       if (firebase.auth) {
         auth = firebase.auth();
-        auth.onAuthStateChanged(function (u) { authReady = true; onUser(u); showLpop(); });
-      } else { setTimeout(showLpop, 1200); }
+        auth.onAuthStateChanged(function (u) { authReady = true; onUser(u); /* Login is customer-triggered, not automatic. */ });
+      } else { /* Optional login stays available from Login, with no automatic interruption. */ }
       countVisit();
     }
   } catch (e) { db = null; }
@@ -1115,23 +1115,7 @@
     var fl = document.getElementById('festive-lights'); if (fl) fl.hidden = !on;
   }
   var sparkTimer = null;
-  function sparkStart() {
-    if (sparkTimer || !festiveOn()) return;
-    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    sparkTimer = setInterval(function () {
-      if (document.hidden || !festiveOn()) return;
-      var host = document.querySelector('.hero'); if (!host) return;
-      if (host.querySelectorAll('.spark').length > 5) return;
-      var sp = document.createElement('i');
-      sp.className = 'spark';
-      var size = 24 + Math.random() * 30;
-      sp.style.width = sp.style.height = size + 'px';
-      sp.style.left = (Math.random() * 88) + '%';
-      sp.style.top = (Math.random() * 80) + '%';
-      host.appendChild(sp);
-      setTimeout(function () { sp.remove(); }, 1500);
-    }, 1400);
-  }
+  function sparkStart() { /* Diwali 2026 uses static motifs, no background particles. */ }
 
   /* --- Settings toggles --- */
   function setTog(id, on) { var t = document.getElementById(id); if (t) t.setAttribute('aria-pressed', on ? 'true' : 'false'); }
@@ -1341,12 +1325,15 @@
   /* --- Home rows --- */
   function renderHomeRows() {
     var k = Math.max(0, Math.min(items.length, +CFG.newCount || 0));
-    var newItems = k ? items.slice(items.length - k) : [];
+    var newItems = k ? items.slice(items.length - k) : pick([57, 56, 53, 54]);
     setSecVisible('sec-new', newItems.length > 0);
     fillRow('row-new', newItems.slice().reverse());
     var best = items.filter(isBest);
     setSecVisible('sec-best', best.length > 0);
     fillRow('row-best', best);
+    var valueItems=items.filter(function(it){var p=priceNum(it);return p>0&&p<=500&&!effOos(it);}).sort(function(a,b){return priceNum(a)-priceNum(b);}).slice(0,8);
+    fillRow('row-value', valueItems);
+    setSecVisible('sec-value', valueItems.length > 0);
     var rec = getRecent().map(function (n) { return byN[n]; }).filter(Boolean);
     setSecVisible('sec-recent', rec.length > 0);
     fillRow('row-recent', rec.slice(0, 20));
@@ -1362,7 +1349,7 @@
   /* --- Apply admin overrides to items + live cards --- */
   function applyOverrides() {
     items.forEach(function (it) {
-      var o = OVR[it.n]; if (!o) return;
+      var o = OVR[it.n] || {};
       if (o.offer) it.offer = o.offer;
       if (o.mrp) it.mrp = o.mrp;
       var el = it._el; if (!el) return;
@@ -1370,11 +1357,16 @@
       if (offEl && o.offer) offEl.textContent = 'Offer Price ' + it.offer;
       var mrpEl = el.querySelector('.mrp');
       if (mrpEl && o.mrp) mrpEl.textContent = 'MRP ' + it.mrp;
+      var discount=el.querySelector('.offpill-card');
+      if(discount){var pct=offPct(it);discount.hidden=!pct;discount.textContent=pct+'% off';}
       var pill = el.querySelector('.stockpill');
       var st = effStock(it);
       if (pill) {
+        pill.hidden = !effOos(it) && st == null;
         if (effOos(it)) { pill.textContent = 'OUT OF STOCK'; pill.classList.add('oos-pill'); }
+        else if (st === 0) { pill.textContent = 'OUT OF STOCK'; }
         else if (st != null && st <= (+CFG.lowStock || 2)) { pill.textContent = 'ONLY ' + st + ' LEFT'; pill.classList.add('low-pill'); }
+        else if (st > 0) { pill.textContent = 'IN STOCK'; }
       }
       if (isNewItem(it) && !el.querySelector('.newpill-card')) {
         var iw = el.querySelector('.imgwrap');
@@ -1392,8 +1384,8 @@
       if (CFG.banner && pdpOffers) pdpOffers.innerHTML = '<b>Available offers</b><p>' + esc(CFG.banner) + '</p>';
     }
     renderShopHours();
-    renderHomeRows();
     applyOverrides();
+    renderHomeRows();
   }
   function loadRemote() {
     if (!db) return;
@@ -1427,7 +1419,7 @@
     var sg = h('button', 'btn btn-sg', '📏 Size Guide'); sg.type = 'button'; sg.id = 'pdp-sizeguide';
     sg.addEventListener('click', function () { openOverlay(document.getElementById('sizeguide')); });
     var ms = h('p', 'mysz-note'); ms.id = 'pdp-mysz'; ms.hidden = true;
-    var hold = h('a', 'btn btn-hold', '🤝 Hold this pair for me');
+    var hold = h('a', 'btn btn-hold', 'Hold this pair for me');
     hold.id = 'pdp-hold'; hold.target = '_blank'; hold.rel = 'noopener';
     var holdNote = h('p', 'hold-note', 'Reserved till tomorrow evening - come to the shop and collect.');
     pdpExtra.appendChild(hold); pdpExtra.appendChild(holdNote);
@@ -1455,7 +1447,7 @@
     /* badges: NEW + real low stock */
     pdpBadges.innerHTML = '';
     if (isNewItem(it)) pdpBadges.appendChild(h('span', 'newpill', '🆕 NEW ARRIVAL'));
-    if (isBest(it)) pdpBadges.appendChild(h('span', 'bestpill', '🏆 BEST SELLER'));
+    if (isBest(it)) pdpBadges.appendChild(h('span', 'bestpill', 'FEATURED'));
     var st = effStock(it), stock = document.getElementById('pdp-stock');
     if (effOos(it)) {
       stock.hidden = false; stock.textContent = '● OUT OF STOCK - ask on WhatsApp for new stock'; stock.className = 'instock oos-txt';
@@ -1465,6 +1457,7 @@
       else if (st <= (+CFG.lowStock || 2)) { stock.textContent = '🔥 ONLY ' + st + ' LEFT'; stock.className = 'instock low-txt'; }
       else { stock.textContent = '● IN STOCK'; stock.className = 'instock'; }
     }
+    else { stock.hidden = true; }
     /* talk link */
     document.getElementById('pdp-talk').href = talkLink(it, curCol, pdpSelectedSize, qty);
     var holdEl = document.getElementById('pdp-hold');
@@ -1581,7 +1574,7 @@
         sug.appendChild(b);
       });
     sr.parentNode.insertBefore(sug, sr.nextSibling);
-    noresEl = h('div', 'noresult'); noresEl.hidden = true;
+    noresEl = h('div', 'noresult'); noresEl.id = 'noresult'; noresEl.hidden = true;
     noresEl.innerHTML = '<p>Product nahi mila? 💬</p>';
     var waB = h('a', 'btn btn-wa btn-talk', 'Ask RBH on WhatsApp'); waB.target = '_blank'; waB.rel = 'noopener';
     waB.href = WA(encodeURIComponent('Hi Raja Boot House! I searched your app but could not find what I want. Please help:'));
@@ -1621,7 +1614,7 @@
     items.forEach(function (it) { if (it._el && it._el.style.display !== 'none') visible++; });
     var searching = (q && q.value.trim()) || curF !== 'all' || curCat !== 'all' || curSize !== 'all';
     if (noresEl) noresEl.hidden = !(searching && visible === 0);
-    ['sec-trending','sec-limited','sec-new','sec-best','sec-recent','sec-reco','sec-fancy'].forEach(function(id){var sec=document.getElementById(id);if(sec)sec.style.display=searching?'none':'';});
+    ['sec-trending','sec-limited','sec-new','sec-best','sec-value','sec-recent','sec-reco','sec-fancy'].forEach(function(id){var sec=document.getElementById(id);if(sec)sec.style.display=searching?'none':'';});
   };
 
   /* --- Quick category chips --- */
