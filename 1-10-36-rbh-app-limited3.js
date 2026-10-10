@@ -628,7 +628,7 @@
     if (window.firebase) {
       firebase.initializeApp(FBCFG);
       db = firebase.firestore();
-      if (window.RBHClub) window.RBHClub.connect({catalogue:items,refreshPdp:function(){if(curIt&&pdp&&!pdp.hidden)window.RBHClub.pdp(curIt,pdpSelectedSize,(OVR||{})[curIt.n]);}});
+      if (window.RBHClub) window.RBHClub.connect({catalogue:items,openBag:openBag,bonusNotice:function(){var n=document.createElement('div');n.className='rbh-bonus-toast';n.setAttribute('role','status');n.textContent='53 welcome points added! View your progress in Cart.';document.body.appendChild(n);setTimeout(function(){n.remove();},6500);},refreshPdp:function(){if(curIt&&pdp&&!pdp.hidden)window.RBHClub.pdp(curIt,pdpSelectedSize,(OVR||{})[curIt.n]);}});
       loadRevs();
       if (firebase.auth) {
         auth = firebase.auth();
@@ -732,6 +732,7 @@
             return !snapshot.exists;
           });
         }).then(function (firstLogin) {
+          if(window.RBHClub)window.RBHClub.bonus();
           var created = Date.parse(u.metadata && u.metadata.creationTime || '');
           if (firstLogin && u.email && created && Date.now() - created < 86400000) { sendWelcome(u); showWelcome(u); }
         }).catch(function (error) { console.warn('Customer profile could not be saved', error); })
@@ -2260,6 +2261,7 @@
   var _renderBag = renderBag;
   renderBag = function () {
     _renderBag();
+    if(window.RBHClub)window.RBHClub.cart(document.getElementById("rbh-cart-rewards"));
     var b = getBag();
     var old = document.getElementById('cart-summary'); if (old) old.remove();
     if (!b.length) return;
