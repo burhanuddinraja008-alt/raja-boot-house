@@ -4,3 +4,15 @@
 
 /* Keep the existing install dialog above fixed navigation and reward overlays. */
 #ipop{z-index:150}
+
+#rbh-rewards-promo{background:#111;color:#fff9ef;border:1px solid #796436;border-radius:19px;padding:24px;margin:0;box-shadow:0 4px 16px #1111110a}
+#rbh-rewards-promo h2{font:700 26px/1.2 Georgia,serif;margin:0 0 14px;color:#fff9ef}
+#rbh-rewards-promo .rbh-promo-earn{font-size:14px;line-height:1.65;margin:0 0 18px;color:#e5dccf}
+#rbh-rewards-promo .rbh-promo-earn strong{color:#e3c76d}
+#rbh-rewards-promo .rbh-promo-reward{padding:16px;border:1px solid #766137;border-radius:12px;background:#211c13;display:grid;gap:7px}
+#rbh-rewards-promo .rbh-promo-reward span{font-size:10px;letter-spacing:.13em;color:#d4af37;font-weight:700}
+#rbh-rewards-promo .rbh-promo-reward strong{font-size:19px;line-height:1.4;color:#fff9ef}
+#rbh-rewards-promo .rbh-promo-reward small{font-size:12px;color:#d6cdc0}
+#rbh-rewards-promo .rbh-promo-terms{font-size:12px;line-height:1.7;color:#c8bead;margin:16px 0 18px}
+#rbh-rewards-promo button{width:100%;min-height:46px;border:0;border-radius:9px;background:#d4af37;color:#111;font-size:13px;font-weight:750;display:flex;justify-content:space-between;align-items:center;padding:12px 15px;cursor:pointer}
+@media(min-width:760px){#rbh-rewards-promo{max-width:680px;width:100%;align-self:center;margin:auto}}
