@@ -1,7 +1,7 @@
 (function () {
   var WA = function (t) { return 'https://wa.me/919022150546?text=' + t; };
   var SZ = '6 to 10 (confirm on WhatsApp)';
-  var OFFER = '🪔 Diwali Offer - Coming Soon!';  // offer banner text - khali rakha toh banner nahi dikhega
+  var OFFER = '';  // offer banner text - khali rakha toh banner nahi dikhega
   var items = [
     { n: 58, brand: 'Paragon', name: 'Paragon Sandal', colour: 'Grey / Yellow', offer: '₹350', mrp: '₹699', sizes: '7-10', szarr: ['7', '8', '9', '10'], tag: "Men's", tag2: 'Limited Sale', c: '1-rbh-limited-58a.jpg', f: ['1-rbh-limited-58a.jpg', '2-rbh-limited-58b.jpg', '3-rbh-limited-58c.jpg', '4-rbh-limited-58d.jpg', '5-rbh-limited-58e.jpg'], wa: WA(encodeURIComponent('Hi Raja Boot House! I saw Paragon Sandal (Grey / Yellow) on your website for Rs 350 (MRP Rs 699). Please confirm size and stock. (#58)')) },
     { n: 59, brand: 'Paragon', name: 'Paragon Sandal', colour: 'Navy / Orange', offer: '₹350', mrp: '₹699', sizes: '7-10', szarr: ['7', '8', '9', '10'], tag: "Men's", tag2: 'Limited Sale', c: '6-rbh-limited-59a.jpg', f: ['6-rbh-limited-59a.jpg', '7-rbh-limited-59b.jpg', '8-rbh-limited-59c.jpg'], wa: WA(encodeURIComponent('Hi Raja Boot House! I saw Paragon Sandal (Navy / Orange) on your website for Rs 350 (MRP Rs 699). Please confirm size and stock. (#59)')) },
@@ -511,7 +511,7 @@
       pdpSizes.querySelectorAll('.chip').forEach(function (x, j) { x.classList.toggle('on', j === i); });
       refreshCta();
     }, -1);
-    if (OFFER) { pdpOffers.hidden = false; } else { pdpOffers.hidden = true; }
+    pdpOffers.hidden = !(OFFER || CFG.banner);
     pdpRel.innerHTML = '';
     items.forEach(function (o) {
       if (o === it || o.cat !== it.cat) return;
@@ -1227,17 +1227,23 @@
 
   /* Shop schedule uses India time, not the customer's device timezone. */
   var shopConfigReady = false;
+  /* ONE place for shop hours. Owner-stated 1 Oct 2026: 9 AM to 8 PM daily, no weekly holiday. Everything shown in the app reads from here. */
+  var HOURS = { openMin: 540, closeMin: 1200, openLabel: '9 AM', closeLabel: '8 PM' };
+  HOURS.range = HOURS.openLabel + ' - ' + HOURS.closeLabel;
+  window.RBH_HOURS = HOURS;
+  function fillHours() { document.querySelectorAll('[data-rbh-hours]').forEach(function (e) { e.textContent = HOURS.range; }); }
   function shopState(at, closure, ready) {
     var parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(at);
     var v = {}; parts.forEach(function (p) { v[p.type] = p.value; });
     var day = v.year + '-' + v.month + '-' + v.day, minutes = +v.hour * 60 + +v.minute;
     var valid = closure && /^\d{4}-\d{2}-\d{2}$/.test(closure.from) && /^\d{4}-\d{2}-\d{2}$/.test(closure.until) && closure.until >= closure.from;
     var active = valid && day >= closure.from && day <= closure.until;
-    var label = !ready ? 'Usual shop hours' : active ? 'Shop is closed today' : minutes >= 540 && minutes < 1200 ? 'Shop is open now' : 'Shop is closed now';
-    var detail = !ready ? '9 AM - 8 PM IST · live closure status unavailable' : active ? (closure.note || 'Owner-set closure') : minutes < 540 ? 'Opens at 9 AM · India time' : minutes >= 1200 ? 'Usual hours: 9 AM - 8 PM · India time' : 'Until 8 PM · India time';
-    return { label: label, detail: detail, open: ready && !active && minutes >= 540 && minutes < 1200, upcoming: ready && valid && day < closure.from ? closure : null };
+    var label = !ready ? 'Usual shop hours' : active ? 'Shop is closed today' : minutes >= HOURS.openMin && minutes < HOURS.closeMin ? 'Shop is open now' : 'Shop is closed now';
+    var detail = !ready ? HOURS.range + ' IST · live closure status unavailable' : active ? (closure.note || 'Owner-set closure') : minutes < HOURS.openMin ? 'Opens at ' + HOURS.openLabel + ' · India time' : minutes >= HOURS.closeMin ? 'Usual hours: ' + HOURS.range + ' · India time' : 'Until ' + HOURS.closeLabel + ' · India time';
+    return { label: label, detail: detail, open: ready && !active && minutes >= HOURS.openMin && minutes < HOURS.closeMin, upcoming: ready && valid && day < closure.from ? closure : null };
   }
   function renderShopHours() {
+    fillHours();
     var box = document.getElementById('shop-hours'); if (!box) return;
     // Temporary owner-approved Ujjain closure. Ends Friday, 9 October, 9 AM IST.
     var now = new Date();
@@ -1377,6 +1383,8 @@
 
   /* --- Config / overrides remote load --- */
   function applyConfig() {
+    /* A "coming soon" placeholder is not an offer: never show it (owner-set real offer text still shows). */
+    if (typeof CFG.banner === 'string' && /coming\s*soon/i.test(CFG.banner)) CFG.banner = '';
     if (CFG.banner != null) {
       var ob = document.getElementById('offer-banner');
       if (ob) { ob.textContent = CFG.banner; ob.hidden = !CFG.banner; }
@@ -1457,7 +1465,7 @@
       else if (st <= (+CFG.lowStock || 2)) { stock.textContent = '🔥 ONLY ' + st + ' LEFT'; stock.className = 'instock low-txt'; }
       else { stock.textContent = '● IN STOCK'; stock.className = 'instock'; }
     }
-    else { stock.hidden = true; }
+    else { stock.hidden = false; stock.textContent = 'Availability: confirm on WhatsApp before ordering'; stock.className = 'instock avail-note'; }
     /* talk link */
     document.getElementById('pdp-talk').href = talkLink(it, curCol, pdpSelectedSize, qty);
     var holdEl = document.getElementById('pdp-hold');
@@ -1986,7 +1994,7 @@
     ['How do I confirm my size?', 'Check the Size Guide on any product page. Still unsure? Order on WhatsApp - RBH shows the exact product on a video call before dispatch.'],
     ['What are the delivery charges?', 'Shoe prices are for the pair only - shipping charges are extra and confirmed on WhatsApp before dispatch.'],
     ['How long does delivery take?', 'Delivery time depends on your location - confirm it on WhatsApp when you order.'],
-    ['Is store pickup available?', 'Yes - visit Raja Boot House, Tingray Road, Dharni. Usual hours: 9 AM - 8 PM (India time). Check the shop status on the home page for closures.'],
+    ['Is store pickup available?', 'Yes - visit Raja Boot House, Tingray Road, Dharni. Usual hours: ' + HOURS.range + ' (India time). Check the shop status on the home page for closures.'],
     ['What is the exchange policy?', 'No exchange, no return, no COD. Every order is confirmed on WhatsApp with a video call of the genuine product before payment.'],
     ['How can I contact RBH?', 'WhatsApp or call +91 90221 50546. You can also message on Instagram @raja.boot.house_rbh.'],
     ['How do I check product availability?', 'Stock moves fast - tap Order on WhatsApp on the product and RBH will confirm availability and sizes.']
@@ -2356,7 +2364,7 @@
 
     /* Dated shop closure: expires automatically after the last date in India. */
     var sHours = adminSec('Shop hours & closures');
-    sHours.appendChild(h('p', 'adm-load', 'Usual hours: 9 AM - 8 PM · India time. No weekly closure has been set.'));
+    sHours.appendChild(h('p', 'adm-load', 'Usual hours: ' + HOURS.range + ' · India time. No weekly closure has been set.'));
     function closureField(label, type, value) {
       var wrap = h('div', 'adm-field'), lab = h('label', null, label), input = h('input', 'rin');
       input.type = type; input.value = value || ''; lab.appendChild(input); wrap.appendChild(lab); sHours.appendChild(wrap); return input;
