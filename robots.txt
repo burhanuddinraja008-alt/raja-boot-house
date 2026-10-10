@@ -1,3 +1,5 @@
+# GitHub Pages project file: Google reads robots.txt only at the host root.
+# Submit this project sitemap using the existing Search Console property.
 User-agent: *
-Allow: /
+Allow: /raja-boot-house/
 Sitemap: https://burhanuddinraja008-alt.github.io/raja-boot-house/sitemap.xml
