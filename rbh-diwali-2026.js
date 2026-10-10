@@ -15,7 +15,7 @@
   var promo=document.getElementById('fest-offer'),banner=document.querySelector('.diya-row');if(banner)promo.after(banner);
   var carousel=document.querySelector('.carousel');if(carousel)carousel.setAttribute('aria-label','Current shop offer posters - swipe to browse');
   var share=document.getElementById('rbh-share-app'),app=document.getElementById('fest-app');if(share&&app)app.appendChild(share);
-  var social=document.getElementById('reviews'),shop=document.querySelector('.shopinfo');if(social&&shop)shop.appendChild(social);if(shop)promo.after(shop);
+  var social=document.getElementById('reviews'),shop=document.querySelector('.shopinfo');if(social&&shop)shop.appendChild(social);if(shop&&page)page.appendChild(shop);
   // Never inject sales rankings or a made-up festive offer. The owner can update #offer-banner as before.
   document.querySelectorAll('.card').forEach(function(card){if(!card.querySelector('.fest-detail')){var b=document.createElement('button');b.className='fest-detail';b.type='button';b.textContent='View details';b.addEventListener('click',function(){card.click();});card.insertBefore(b,card.querySelector('.facts'));}});
 })();
