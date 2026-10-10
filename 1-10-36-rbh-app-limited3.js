@@ -628,7 +628,7 @@
     if (window.firebase) {
       firebase.initializeApp(FBCFG);
       db = firebase.firestore();
-      if (window.RBHClub) window.RBHClub.connect({catalogue:items});
+      if (window.RBHClub) window.RBHClub.connect({catalogue:items,refreshPdp:function(){if(curIt&&pdp&&!pdp.hidden)window.RBHClub.pdp(curIt,pdpSelectedSize,(OVR||{})[curIt.n]);}});
       loadRevs();
       if (firebase.auth) {
         auth = firebase.auth();
@@ -1414,6 +1414,7 @@
       snap.forEach(function (d) { OVR[+d.id] = d.data(); });
       applyOverrides();
       renderHomeRows();
+      if (curIt && pdp && !pdp.hidden && window.RBHClub) window.RBHClub.pdp(curIt, pdpSelectedSize, OVR[curIt.n]);
     }).catch(function () {});
   }
 
