@@ -24,3 +24,8 @@ body.dark{background:#171614!important;color:#fff9ef}.page{max-width:1040px;padd
 .bnav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:visible!important}.bnav .btab .bt-ic{background:transparent!important;color:inherit!important}.bnav .btab .bt-ic svg{color:inherit!important;fill:none}.pdp-body{background:#fff9ef!important}.rbh-product-share svg{stroke:#705619}.rbh-angle-hint{background:#111!important;color:#fff9ef!important}
 @media(max-width:350px){.topbar{gap:5px!important}.topbar .rbh-install-top{max-width:95px!important;min-width:95px!important;padding:6px!important}.topbar .rbh-install-top svg{width:12px!important;height:12px!important}.topbar .tb-btn{padding:6px!important;font-size:11px!important;min-height:35px!important}.topbar .tb-ic{width:30px!important;min-width:30px!important}.topbar #rbh-lang-control{gap:1px!important}.topbar #rbh-lang-control select{width:68px!important;font-size:9px!important}}
 .offpill-card[hidden]{display:none!important}.rbh-reels{color:#25211f!important}.rbh-reels h2{font-family:inherit!important;font-size:21px!important}.rbh-reel-screen,.rbh-reel button{background:#111!important}.rbh-reel{border-color:#e8dfd0!important}.rbh-caption{color:#514638!important}.rbh-product-highlights h3{background:#111!important;color:#D4AF37!important}.rbh-product-highlights{color:#514638!important;border-color:#e8dfd0!important}
+
+/* Availability note: neutral, never shown as verified stock */
+.instock.avail-note{color:#5a6475;font-weight:600;letter-spacing:0;font-size:12.5px}
+body.dark .instock.avail-note{color:#b9c3d4}
+.offers-box[hidden]{display:none!important}
