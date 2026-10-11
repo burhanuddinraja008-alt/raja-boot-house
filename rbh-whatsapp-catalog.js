@@ -933,7 +933,7 @@
     var s1 = document.createElement('div'); s1.className = 'adm-sec';
     s1.innerHTML = '<h3>Today\'s summary</h3><p class="adm-load">Loading...</p>';
     var s2 = document.createElement('div'); s2.className = 'adm-sec';
-    s2.innerHTML = '<h3>Customers (signed in)</h3><p class="adm-load">Load ho raha hai...</p>';
+    s2.innerHTML = '<h3>Customers</h3><p class="adm-load">Loading...</p>';
     var s3 = document.createElement('div'); s3.className = 'adm-sec';
     s3.innerHTML = '<h3>Visitors - daily count</h3><p class="adm-load">Loading...</p>';
     adminBody.appendChild(s1); adminBody.appendChild(s2); adminBody.appendChild(s3);
@@ -941,7 +941,7 @@
       var html = '';
       if (!snap.size) { html = '<p class="adm-load">No customer logins yet.</p>'; }
       else {
-        html = '<table class="adm-table"><tr><th>Naam</th><th>Email</th><th>Last login</th></tr>';
+        html = '<table class="adm-table"><tr><th>Name</th><th>Email</th><th>Last login</th></tr>';
         snap.forEach(function (d) { var v = d.data(); html += '<tr><td>' + esc(v.name) + '</td><td>' + esc(v.email) + '</td><td>' + fmtTs(v.lastLoginAt) + '</td></tr>'; });
         html += '</table>';
       }
@@ -952,7 +952,7 @@
       var today = 0, rows = '';
       docs.forEach(function (d) { if (d.id === todayKey()) today = d.data().count; rows += '<tr><td>' + d.id + '</td><td>' + d.data().count + '</td></tr>'; });
       s1.innerHTML = '<h3>Today\'s summary</h3><p class="adm-big">Visitors today: <b>' + today + '</b></p>';
-      s3.innerHTML = '<h3>Visitors - roz ka count</h3>' + (rows ? '<table class="adm-table"><tr><th>Date</th><th>Visitors</th></tr>' + rows + '</table>' : '<p class="adm-load">No data yet.</p>');
+      s3.innerHTML = '<h3>Visitors - daily count</h3>' + (rows ? '<table class="adm-table"><tr><th>Date</th><th>Visitors</th></tr>' + rows + '</table>' : '<p class="adm-load">No data yet.</p>');
     }).catch(function () {
       [s1, s2, s3].forEach(function (s) { var l = s.querySelector('.adm-load'); if (l) l.textContent = 'Could not load data - check your internet.'; });
     });
@@ -2297,52 +2297,6 @@
   function renderAdminExtra() {
     if (!adminBody || !curUser || curUser.uid !== OWNER_UID || !db) return;
     if (window.RBHClub) window.RBHClub.owner(adminBody);
-    /* Orders */
-    var sOrd = adminSec('📦 Enquiries & orders (latest 50)');
-    sOrd.appendChild(h('p', 'adm-load', 'Loading...'));
-    adminBody.appendChild(sOrd);
-    db.collection('orders').orderBy('createdAt', 'desc').limit(50).get().then(function (snap) {
-      sOrd.innerHTML = ''; sOrd.appendChild(h('h3', null, '📦 Enquiries & orders (latest 50)'));
-      if (!snap.size) { sOrd.appendChild(h('p', 'adm-load', 'No enquiries or orders yet.')); return; }
-      var counts = { enquiries: 0, orders: 0, older: 0 };
-      snap.forEach(function (d) { var st = d.data().status || 'received'; if (st === 'enquiry') counts.enquiries++; else if (st === 'received') counts.older++; else if (st !== 'cancelled') counts.orders++; });
-      sOrd.appendChild(h('p', 'adm-load', 'Latest 50: ' + counts.enquiries + ' enquiries · ' + counts.orders + ' confirmed/in-progress orders · ' + counts.older + ' older awaiting confirmation.'));
-      snap.forEach(function (d) {
-        var v = d.data();
-        var row = h('div', 'adm-ord');
-        var st = STATUS[v.status] || STATUS.received;
-        row.appendChild(h('b', null, (v.oid || d.id.slice(0, 8)) + ' - ' + (v.name || v.email || 'customer')));
-        row.appendChild(h('div', 'adm-ord-items', (v.items || []).map(function (x) {
-          return x.name + (x.size ? ' (Size ' + x.size + ')' : '') + ' x' + x.qty;
-        }).join(', ') + (v.total ? ' - Rs ' + v.total : '')));
-        row.appendChild(h('div', 'adm-ord-date', fmtTs(v.createdAt)));
-        var pending = v.status === 'enquiry' || !v.status || v.status === 'received';
-        row.appendChild(h('p', 'adm-load', st[0] + ' ' + st[1]));
-        var updateMsg = h('p', 'adm-load');
-        if (pending) {
-          var confirm = h('button', 'btn pdp-cta', 'Confirm order'); confirm.type = 'button';
-          row.appendChild(h('p', 'adm-load', 'Use only after agreeing with the customer on WhatsApp.'));
-          confirm.addEventListener('click', function () {
-            confirm.disabled = true; updateMsg.textContent = 'Confirming...';
-            d.ref.set({ status: 'confirmed' }, { merge: true }).then(function () { renderAdmin(); }).catch(function () { confirm.disabled = false; updateMsg.textContent = 'Could not confirm. Nothing changed - try again.'; });
-          });
-          row.appendChild(confirm);
-        }
-        var sel = h('select', 'fsel'); sel.setAttribute('aria-label', 'Order status');
-        (pending ? [v.status || 'received', 'cancelled'] : ['confirmed', 'packed', 'shipped', 'delivered', 'cancelled']).forEach(function (k) {
-          var o = h('option', null, STATUS[k][0] + ' ' + STATUS[k][1]); o.value = k;
-          if (k === (v.status || 'received')) o.selected = true;
-          sel.appendChild(o);
-        });
-        sel.addEventListener('change', function () {
-          sel.disabled = true; updateMsg.textContent = 'Saving...';
-          d.ref.set({ status: sel.value }, { merge: true }).then(function () { renderAdmin(); }).catch(function () { sel.disabled = false; sel.value = v.status || 'received'; updateMsg.textContent = 'Could not save. Nothing changed - try again.'; });
-        });
-        row.appendChild(sel); row.appendChild(updateMsg);
-        sOrd.appendChild(row);
-      });
-    }).catch(function () { sOrd.innerHTML = '<h3>📦 Orders</h3><p class="adm-load">Could not load orders.</p>'; });
-
     /* Store settings */
     var sSet = adminSec('⚙️ Store settings');
     function field(label, val, ph) {
@@ -2500,9 +2454,22 @@
   renderAdmin = function () {
     _renderAdmin();
     renderAdminExtra();
+    organizeOwnerPanel();
   };
 
-  /* RBH Owner catalog bridge. In-place arrays preserve bag/wishlist/rewards references. */
+  function organizeOwnerPanel(){
+    if(!curUser||curUser.uid!==OWNER_UID||!adminBody)return;
+    var sections=Array.from(adminBody.children).filter(e=>e.classList.contains('adm-sec'));
+    var home=h('div','owner-home');var kicker=h('p','owner-kicker','PRIVATE OWNER PANEL');var title=h('h1',null,'Your shop controls');var subtitle=h('p','owner-subtitle','Choose what you want to change. Your customers cannot see this panel.');
+    var note=h('div','owner-intro');note.append(h('b',null,'Orders stay on WhatsApp'),h('p',null,'Discuss size, payment and delivery directly with the customer. No checkout or payment cards here.'));
+    var grid=h('div','owner-grid');home.append(kicker,title,subtitle,note,grid);adminBody.insertBefore(home,adminBody.firstChild);
+    var back=h('button','owner-back','‹ All shop controls');back.type='button';back.hidden=true;adminBody.insertBefore(back,home.nextSibling);
+    var groups=[['Products','Price, MRP and availability',/Products/],['Store settings','Banner and delivery PINs',/Store settings/],['Shop hours','Opening hours and holidays',/Shop hours/],['Customers','Signed-in customer list',/Customers/],['Visitors','Today and daily counts',/summary|Visitors/],['Reviews','Approve or remove reviews',/Reviews/],['FAQs','Edit your shop answers',/FAQs/]];
+    sections.forEach(e=>e.hidden=true);
+    groups.forEach(function(g,i){var b=h('button','owner-block');b.type='button';b.append(h('span','owner-number',('0'+(i+1)).slice(-2)),h('b',null,g[0]),h('small',null,g[1]));b.addEventListener('click',function(){home.hidden=true;back.hidden=false;sections.forEach(e=>e.hidden=!g[2].test(e.querySelector('h3')?.textContent||''));adminBody.scrollTop=0;});grid.append(b);});
+    back.onclick=function(){sections.forEach(e=>e.hidden=true);home.hidden=false;back.hidden=true;adminBody.scrollTop=0;};
+  }
+    /* RBH Owner catalog bridge. In-place arrays preserve bag/wishlist/rewards references. */
   if (window.RBHCatalog && db) {
     var catalogSeed = items.map(function(p){ var seed=window.RBH_CATALOG_SEED.find(function(s){return s.n===p.n;});return Object.assign({},seed,p,{cat:p.cat||seed.cat,f:seed.f.slice(),c:seed.c,rank:seed.rank,hidden:false,revision:0}); });
     var catalogGeneration = 0;
@@ -2512,7 +2479,7 @@
         var visible = await Promise.all(all.filter(function(p){return !p.hidden;}).map(function(p){return window.RBHCatalog.hydrate(db,p);}));
         if(gen!==catalogGeneration)return;
         /* Replace old override prices before the legacy code paints cards. */
-        all.forEach(function(p){OVR[p.n]=Object.assign({},OVR[p.n]||{},{offer:p.offer,mrp:p.mrp});});
+        all.forEach(function(p){if(!OVR[p.n])OVR[p.n]={};});
         var shown = curIt && curIt.n;
         items.splice.apply(items,[0,items.length].concat(visible));
         Object.keys(byN).forEach(function(k){delete byN[k];});
