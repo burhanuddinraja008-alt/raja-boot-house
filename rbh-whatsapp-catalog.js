@@ -710,7 +710,7 @@
   if (umLogout) umLogout.addEventListener('click', function () { if (auth) auth.signOut(); if (umenu) umenu.hidden = true; });
   if (umAdmin) umAdmin.addEventListener('click', function () {
     if (umenu) umenu.hidden = true;
-    location.href='owner.html';
+    if (location.hash === '#admin') { openAdmin(); } else { location.hash = 'admin'; }
   });
   var welcomeCheckInFlight = {};
   function chosenReferral(){try{return sessionStorage.getItem('rbhReferralConfirmed')||'';}catch(e){return '';}}
@@ -965,7 +965,7 @@
   function handleHash() {
     var h = location.hash;
     if (h === '#bag') { openBag(); return; }
-    if (h === '#admin') { location.href='owner.html'; return; }
+    if (h === '#admin') { openAdmin(); return; }
     var m = h.match(/^#p(\d+)$/);
     if (m && byN[+m[1]]) { openPdp(byN[+m[1]]); }
   }
