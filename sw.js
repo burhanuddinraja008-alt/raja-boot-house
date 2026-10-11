@@ -1,5 +1,5 @@
-var CACHE = 'rbh-v62-whatsapp-only-20261011';
-var CORE = ['./', 'index.html', 'rbh-diwali-2026.css?v=2', 'rbh-diwali-2026.js?v=2', 'rbh-whatsapp-catalog.js?v=3', 'rbh-whatsapp-only.js?v=3', 'rbh-owner-readable.css?v=1', 'rbh-catalog-seed.js?v=1', 'rbh-catalog.js?v=1', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
+var CACHE = 'rbh-v63-whatsapp-only-20261011';
+var CORE = ['./', 'index.html', 'rbh-diwali-2026.css?v=2', 'rbh-diwali-2026.js?v=2', 'rbh-whatsapp-catalog.js?v=3', 'rbh-whatsapp-only.js?v=4', 'rbh-owner-readable.css?v=1', 'rbh-catalog-seed.js?v=1', 'rbh-catalog.js?v=1', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE.map(function (url) { return new Request(url, { cache: "reload" }); })); }).then(function () { return self.skipWaiting(); }));
 });
