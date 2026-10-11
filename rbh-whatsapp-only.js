@@ -6,6 +6,6 @@ function update(){
  document.querySelectorAll('article.card').forEach(function(card){var img=card.querySelector('.imgwrap img'),name=card.querySelector('h3');card.querySelectorAll('a.btn').forEach(function(a){if(a.textContent.trim()==='Order on WhatsApp'&&img&&name)a.href='https://wa.me/919022150546?text='+encodeURIComponent('Hi Raja Boot House! I saw '+name.textContent+' on your app. Please confirm size and stock. Photo: '+img.src);});});
 }
 var queued=false;new MutationObserver(function(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;update();});}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src','hidden']});
-document.addEventListener('click',function(e){if(e.target.closest('#pdp-sizes,#pdp-colours,.qty'))setTimeout(update,0);if(e.target.closest('#umenu-admin'))e.preventDefault();});update();
-if(location.hash==='#admin'||location.hash==='#bag'||location.hash==='#orders')history.replaceState(null,'',location.pathname+location.search);
+document.addEventListener('click',function(e){if(e.target.closest('#pdp-sizes,#pdp-colours,.qty'))setTimeout(update,0);});update();
+if(location.hash==='#bag'||location.hash==='#orders')history.replaceState(null,'',location.pathname+location.search);
 })();
