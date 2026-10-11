@@ -1853,9 +1853,30 @@
       recordOrder([{ n: curIt.n, name: curIt.name, col: curCol, size: pdpSelectedSize || '', qty: qty, price: p }], p * qty);
     });
   }
+  var customerOrderOffs=[];
   function renderOrders() {
-    var body = document.getElementById('orders-body'); if (!body) return;
-    body.innerHTML = '';
+    var body=document.getElementById('orders-body');if(!body)return;
+    customerOrderOffs.forEach(function(off){off();});customerOrderOffs=[];body.replaceChildren();
+    var heading=h('h3',null,'Your order requests');body.appendChild(heading);
+    var help=h('p',null,'Live order status and payment updates. Saved on this browser. For orders from another device, use your order ID and mobile number.');body.appendChild(help);
+    var manual=h('a','btn btn-mini','Find / track an order');manual.href='tracking.html';body.appendChild(manual);
+    var recent=[];try{recent=JSON.parse(localStorage.getItem('rbh-order-tracking')||'[]');}catch(e){}
+    var statusLabels={new:'Awaiting owner confirmation',confirmed:'Confirmed',packed:'Packed',shipped:'Shipped','out-for-delivery':'Out for delivery',delivered:'Delivered',cancelled:'Cancelled'};
+    if(!recent.length)body.appendChild(h('p',null,'No saved app orders on this browser. Use Find / track an order if you have an order ID.'));
+    recent.forEach(function(o){
+      var card=h('div','ord-card'),title=h('b',null,o.id),status=h('p',null,'Checking live status...'),detail=h('p',null,(o.items||[]).map(function(i){return i.name+' · Size '+i.size+' × '+i.qty;}).join(' | '));
+      var link=h('a','btn btn-mini','Track order / payment');link.href='tracking.html?order='+encodeURIComponent(o.id);card.append(title,status,detail,link);body.appendChild(card);
+      function paint(d){status.textContent=d.status==='confirmed'&&!d.paymentVerified?(d.paymentSent?'Payment sent - awaiting owner verification':'Confirmed - awaiting payment'):statusLabels[d.status]||d.status;if(!detail.textContent)detail.textContent=d.productNames||'';}
+      var liveDb=window.RBHCatalog.connect().db;
+      window.RBHOrders.tracking(liveDb,o.id,o.phone).then(function(r){paint(r);var off=liveDb.collection('orderTracking').doc(r.key).onSnapshot(function(snap){if(snap.exists)paint(snap.data());},function(){status.textContent='Live updates paused. Open tracking to check.';});customerOrderOffs.push(off);}).catch(function(e){status.textContent='Status could not be checked. Open tracking with your order ID and mobile.';});
+    });
+    body.appendChild(h('h3',null,'Older WhatsApp enquiries'));
+    renderLegacyOrders();
+  }
+
+  function renderLegacyOrders() {
+    var parent = document.getElementById('orders-body'); if (!parent) return; var body=document.createElement('div');body.dataset.legacyOrders='';parent.appendChild(body);
+    body.querySelectorAll('[data-legacy-orders]').forEach(function(el){el.remove();});
     var list = localOrders();
     function draw(all) {
       body.innerHTML = '';
@@ -1895,22 +1916,9 @@
       });
     }
     draw(list);
-    if (db && curUser) {
-      db.collection('orders').where('uid', '==', curUser.uid).limit(50).get().then(function (snap) {
-        if (!snap.size) return;
-        var remote = snap.docs.map(function (d) {
-          var v = d.data();
-          return { id: v.oid || d.id.slice(0, 8).toUpperCase(), items: v.items || [], total: v.total || 0,
-            status: v.status || 'received', at: v.createdAt && v.createdAt.toMillis ? v.createdAt.toMillis() : Date.now() };
-        });
-        var merged = remote.concat(list.filter(function (lo) { return !remote.some(function (r) { return r.id === lo.id; }); }));
-        merged.sort(function (a, b) { return b.at - a.at; });
-        draw(merged);
-      }).catch(function () {});
-    }
   }
 
-  /* --- Account page --- */
+/* --- Account page --- */
   function renderAccount() {
     var body = document.getElementById('account-body'); if (!body) return;
     body.innerHTML = '';
