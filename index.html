@@ -147,7 +147,7 @@
 <style>.shop-hours{margin:14px auto 18px;padding:14px 18px;max-width:420px;border:1px solid #c7a96b;border-radius:14px;background:#fffaf0;color:#142544;text-align:center}.shop-hours>div{display:flex;align-items:center;justify-content:center;gap:9px;font-size:16px}.shop-hours-dot{width:8px;height:8px;border-radius:50%;background:#957239;flex-shrink:0}.shop-hours.is-open .shop-hours-dot{background:#28714d}.shop-hours p{margin:5px 0 0;font-size:12px;line-height:1.55;color:#5b6070}.shop-hours #shop-hours-notice{margin-top:10px;padding-top:9px;border-top:1px solid #e8dbbc}.adm-field input[type=date]{display:block;width:100%;box-sizing:border-box;margin-top:7px}.adm-ord .pdp-cta{margin:8px 0;min-height:44px}.adm-sec .btn-mini{margin:9px 0 0}.shop-hours [hidden]{display:none!important}#admin,#orders{background:#f7f8fb!important}#admin .pdp-top,#orders .pdp-top{background:#fff!important}#admin .pdp-body,#orders .pdp-body{background:#f7f8fb!important}#orders .ord-item .bi{display:flex;flex-direction:column;min-width:0;gap:4px}#orders .ord-item .bi b{font-size:14px;line-height:1.4}#orders .ord-item .bi span{font-size:12px;line-height:1.5}#orders .ord-head{line-height:1.5}#orders .ord-card{background:#fff}#admin .adm-load{line-height:1.5}#admin .adm-sec{padding-bottom:16px}
 </style>
 <style>.grid{grid-template-columns:1fr!important}.card .imgwrap{aspect-ratio:1/1!important;background:#fff!important}.card .imgwrap img{padding:0!important;object-fit:contain!important}.card h3{min-height:0}.card .facts{font-size:12px}#pdp .pdp-gallery{padding:0 0 12px!important;background:#fff!important}#pdp-img{aspect-ratio:1/1!important;border-radius:0!important;box-shadow:none!important;object-fit:contain!important}</style><style>.rbh-reels{order:1;margin:24px 0;color:#19345f}.rbh-reels h2{font:700 23px Georgia;margin:0 0 8px}.rbh-reels p{font-size:12px;color:#627087}.rbh-reels-rail{display:flex;gap:12px;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:10px}.rbh-reel{flex:0 0 73%;max-width:285px;border:1px solid #d9c28b;border-radius:15px;overflow:hidden;background:white;scroll-snap-align:start}.rbh-reel-screen{position:relative;aspect-ratio:9/16;background:#19345f}.rbh-reel video{width:100%;height:100%;object-fit:contain}.rbh-reel button{position:absolute;bottom:13px;min-height:44px;min-width:44px;border:1px solid #eee;border-radius:50%;background:#19345fd9;color:white;font-size:17px}.rbh-play{left:12px}.rbh-sound{right:12px}.rbh-tag{position:absolute;left:12px;top:12px;background:#fff9ed;color:#19345f;padding:5px 9px;border-radius:6px;font-size:11px}.rbh-caption{padding:12px;font-size:13px;font-weight:700}@media(min-width:700px){.rbh-reel{flex-basis:25%}}</style><style>#rbh-owner-highlights{display:none!important}.rbh-product-highlights{margin:18px 17px;border:1px solid #d6bb7c;border-radius:14px;overflow:hidden;background:white;color:#19345f}.rbh-product-highlights h3{margin:0;padding:13px 16px;background:#19345f;color:#e8cd92;font-size:17px}.rbh-product-highlights .hl-label{font-size:11px;color:#617089;margin:14px 16px 6px;letter-spacing:.4px}.rbh-product-highlights ul{list-style:none;padding:0 16px;margin:0}.rbh-product-highlights li{padding:9px 0;border-bottom:1px solid #edf0f4;font-size:14px;line-height:1.5}.rbh-product-highlights li:before{content:'✓';color:#92743b;margin-right:8px}.rbh-product-highlights .hl-owner{background:#fffaf0;padding:11px 16px;margin-top:13px;font-size:13px;line-height:1.7}.rbh-product-highlights .hl-confirm{background:#f4f5f7;padding:12px 16px;font-size:12px;line-height:1.6;color:#626d7e}.rbh-product-highlights .hl-draft{font-size:10px;padding:8px 16px;color:#627087;border-top:1px solid #edf0f4}</style><link rel="stylesheet" href="rbh-diwali-2026.css?v=2">
-</head>
+<style>#umenu-admin,#admin,#orders,#bag-btn,#bt-bag,#pdp-addbag,#bag-items,#bag-total,#bag-addr,#bag-order{display:none!important}#bag,#rbh-cart-rewards,#rbh-cart-referral{display:none!important}</style></head>
 <body>
 <div class="splash" id="rbh-diwali-splash" role="status" aria-label="Raja Boot House festive opening">
   <img src="1-icon-192.png" alt="RBH logo">
@@ -174,7 +174,7 @@
 <div class="umenu" id="usermenu" hidden>
   <p id="umenu-email"></p>
   <a href="#" id="umenu-profile">My profile &amp; settings</a>
-  <a href="#admin" id="umenu-admin" hidden>Owner panel</a>
+  <a id="umenu-admin" hidden aria-hidden="true"></a>
   <button type="button" id="umenu-logout">Logout</button>
 </div>
 <main class="page">
@@ -348,7 +348,7 @@
     <div class="chips" id="pdp-sizes"></div>
     <div class="pdp-label">Quantity</div>
     <div class="qty"><button type="button" id="q-minus" aria-label="Less">&minus;</button><span id="q-val">1</span><button type="button" id="q-plus" aria-label="More">+</button></div>
-    <button class="btn pdp-addbag" id="pdp-addbag" type="button">Add to Bag</button>
+    
     <a class="btn pdp-cta" id="pdp-order" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
     <div class="offers-box" id="pdp-offers" hidden><b>Available offers</b><p></p></div>
     <div class="steps-box">
@@ -372,7 +372,7 @@
 <div class="pdp" id="bag" hidden>
   <div class="pdp-top">
     <button class="pdp-close" id="bag-close" aria-label="Close">&times;</button>
-    <span class="pdp-toptitle">Your Bag</span>
+    <span class="pdp-toptitle"></span>
     <span class="pdp-topsp"></span>
   </div>
   <div class="pdp-body">
@@ -651,16 +651,17 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
-<link rel="stylesheet" href="rbh-rewards-alerts.css?v=5">
-<script src="rbh-feature-config.js?v=2"></script>
-<script src="rbh-spark-api.js?v=3"></script>
-<script src="rbh-rewards-alerts.js?v=5"></script>
-<script src="rbh-referral-signup.js?v=1"></script>
+
+
+
+
+
 <script src="rbh-catalog-seed.js?v=1"></script>
 <script src="rbh-catalog.js?v=1"></script>
-<script src="rbh-orders.js?v=1"></script>
-<script src="public-order-ui.js?v=1"></script>
-<script src="rbh-app-orders-20261011.js?v=1"></script>
+
+
+<script src="rbh-whatsapp-catalog.js?v=1"></script>
+<script src="rbh-whatsapp-only.js?v=1"></script>
 
   
 <script>
