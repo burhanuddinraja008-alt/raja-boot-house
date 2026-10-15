@@ -77,6 +77,8 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
 
   ]);
 
+  items=[{"n": 76, "brand": "Hi Pride", "name": "Hi Pride LP1422 Butterfly Slides", "colour": "Orange / White", "offer": "₹250", "mrp": "₹289", "sizes": "Confirm on WhatsApp", "szarr": ["Confirm on WhatsApp"], "tag": "Ladies", "tag2": "Limited Stock", "c": "rbh-lp1422-20261015.jpg", "f": ["rbh-lp1422-20261015.jpg"], "cat": "grid-ladies", "rank": -9, "hidden": false, "revision": 0}, {"n": 77, "brand": "My Debon", "name": "My Debon DL3475 Bow Slides", "colour": "Gold / Cream", "offer": "₹250", "mrp": "", "sizes": "Confirm on WhatsApp", "szarr": ["Confirm on WhatsApp"], "tag": "Ladies", "tag2": "Limited Stock", "c": "rbh-dl3475-20261015.jpg", "f": ["rbh-dl3475-20261015.jpg"], "cat": "grid-ladies", "rank": -8, "hidden": false, "revision": 0}, {"n": 78, "brand": "My Debon", "name": "My Debon DL3530 Holographic Slides", "colour": "Black / Holographic", "offer": "₹250", "mrp": "₹299", "sizes": "Confirm on WhatsApp", "szarr": ["Confirm on WhatsApp"], "tag": "Ladies", "tag2": "Limited Stock", "c": "rbh-dl3530-20261015.jpg", "f": ["rbh-dl3530-20261015.jpg"], "cat": "grid-ladies", "rank": -7, "hidden": false, "revision": 0}].concat(items);
+
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
@@ -227,7 +229,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   fill('grid-kids', pick([53, 54, 55]));
   (function(){ if(!document.getElementById('sec-limited')){ var tr0=document.getElementById('sec-trending'); if(tr0){ var sl=document.createElement('section'); sl.id='sec-limited'; sl.innerHTML='<h2 class="sec-bar">Limited Sale</h2><div class="grid" id="grid-limited"></div>'; tr0.parentNode.insertBefore(sl,tr0); } } })();
   fill('grid-limited', pick([58, 59, 60, 61, 62, 63, 64, 65, 66, 67]));
-  fill('grid-ladies', pick([35, 46]));
+  fill('grid-ladies', pick([76, 77, 78, 35, 46]));
 
   /* ---------- Lightbox ---------- */
   var lb = document.getElementById('lb'),
