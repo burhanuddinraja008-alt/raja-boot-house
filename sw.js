@@ -1,5 +1,5 @@
-var CACHE = 'rbh-v68-vertex-200-20261015';
-var CORE = ['./', 'index.html', 'rbh-diwali-2026.css?v=2', 'rbh-diwali-2026.js?v=2', '4-rbh-vertex-catalog.js?v=68', '4-rbh-vertex-650055GS.jpg', '5-rbh-vertex-650039.jpg', '6-rbh-vertex-6889.jpg', '1-rbh-vertex-6898.jpg', '2-rbh-vertex-650040GS.jpg', '3-rbh-vertex-PUXP650109GP.jpg', 'rbh-owner-readable.css?v=1', 'rbh-catalog-seed.js?v=1', 'rbh-catalog.js?v=1', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
+var CACHE = 'rbh-v69-green-preview-20261015';
+var CORE = ['rbh-green.css?v=1', 'rbh-green.js?v=1', './', 'index.html', 'rbh-diwali-2026.css?v=2', 'rbh-diwali-2026.js?v=2', '4-rbh-vertex-catalog.js?v=69', '4-rbh-vertex-650055GS.jpg', '5-rbh-vertex-650039.jpg', '6-rbh-vertex-6889.jpg', '1-rbh-vertex-6898.jpg', '2-rbh-vertex-650040GS.jpg', '3-rbh-vertex-PUXP650109GP.jpg', 'rbh-owner-readable.css?v=1', 'rbh-catalog-seed.js?v=1', 'rbh-catalog.js?v=1', '41-style.css?v=22', '42-premium.css?v=2', '44-polish.css?v=1', '45-final-polish.css?v=1', 'terms.html', 'privacy.html', 'rbh-hours-enquiries.js?v=1', 'manifest.json', '1-logo-new.jpg', '1-icon-192.png', '2-icon-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE.map(function (url) { return new Request(url, { cache: "reload" }); })); }).then(function () { return self.skipWaiting(); }));
 });
