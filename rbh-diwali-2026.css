@@ -27,5 +27,5 @@ body.dark{background:#171614!important;color:#fff9ef}.page{max-width:1040px;padd
 
 /* Availability note: neutral, never shown as verified stock */
 .instock.avail-note{color:#5a6475;font-weight:600;letter-spacing:0;font-size:12.5px}
-body.dark .instock.avail-note{color:#b9c3d4}
+body.dark .instock.avail-note{color:#b9d4cb}
 .offers-box[hidden]{display:none!important}

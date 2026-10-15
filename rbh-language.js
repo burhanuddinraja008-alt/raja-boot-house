@@ -55,7 +55,7 @@
   function change(){mode=this.value;localStorage.setItem('rbh-ui-lang',mode);sweep();}
   var box=document.createElement('label');box.id='rbh-lang-control';box.style.cssText='display:inline-flex;align-items:center;gap:5px;margin:6px 8px;color:#6e5315;font:600 13px system-ui,sans-serif';
   var text=document.createTextNode('🌐 ');box.appendChild(text);
-  var select=document.createElement('select');select.setAttribute('aria-label','Site language');select.style.cssText='border:1px solid #ba9c55;border-radius:8px;padding:7px;background:#fff;color:#1c3150;font:600 13px system-ui,sans-serif;min-height:36px';
+  var select=document.createElement('select');select.setAttribute('aria-label','Site language');select.style.cssText='border:1px solid #ba9c55;border-radius:8px;padding:7px;background:#fff;color:#1c503f;font:600 13px system-ui,sans-serif;min-height:36px';
   [['en','English'],['hi','हिन्दी'],['mr','मराठी']].forEach(function(pair){var op=document.createElement('option');op.value=pair[0];op.textContent=pair[1];select.appendChild(op);});select.value=mode;select.addEventListener('change',change);box.appendChild(select);
   var mount=document.querySelector('.topbar')||document.querySelector('header')||document.body;
   mount.appendChild(box);

@@ -1,14 +1,14 @@
 /* ============================================================
    RBH PREMIUM - V1 ROYAL NAVY + GOLD  (visual override layer)
    Loaded after 41-style.css. No markup or logic changes.
-   Palette: navy #1e3a6e | metallic gold #d4af5e (accent only)
-            cool ivory #f6f8fb | ink #141a26
+   Palette: navy #1e6e54 | metallic gold #d4af5e (accent only)
+            cool ivory #f6fbf9 | ink #142620
    ============================================================ */
 :root{
-  --pv-navy:#1e3a6e; --pv-navy-2:#274a85; --pv-navy-soft:#eaf0f9;
+  --pv-navy:#1e6e54; --pv-navy-2:#278566; --pv-navy-soft:#eaf9f4;
   --pv-gold:#d4af5e; --pv-gold-deep:#b8923e;
-  --pv-ivory:#f6f8fb; --pv-ink:#141a26; --pv-sub:#5b6678;
-  --pv-line:#e4e9f2; --pv-card-shadow:0 10px 26px rgba(17,30,55,.09);
+  --pv-ivory:#f6fbf9; --pv-ink:#142620; --pv-sub:#5b6678;
+  --pv-line:#e4f2ed; --pv-card-shadow:0 10px 26px rgba(17,55,42,.09);
   --pv-r:18px;
 }
 /* ---------- base ---------- */
@@ -18,17 +18,17 @@ body{background:var(--pv-ivory);color:var(--pv-ink);
   font-family:"Playfair Display",Georgia,"Times New Roman",serif}
 .topline,.brand,.sec-bar small,.facts,.pdp-label{
   font-family:-apple-system,"Segoe UI",Roboto,sans-serif}
-::selection{background:#c9d6ee}
+::selection{background:#c9eee2}
 img{transition:opacity .45s ease}
 /* ---------- topbar ---------- */
-.topbar{background:rgba(250,251,254,.92);backdrop-filter:saturate(1.4) blur(10px);
-  border-bottom:1px solid var(--pv-line);box-shadow:0 2px 14px rgba(17,30,55,.05)}
+.topbar{background:rgba(250,254,253,.92);backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--pv-line);box-shadow:0 2px 14px rgba(17,55,42,.05)}
 .topbar h1{font-size:22px;font-weight:700;letter-spacing:.01em;color:var(--pv-ink)}
 .topline{color:var(--pv-navy);font-weight:700;letter-spacing:.16em}
-.tb-btn,.tb-bag{border-color:#d7dfee;color:var(--pv-navy);background:#fff;
+.tb-btn,.tb-bag{border-color:#d7eee6;color:var(--pv-navy);background:#fff;
   transition:transform .18s ease,box-shadow .25s ease,border-color .25s ease}
 .tb-btn:active,.tb-bag:active{transform:scale(.93)}
-.tb-btn:hover,.tb-bag:hover{border-color:var(--pv-navy);box-shadow:0 4px 12px rgba(30,58,110,.12)}
+.tb-btn:hover,.tb-bag:hover{border-color:var(--pv-navy);box-shadow:0 4px 12px rgba(30,110,84,.12)}
 .tb-badge{background:var(--pv-navy)}
 /* ---------- hero ---------- */
 .hero h1{font-weight:700;font-size:30px;letter-spacing:.01em;color:var(--pv-ink)}
@@ -39,23 +39,23 @@ img{transition:opacity .45s ease}
 .goldlink:hover{background:var(--pv-navy);color:#fff}
 /* ---------- app-share button (JS-injected #rbh-share-app) ---------- */
 #rbh-share-app{background:#fff;border:1.5px solid var(--pv-navy);color:var(--pv-navy);
-  border-radius:14px;box-shadow:0 6px 18px rgba(30,58,110,.10);font-weight:700;
+  border-radius:14px;box-shadow:0 6px 18px rgba(30,110,84,.10);font-weight:700;
   transition:transform .18s ease,box-shadow .25s ease}
 #rbh-share-app:active{transform:scale(.97)}
 /* ---------- carousel ---------- */
 .carousel{border-radius:22px;box-shadow:var(--pv-card-shadow);overflow:hidden}
 .ctrack img{border-radius:22px;animation:pvKenBurns 14s ease-in-out infinite alternate}
 @keyframes pvKenBurns{from{transform:scale(1)}to{transform:scale(1.055)}}
-.cdots span{background:#c9d3e4;transition:background .3s ease,transform .3s ease}
+.cdots span{background:#c9e4db;transition:background .3s ease,transform .3s ease}
 .cdots span.active,.cdots span.on{background:var(--pv-navy);transform:scale(1.25)}
 /* ---------- categories ---------- */
-.catrow img{border:2px solid var(--pv-navy);box-shadow:0 4px 12px rgba(30,58,110,.14);
+.catrow img{border:2px solid var(--pv-navy);box-shadow:0 4px 12px rgba(30,110,84,.14);
   transition:transform .25s ease}
 .catrow a:active img{transform:scale(.94)}
 /* ---------- search + chips ---------- */
 .searchrow input{border:1.5px solid var(--pv-line);border-radius:999px;background:#fff;
   transition:border-color .25s ease,box-shadow .25s ease}
-.searchrow input:focus{border-color:var(--pv-navy);box-shadow:0 0 0 4px rgba(30,58,110,.12);outline:none}
+.searchrow input:focus{border-color:var(--pv-navy);box-shadow:0 0 0 4px rgba(30,110,84,.12);outline:none}
 .qchip{border:1px solid var(--pv-line);background:#fff;color:var(--pv-ink);border-radius:999px;
   transition:transform .15s ease,border-color .2s ease}
 .qchip:active{transform:scale(.95)}
@@ -73,7 +73,7 @@ img{transition:opacity .45s ease}
 .diya-row,.festive-lights{opacity:.95}
 /* ---------- horizontal cards ---------- */
 .hcard{border-radius:var(--pv-r);border:1px solid var(--pv-line);background:#fff;
-  box-shadow:0 6px 18px rgba(17,30,55,.07);
+  box-shadow:0 6px 18px rgba(17,55,42,.07);
   transition:transform .22s ease,box-shadow .3s ease}
 .hcard:active{transform:scale(.97)}
 .hname{color:var(--pv-ink)}
@@ -86,7 +86,7 @@ img{transition:opacity .45s ease}
   box-shadow:var(--pv-card-shadow);overflow:hidden;
   transition:transform .22s ease,box-shadow .3s ease}
 .card:active{transform:scale(.98)}
-.card .imgwrap{border-radius:14px;overflow:hidden;background:#f2f5fa}
+.card .imgwrap{border-radius:14px;overflow:hidden;background:#f2faf7}
 .card h3{font-weight:700;color:var(--pv-ink);letter-spacing:.005em}
 .card .brand{color:var(--pv-navy);font-weight:700;letter-spacing:.09em;text-transform:uppercase}
 .card .num{color:#9aa4b5}
@@ -96,7 +96,7 @@ img{transition:opacity .45s ease}
 .mrp{color:#9aa4b5}
 .offer{color:#0d7a30;font-weight:800}
 .facts{color:var(--pv-sub)}
-.offpill-card{background:#fff;border:1px solid #d7e0f0;color:var(--pv-navy);
+.offpill-card{background:#fff;border:1px solid #d7f0e8;color:var(--pv-navy);
   border-radius:8px;font-weight:800}
 .stockpill{border-radius:8px}
 /* CTA buttons */
@@ -105,13 +105,13 @@ img{transition:opacity .45s ease}
 .btn:active{transform:scale(.96)}
 .btn-wa{background:#1d9e53;box-shadow:0 6px 16px rgba(29,158,83,.22)}
 .btn-wa:hover{filter:brightness(1.05)}
-.btn-dark{background:var(--pv-navy);color:#fff;box-shadow:0 6px 16px rgba(30,58,110,.24)}
+.btn-dark{background:var(--pv-navy);color:#fff;box-shadow:0 6px 16px rgba(30,110,84,.24)}
 .btn-mini{border-radius:10px}
 .rlink{color:var(--pv-navy)}
 /* ---------- heart (wishlist) + product share on cards ---------- */
 .card button.wish-heart{top:8px;bottom:auto;right:8px;width:33px;height:33px;
-  background:#fff;border:1px solid var(--pv-line);border-radius:50%;color:#31405c;
-  box-shadow:0 4px 12px rgba(17,30,55,.14);
+  background:#fff;border:1px solid var(--pv-line);border-radius:50%;color:#315c4e;
+  box-shadow:0 4px 12px rgba(17,55,42,.14);
   transition:transform .18s cubic-bezier(.34,1.56,.64,1),border-color .25s ease}
 .card button.wish-heart:active{transform:scale(1.22)}
 .card button.wish-heart.on{color:#e03131;border-color:#f3c8c4;
@@ -122,12 +122,12 @@ img{transition:opacity .45s ease}
 .imgwrap span.rbh-product-share.rbh-product-share-mini,
 span.rbh-product-share.rbh-product-share-home{
   top:47px;right:8px;width:33px;height:33px;border:1px solid var(--pv-line);
-  background:#fff;color:var(--pv-navy);box-shadow:0 4px 12px rgba(17,30,55,.12);
+  background:#fff;color:var(--pv-navy);box-shadow:0 4px 12px rgba(17,55,42,.12);
   transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
 .imgwrap span.rbh-product-share.rbh-product-share-mini:active{transform:scale(1.15)}
 /* ---------- bottom nav ---------- */
 .bnav{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
-  border-top:1px solid var(--pv-line);box-shadow:0 -6px 20px rgba(17,30,55,.06)}
+  border-top:1px solid var(--pv-line);box-shadow:0 -6px 20px rgba(17,55,42,.06)}
 .btab{color:#8b94a6;transition:color .25s ease,transform .18s ease}
 .btab:active{transform:scale(.92)}
 .btab.on{color:var(--pv-navy)}
@@ -151,21 +151,21 @@ span.rbh-product-share.rbh-product-share-home{
   font-weight:700;transition:all .22s ease}
 .chips .chip:active{transform:scale(.95)}
 .chips .chip.on{background:var(--pv-navy);border-color:var(--pv-navy);color:#fff;
-  box-shadow:0 4px 12px rgba(30,58,110,.28)}
+  box-shadow:0 4px 12px rgba(30,110,84,.28)}
 .qty{border:1.5px solid var(--pv-line);border-radius:12px;background:#fff}
 .pdp-cta{background:#1d9e53;border-radius:14px;box-shadow:0 8px 20px rgba(29,158,83,.24);
   transition:transform .16s ease,filter .25s ease}
 .pdp-cta:active{transform:scale(.97)}
 .pdp-addbag{background:var(--pv-navy);border-radius:14px;color:#fff;
-  box-shadow:0 8px 20px rgba(30,58,110,.26);transition:transform .16s ease,filter .25s ease}
+  box-shadow:0 8px 20px rgba(30,110,84,.26);transition:transform .16s ease,filter .25s ease}
 .pdp-addbag:active{transform:scale(.97)}
 #pdp-share,.pdp-share{background:#fff;border:1.5px solid var(--pv-navy);color:var(--pv-navy);
   border-radius:14px;font-weight:800;transition:transform .16s ease}
 #pdp-share:active,.pdp-share:active{transform:scale(.97)}
-.offers-box{border:1.5px dashed #b9c8e4;background:var(--pv-navy-soft);border-radius:14px}
+.offers-box{border:1.5px dashed #b9e4d6;background:var(--pv-navy-soft);border-radius:14px}
 .trust-row .trust{background:#fff;border:1px solid var(--pv-line);border-radius:14px}
 .relcard{border-radius:16px;border:1px solid var(--pv-line);background:#fff;
-  box-shadow:0 6px 16px rgba(17,30,55,.06)}
+  box-shadow:0 6px 16px rgba(17,55,42,.06)}
 .pdp-rev .rev-item,.rev-item{border-bottom:1px solid var(--pv-line)}
 /* ---------- account / misc sections ---------- */
 .banner-cta,.ct-btn{background:var(--pv-navy);border-radius:12px}
@@ -179,12 +179,12 @@ span.rbh-product-share.rbh-product-share-home{
 .steps-box{background:#fff;border:1px solid var(--pv-line);border-radius:16px}
 .revcta{background:var(--pv-navy);border-radius:12px}
 /* ---------- splash ---------- */
-.splash{background:#10151f}
+.splash{background:#101f1a}
 .splash-name{color:var(--pv-gold)}
 /* ---------- image skeleton shimmer (43-premium.js manages data-pv-loaded) ---------- */
 .imgwrap img:not([data-pv-loaded]),.hcard img:not([data-pv-loaded]),
 .ctrack img:not([data-pv-loaded]),#pdp-img:not([data-pv-loaded]){
-  background:linear-gradient(110deg,#edf1f7 8%,#f8fafd 18%,#edf1f7 33%);
+  background:linear-gradient(110deg,#edf7f4 8%,#f8fdfb 18%,#edf7f4 33%);
   background-size:200% 100%;animation:pvShimmer 1.15s linear infinite}
 @keyframes pvShimmer{to{background-position:-200% 0}}
 /* ---------- scroll reveal (43-premium.js adds .pv-in) ---------- */
@@ -192,16 +192,16 @@ span.rbh-product-share.rbh-product-share-home{
   transition:opacity .55s ease,transform .55s cubic-bezier(.22,.61,.36,1)}
 .pv-rv.pv-in{opacity:1;transform:none}
 /* ---------- dark mode harmony ---------- */
-body.dark{background:#0e1118}
-body.dark .card,body.dark .hcard,body.dark .relcard{background:#171b26;border-color:#232a3a}
-body.dark .qchip,body.dark .fchip,body.dark .chips .chip{background:#171b26;border-color:#2a3347;color:#dfe5ef}
-body.dark .qchip.big,body.dark .qchip.on,body.dark .fchip.on,body.dark .chips .chip.on{background:#2b4d8f;border-color:#2b4d8f}
-body.dark .bnav{background:rgba(16,19,28,.96);border-top-color:#232a3a}
-body.dark .topbar{background:rgba(16,19,28,.92);border-bottom-color:#232a3a}
-body.dark .card button.wish-heart,body.dark .imgwrap span.rbh-product-share.rbh-product-share-mini{background:#1c2230;border-color:#2a3347}
-body.dark .offers-box{background:#17233c;border-color:#2a3c61}
-body.dark .trust-row .trust{background:#171b26;border-color:#232a3a}
-body.dark .gtag{background:#1c2a47;color:#8fb0ee}
+body.dark{background:#0e1815}
+body.dark .card,body.dark .hcard,body.dark .relcard{background:#172621;border-color:#233a32}
+body.dark .qchip,body.dark .fchip,body.dark .chips .chip{background:#172621;border-color:#2a473d;color:#dfefea}
+body.dark .qchip.big,body.dark .qchip.on,body.dark .fchip.on,body.dark .chips .chip.on{background:#2b8f6e;border-color:#2b8f6e}
+body.dark .bnav{background:rgba(16,28,24,.96);border-top-color:#233a32}
+body.dark .topbar{background:rgba(16,28,24,.92);border-bottom-color:#233a32}
+body.dark .card button.wish-heart,body.dark .imgwrap span.rbh-product-share.rbh-product-share-mini{background:#1c3029;border-color:#2a473d}
+body.dark .offers-box{background:#173c30;border-color:#2a614f}
+body.dark .trust-row .trust{background:#172621;border-color:#233a32}
+body.dark .gtag{background:#1c4739;color:#8feecf}
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -210,11 +210,11 @@ body.dark .gtag{background:#1c2a47;color:#8fb0ee}
 
 /* ---------- install (Download App) buttons ---------- */
 .rbh-install-top{background:var(--pv-navy)!important;color:#fff!important;
-  box-shadow:0 3px 10px rgba(30,58,110,.22)}
-.rbh-install-hero{background:linear-gradient(120deg,#14294f,#1e3a6e)!important;
+  box-shadow:0 3px 10px rgba(30,110,84,.22)}
+.rbh-install-hero{background:linear-gradient(120deg,#144f3c,#1e6e54)!important;
   border:1px solid var(--pv-gold)!important;color:#fdf8ec!important;
-  box-shadow:0 8px 22px rgba(20,41,79,.28)!important}
-.rbh-install-hero .rbh-install-icon{background:var(--pv-gold)!important;color:#14294f!important}
+  box-shadow:0 8px 22px rgba(20,79,60,.28)!important}
+.rbh-install-hero .rbh-install-icon{background:var(--pv-gold)!important;color:#144f3c!important}
 /* ---------- bottom nav svg icons (43-premium.js swaps emoji -> svg) ---------- */
 .bt-ic svg{display:block;margin:0 auto;width:22px;height:22px}
 
@@ -238,12 +238,12 @@ body.dark .gtag{background:#1c2a47;color:#8fb0ee}
 #pdp,.pdp,.pdp-body,.pdp-gallery{background:var(--pv-ivory)}
 .pdp-gallery{background:#fff}
 .btn-talk{border-radius:14px}
-body.dark .pdp{background:#0e1118}
+body.dark .pdp{background:#0e1815}
 
 /* ---------- grid card price row + CTA + pills (beat .card .x specificity) ---------- */
 .card .offer{color:var(--pv-navy);font-weight:800}
 .card .mrp{color:#9aa4b5;font-weight:400}
-.card .btn{background:var(--pv-navy);color:#fff;box-shadow:0 6px 16px rgba(30,58,110,.22)}
+.card .btn{background:var(--pv-navy);color:#fff;box-shadow:0 6px 16px rgba(30,110,84,.22)}
 .card .rlink,.rlink{color:var(--pv-navy)}
 .rlink svg{fill:var(--pv-navy)}
 .imgwrap .stockpill{top:38px;left:8px;right:auto}

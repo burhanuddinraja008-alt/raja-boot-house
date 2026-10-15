@@ -998,7 +998,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       track.insertBefore(img, track.firstChild);
     });
     var css = document.createElement('style');
-    css.textContent = '.ctrack img.rbh-poster-slide{object-fit:contain;background:#152d54}#row-new .hcard img{object-fit:contain;background:#fff}#row-new .sale-newpill{display:block;background:#8a6d1f;color:#fff;border-radius:4px;padding:2px 5px;font:700 9px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.02em;text-align:center;margin:2px 4px}.rbh-share-app{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;max-width:400px;margin:8px auto 12px;padding:13px 16px;border:1px solid #b89a56;border-radius:12px;background:linear-gradient(120deg,#211a10,#6f561e);color:#fff8e8;font:700 15px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;box-shadow:0 4px 12px #0002;cursor:pointer}.rbh-product-share{display:grid;place-items:center;width:38px;height:38px;border:1px solid #c9ad6d;border-radius:50%;background:#fff;color:#6e5315;box-shadow:0 2px 8px #0003;cursor:pointer;z-index:3}.rbh-product-share-mini{position:absolute;right:8px;top:8px}.rbh-product-share-home{position:absolute;right:8px;top:8px}.hcard{position:relative}.rbh-product-share:focus-visible,#rbh-share-app:focus-visible{outline:3px solid #231909;outline-offset:2px}#pdp-share{min-width:145px;min-height:44px;padding:8px 13px;border:1px solid #d4c18e;border-radius:10px;background:#fff}';
+    css.textContent = '.ctrack img.rbh-poster-slide{object-fit:contain;background:#15543f}#row-new .hcard img{object-fit:contain;background:#fff}#row-new .sale-newpill{display:block;background:#8a6d1f;color:#fff;border-radius:4px;padding:2px 5px;font:700 9px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.02em;text-align:center;margin:2px 4px}.rbh-share-app{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;max-width:400px;margin:8px auto 12px;padding:13px 16px;border:1px solid #b89a56;border-radius:12px;background:linear-gradient(120deg,#211a10,#6f561e);color:#fff8e8;font:700 15px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;box-shadow:0 4px 12px #0002;cursor:pointer}.rbh-product-share{display:grid;place-items:center;width:38px;height:38px;border:1px solid #c9ad6d;border-radius:50%;background:#fff;color:#6e5315;box-shadow:0 2px 8px #0003;cursor:pointer;z-index:3}.rbh-product-share-mini{position:absolute;right:8px;top:8px}.rbh-product-share-home{position:absolute;right:8px;top:8px}.hcard{position:relative}.rbh-product-share:focus-visible,#rbh-share-app:focus-visible{outline:3px solid #231909;outline-offset:2px}#pdp-share{min-width:145px;min-height:44px;padding:8px 13px;border:1px solid #d4c18e;border-radius:10px;background:#fff}';
     document.head.appendChild(css);
   })();
   /* --- Carousel (auto-rotate + swipe) --- */
@@ -1267,7 +1267,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (tripActive && !tripBanner) {
       tripBanner = document.createElement('section');
       tripBanner.id = 'rbh-trip-closure'; tripBanner.setAttribute('role', 'status');
-      tripBanner.style.cssText = 'margin:0 0 14px;padding:17px 20px;border:1px solid #d6bb7c;border-radius:14px;background:#19345f;color:#fff;text-align:center;box-shadow:0 4px 16px rgba(20,30,60,.12)';
+      tripBanner.style.cssText = 'margin:0 0 14px;padding:17px 20px;border:1px solid #d6bb7c;border-radius:14px;background:#195f48;color:#fff;text-align:center;box-shadow:0 4px 16px rgba(20,60,47,.12)';
       var tripTitle = document.createElement('strong');
       tripTitle.style.cssText = 'display:block;font-size:19px;color:#e8cd92;line-height:1.4';
       tripTitle.textContent = 'Shop is closed';
@@ -2533,7 +2533,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
 
 })();
 
-;(function(){var s=document.createElement('style');s.textContent="#pdp .pdp-body>.pdp-extra .btn-hold{background:#fff;color:var(--pv-navy,#0b1f4a);border:1.5px solid #c9a24a;box-shadow:none;min-height:46px;border-radius:14px;font-weight:700;margin-top:8px}\n#pdp .pdp-extra .hold-note{font-size:12px;color:#6b7280;margin:4px 2px 8px;text-align:center}\n#pdp .pdp-extra.hold-off .btn-hold,#pdp .pdp-extra.hold-off .hold-note{display:none}\n.card .btn-hold-card{display:block;text-align:center;margin-top:6px;background:#fff;color:#0b1f4a;border:1.5px solid #c9a24a;border-radius:12px;font-weight:700;font-size:13px;padding:9px 8px;box-shadow:none}";document.head.appendChild(s);})();
+;(function(){var s=document.createElement('style');s.textContent="#pdp .pdp-body>.pdp-extra .btn-hold{background:#fff;color:var(--pv-navy,#0b4a35);border:1.5px solid #c9a24a;box-shadow:none;min-height:46px;border-radius:14px;font-weight:700;margin-top:8px}\n#pdp .pdp-extra .hold-note{font-size:12px;color:#6b7280;margin:4px 2px 8px;text-align:center}\n#pdp .pdp-extra.hold-off .btn-hold,#pdp .pdp-extra.hold-off .hold-note{display:none}\n.card .btn-hold-card{display:block;text-align:center;margin-top:6px;background:#fff;color:#0b4a35;border:1.5px solid #c9a24a;border-radius:12px;font-weight:700;font-size:13px;padding:9px 8px;box-shadow:none}";document.head.appendChild(s);})();
 
 (function(){'use strict';
 var chosenSize='',chosenProduct='';function update(){
