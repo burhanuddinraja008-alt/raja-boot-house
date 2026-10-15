@@ -2485,7 +2485,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
         if(gen!==catalogGeneration)return;
         /* Replace old override prices before the legacy code paints cards. */
         all.forEach(function(p){if(!OVR[p.n])OVR[p.n]={};});
-        var shown = curIt && curIt.n;
+        var shown = curIt && !pdp.hidden && curIt.n;
         items.splice.apply(items,[0,items.length].concat(visible));
         Object.keys(byN).forEach(function(k){delete byN[k];});
         items.forEach(function(p){byN[p.n]=p;});
