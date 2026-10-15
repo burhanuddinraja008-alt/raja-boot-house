@@ -40,3 +40,5 @@ body,#green-app h1,#green-app h2,#green-app h3,#green-app strong,#green-app p,.p
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 
 #admin .pdp-close,#orders .pdp-close{color:#063b28!important}
+#green-app .green-hero h2 strong,#green-app .green-top h1 span{font-family:'Playfair Display',Georgia,serif!important;font-style:italic}
+@media(max-width:699px){.green-hero{grid-template-columns:1.25fr .9fr}.green-hero h2{font-size:31px;white-space:nowrap}.green-hero h2 strong{font-size:35px}.green-hero .gold-btn{font-size:9px;padding:10px}}
