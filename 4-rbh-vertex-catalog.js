@@ -2401,6 +2401,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     }
     pSearch.addEventListener('input', function () { drawProds(pSearch.value.trim().toLowerCase()); });
     drawProds('');
+    if(window.RBHBulkEdit)window.RBHBulkEdit.mount(sProd,{products:function(){return items;},overrides:function(){return OVR;},db:db,auth:auth,owner:OWNER_UID,secureStock:function(){return !!(window.RBHClub&&window.RBHClub.backendReady());},refresh:function(){applyOverrides();renderHomeRows();drawProds(pSearch.value.trim().toLowerCase());}});
     adminBody.appendChild(sProd);
 
     /* FAQ editor */
