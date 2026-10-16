@@ -51,7 +51,7 @@ body {
 
 /* ---- Full-screen lightbox with pinch zoom ---- */
 .lb {
-  position: fixed; inset: 0; z-index: 50; background: #161311; color: #f5efdf;
+  position: fixed; inset: 0; z-index: 30000; background: #161311; color: #f5efdf;
   display: flex; flex-direction: column; padding: max(10px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
 }
 .lb[hidden] { display: none; }
@@ -65,6 +65,7 @@ body {
   position: relative; flex: 1; min-height: 0; overflow: hidden; border-radius: 10px;
   display: flex; align-items: center; justify-content: center; touch-action: none;
 }
+#pdp-img { cursor: zoom-in; }
 .lb-img {
   max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;
   transform-origin: center center; user-select: none; -webkit-user-drag: none; pointer-events: none;

@@ -337,15 +337,16 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   if (fSize) fSize.addEventListener('change', function () { curSize = fSize.value; applyFilter(); });
   if (fSort) fSort.addEventListener('change', function () { curSort = fSort.value; applySort(); });
 
-  function openLb(it) {
-    cur = it; idx = 0;
+  function openLb(it, startIdx) {
+    cur = it; idx = (startIdx > 0 && startIdx < it.f.length) ? startIdx : 0;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
     show();
   }
   function closeLb() {
     lb.hidden = true;
-    document.body.style.overflow = '';
+    var pdpEl = document.getElementById('pdp');
+    document.body.style.overflow = (pdpEl && !pdpEl.hidden) ? 'hidden' : '';
     cur = null;
   }
   function nav(d) {
@@ -448,7 +449,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       pdpOrder = document.getElementById('pdp-order'),
       pdpOffers = document.getElementById('pdp-offers'),
       qVal = document.getElementById('q-val'),
-      curIt = null, curCol = '', pdpSelectedSize = '', qty = 1;
+      curIt = null, curCol = '', pdpSelectedSize = '', qty = 1, pdpPhotoIdx = 0;
 
   function sizeList(it) { return it.szarr || ['6', '7', '8', '9', '10']; }
   function colList(it) {
@@ -493,10 +494,11 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (off) { pdpOff.textContent = off + '% off'; pdpOff.hidden = false; } else { pdpOff.hidden = true; }
     let photoBadge=document.getElementById('rbh-pdp-photo-off');
     if(!photoBadge){photoBadge=document.createElement('span');photoBadge.id='rbh-pdp-photo-off';pdpImg.parentElement.style.position='relative';pdpImg.parentElement.appendChild(photoBadge);}
-    photoBadge.textContent=off+'% OFF';photoBadge.hidden=!off;photoBadge.style.cssText='position:absolute;top:12px;left:12px;background:#063e2d;color:white;border-radius:20px;padding:7px 12px;font-size:13px;font-weight:700;z-index:3';
+    photoBadge.textContent=off+'% OFF';photoBadge.hidden=!off;photoBadge.style.cssText='position:absolute;top:12px;left:12px;background:#063e2d;color:white;border-radius:20px;padding:7px 12px;font-size:13px;font-weight:700;z-index:3;pointer-events:none';
     pdpStock.hidden = !!it.oos;
     pdpImg.src = it.f[0];
     pdpImg.alt = it.name;
+    pdpPhotoIdx = 0;
     pdpThumbs.innerHTML = '';
     it.f.forEach(function (src, i) {
       var th = document.createElement('img');
@@ -504,6 +506,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       th.className = i === 0 ? 'on' : '';
       th.addEventListener('click', function () {
         pdpImg.src = src;
+        pdpPhotoIdx = i;
         pdpThumbs.querySelectorAll('img').forEach(function (x) { x.classList.remove('on'); });
         th.classList.add('on');
       });
@@ -514,6 +517,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       pdpColours.querySelectorAll('.chip').forEach(function (x, j) { x.classList.toggle('on', j === i); });
       if (it.cols && it.f[i]) {
         pdpImg.src = it.f[i];
+        pdpPhotoIdx = i;
         pdpThumbs.querySelectorAll('img').forEach(function (x, j) { x.classList.toggle('on', j === i); });
       }
       refreshCta();
@@ -542,7 +546,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   document.getElementById('pdp-close').addEventListener('click', closePdp);
   document.getElementById('q-minus').addEventListener('click', function () { qty = Math.max(1, qty - 1); qVal.textContent = qty; refreshCta(); });
   document.getElementById('q-plus').addEventListener('click', function () { qty = Math.min(10, qty + 1); qVal.textContent = qty; refreshCta(); });
-  pdpImg.addEventListener('click', function () { if (curIt) openLb(curIt); });
+  pdpImg.addEventListener('click', function () { if (curIt) openLb(curIt, pdpPhotoIdx); });
   document.getElementById('pdp-share').addEventListener('click', function () { if(curIt) shareProduct(curIt,pdpImg.src).catch(function(){}); });
 
   /* ---------- Site reviews (Firebase Firestore) ---------- */
