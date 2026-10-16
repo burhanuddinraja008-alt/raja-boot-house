@@ -82,7 +82,6 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
 
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===86));
   function offPct(it) {
-    if(it.n===86)return 0;
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
     if (!m || !o || o >= m) return 0;
@@ -492,6 +491,9 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (it.mrp) { pdpMrp.textContent = 'MRP ' + it.mrp; pdpMrp.hidden = false; } else { pdpMrp.hidden = true; }
     var off = offPct(it);
     if (off) { pdpOff.textContent = off + '% off'; pdpOff.hidden = false; } else { pdpOff.hidden = true; }
+    let photoBadge=document.getElementById('rbh-pdp-photo-off');
+    if(!photoBadge){photoBadge=document.createElement('span');photoBadge.id='rbh-pdp-photo-off';pdpImg.parentElement.style.position='relative';pdpImg.parentElement.appendChild(photoBadge);}
+    photoBadge.textContent=off+'% OFF';photoBadge.hidden=!off;photoBadge.style.cssText='position:absolute;top:12px;left:12px;background:#063e2d;color:white;border-radius:20px;padding:7px 12px;font-size:13px;font-weight:700;z-index:3';
     pdpStock.hidden = !!it.oos;
     pdpImg.src = it.f[0];
     pdpImg.alt = it.name;
