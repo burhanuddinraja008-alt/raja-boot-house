@@ -3,7 +3,7 @@
 const BASE='https://burhanuddinraja008-alt.github.io/raja-boot-house/';
 const OWNER='fCdTcM2FncQ5ngHH0IfMS6QLPXx1';
 const CONFIG={apiKey:'AIzaSyBWl9NX064CJAZa03ltvVoF97X7_1BkGzs',authDomain:'raja-boot-house-dharni.firebaseapp.com',projectId:'raja-boot-house-dharni',appId:'1:983191567554:web:8feb614da884b5df29cf5b'};
-const CATS=['grid-shoes','grid-sandals','grid-sliders','grid-flipflops','grid-shoes2','grid-school','grid-kids','grid-ladies','grid-limited'];
+const CATS=['grid-shoes','grid-sandals','grid-sliders','grid-flipflops','grid-shoes2','grid-school','grid-kids','grid-ladies','grid-limited','grid-newcoll'];
 const photoCache=new Map();
 function valid(p){return ['name','brand','colour','sizes','tag','tag2'].every(k=>p[k]===undefined||typeof p[k]==='string'&&!/[<>"]/g.test(p[k]))&&p.f?.every(u=>typeof u==='string'&&!/[<>" ]/.test(u))&& Number.isInteger(p.n)&&p.n>0&&p.n<1000000&&typeof p.name==='string'&&p.name.trim().length>0&&p.name.length<=100&&CATS.includes(p.cat)&&Array.isArray(p.f)&&p.f.length>0&&p.f.length<=8;}
 function clean(p){const out={};for(const k of ['n','brand','name','colour','cols','offer','mrp','sizes','szarr','tag','tag2','c','f','cat','rank','hidden','oos','revision','highlights'])if(p[k]!==undefined)out[k]=p[k];return out;}
