@@ -957,8 +957,12 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       var html = '';
       if (!snap.size) { html = '<p class="adm-load">No customer logins yet.</p>'; }
       else {
-        html = '<table class="adm-table"><tr><th>Name</th><th>Email</th><th>Last login</th></tr>';
-        snap.forEach(function (d) { var v = d.data(); html += '<tr><td>' + esc(v.name) + '</td><td>' + esc(v.email) + '</td><td>' + fmtTs(v.lastLoginAt) + '</td></tr>'; });
+        html = '<table class="adm-table"><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Last login</th></tr>';
+        snap.forEach(function (d) {
+          var v = d.data(), phone = /^[6-9]\d{9}$/.test(v.phone || '') ? v.phone : '';
+          var welcome = phone ? '<br><a class="adm-wa" target="_blank" rel="noopener" href="https://wa.me/91' + phone + '?text=' + encodeURIComponent('Hi ' + (v.name || 'there') + '! \uD83D\uDC4B Welcome to the Raja Boot House family! \uD83D\uDC51 Quality footwear at the best prices in Dharni. See the latest collection: https://burhanuddinraja008-alt.github.io/raja-boot-house/ Walk With Quality! \uD83D\uDC5F') + '">Send welcome</a>' : '';
+          html += '<tr><td>' + esc(v.name) + '</td><td>' + (phone ? esc(phone) : 'No mobile') + welcome + '</td><td>' + esc(v.email) + '</td><td>' + fmtTs(v.lastLoginAt) + '</td></tr>';
+        });
         html += '</table>';
       }
       s2.innerHTML = '<h3>Customers (signed in) - ' + snap.size + '</h3>' + html;
