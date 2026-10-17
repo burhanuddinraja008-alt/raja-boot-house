@@ -64,4 +64,14 @@
       else say('Could not sign you in right now - please try again.');
     }).finally(function () { submit.disabled = false; });
   });
+
+  // Owner sign-in toggle: reveals the hidden Google button for the store owner only.
+  var ownerToggle = document.getElementById('rbh-owner-toggle');
+  var ownerLogin = document.getElementById('rbh-owner-login');
+  if (ownerToggle && ownerLogin) {
+    ownerToggle.addEventListener('click', function () {
+      ownerLogin.hidden = !ownerLogin.hidden;
+      ownerToggle.textContent = ownerLogin.hidden ? 'Store owner? Sign in' : 'Hide owner sign-in';
+    });
+  }
 })();
