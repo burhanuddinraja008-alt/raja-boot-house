@@ -266,7 +266,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     img.alt = cur.name + ', photo ' + (idx + 1);
     title.textContent = cur.name;
     cap.textContent = cur.colour + ' · Photo ' + (idx + 1) + '/' + cur.f.length + ' · Pinch or double-tap to zoom';
-    waBtn.href = cur.wa;
+    waBtn.href = WA(encodeURIComponent('Hi Raja Boot House! I saw ' + cur.name + ' (' + cur.colour + ') for ' + (cur.offer || 'price on request') + '. Please confirm size and stock. (#' + cur.n + ')\nProduct: ' + (window.RBHProductLink ? window.RBHProductLink(cur.n) : '')));
     var many = cur.f.length > 1;
     prev.style.display = many ? '' : 'none';
     next.style.display = many ? '' : 'none';
@@ -1004,6 +1004,8 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (m && byN[+m[1]]) { openPdp(byN[+m[1]]); }
   }
   window.addEventListener('hashchange', handleHash);
+  var pendingPdpHash = (location.hash.match(/^#p(\d+)$/) || [])[1] || '';
+  window.addEventListener('rbh-catalog-updated', function () { if (pendingPdpHash && byN[+pendingPdpHash]) { handleHash(); pendingPdpHash = ''; } });
   document.querySelectorAll('.vertex-tap').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var id=+a.hash.slice(2);if(byN[id])openPdp(byN[id]);});});
   // Resolve the initial deep link only after configuration and UI handlers are ready.
 
@@ -1484,13 +1486,14 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     var t = 'Hello Raja Boot House 👋\n\nI am interested in:\n\nProduct: ' + it.name +
       '\nBrand: ' + it.brand + '\nSize: ' + (size || 'to be confirmed') +
       '\nQuantity: ' + (q || 1) + '\nPrice: ' + (it.offer ? it.offer.replace('₹', 'Rs ') : 'please share') +
+      '\nLink: ' + (window.RBHProductLink ? window.RBHProductLink(it.n) : '') +
       '\n\nPlease confirm availability and delivery details.';
     return WA(encodeURIComponent(t));
   }
   function holdLink(it, size) {
     var t = 'Hello Raja Boot House 👋\n\nPlease keep this pair for me till tomorrow evening, I will come to the shop to collect it.\n\nProduct: ' + it.name +
       '\nBrand: ' + it.brand + '\nColour: ' + it.colour + '\nSize: ' + (size || 'will confirm at shop') +
-      '\nPrice: ' + (it.offer ? it.offer.replace('₹', 'Rs ') : 'please share') + '\n\nThank you!';
+      '\nPrice: ' + (it.offer ? it.offer.replace('₹', 'Rs ') : 'please share') + '\nLink: ' + (window.RBHProductLink ? window.RBHProductLink(it.n) : '') + '\n\nThank you!';
     return WA(encodeURIComponent(t));
   }
   var revCache = {};
@@ -2570,8 +2573,8 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
 var chosenSize='',chosenProduct='';function update(){
  document.querySelectorAll('.acct-card').forEach(function(el){if(el.textContent.includes('My Orders'))el.remove();});
  var pdp=document.getElementById('pdp'),btn=document.getElementById('pdp-order'),photo=document.getElementById('pdp-img');
- if(btn&&photo&&photo.getAttribute('src')){var productId=(pdp&&pdp.dataset.productId)||((location.hash.match(/^#p(\d+)$/)||[])[1]);if(productId!==chosenProduct){chosenProduct=productId;chosenSize='';}var seed=window.RBH_CATALOG_SEED?.find(p=>String(p.n)===productId);var original=seed?.c?new URL(seed.c,location.origin+'/raja-boot-house/').href:photo.src;if(original.startsWith('blob:'))original=location.origin+location.pathname+location.hash;var amount=document.getElementById('q-val');var text='Hi Raja Boot House!\n\nName:\nAddress (with PIN):\n\nI want to ask about '+document.getElementById('pdp-name').textContent+(seed?' ('+seed.colour+') - '+document.getElementById('pdp-price').textContent:'')+'. Size: '+(chosenSize||Array.from(document.querySelectorAll('#pdp-sizes .chip.on')).map(e=>e.textContent).join(', ')||'Please confirm')+'. Qty: '+(amount?amount.textContent:'1')+'.\nPhoto: '+original;var desired='https://wa.me/919022150546?text='+encodeURIComponent(text);if(btn.href!==desired)btn.href=desired;if(btn.textContent!=='Order on WhatsApp')btn.textContent='Order on WhatsApp';}
- document.querySelectorAll('article.card').forEach(function(card){var img=card.querySelector('.imgwrap img'),name=card.querySelector('h3');card.querySelectorAll('a.btn').forEach(function(a){if(a.textContent.trim()==='Order on WhatsApp'&&img&&name){var wanted='https://wa.me/919022150546?text='+encodeURIComponent('Hi Raja Boot House! I saw '+name.textContent+' on your app. '+(card._it?'Colour: '+card._it.colour+'. Offer Price: '+card._it.offer+'. ':'')+'Please confirm size and stock. Photo: '+img.src);if(a.href!==wanted)a.href=wanted;}});});
+ if(btn&&photo&&photo.getAttribute('src')){var productId=(pdp&&pdp.dataset.productId)||((location.hash.match(/^#p(\d+)$/)||[])[1]);if(productId!==chosenProduct){chosenProduct=productId;chosenSize='';}var seed=window.RBH_CATALOG_SEED?.find(p=>String(p.n)===productId);var original=seed?.c?new URL(seed.c,location.origin+'/raja-boot-house/').href:photo.src;if(original.startsWith('blob:'))original=location.origin+location.pathname+location.hash;var amount=document.getElementById('q-val');var text='Hi Raja Boot House!\n\nName:\nAddress (with PIN):\n\nI want to ask about '+document.getElementById('pdp-name').textContent+(seed?' ('+seed.colour+') - '+document.getElementById('pdp-price').textContent:'')+'. Size: '+(chosenSize||Array.from(document.querySelectorAll('#pdp-sizes .chip.on')).map(e=>e.textContent).join(', ')||'Please confirm')+'. Qty: '+(amount?amount.textContent:'1')+'.\nProduct: '+(productId&&window.RBHProductLink?window.RBHProductLink(productId):original);var desired='https://wa.me/919022150546?text='+encodeURIComponent(text);if(btn.href!==desired)btn.href=desired;if(btn.textContent!=='Order on WhatsApp')btn.textContent='Order on WhatsApp';}
+ document.querySelectorAll('article.card').forEach(function(card){var img=card.querySelector('.imgwrap img'),name=card.querySelector('h3');card.querySelectorAll('a.btn').forEach(function(a){if(a.textContent.trim()==='Order on WhatsApp'&&img&&name){var wanted='https://wa.me/919022150546?text='+encodeURIComponent('Hi Raja Boot House! I saw '+name.textContent+' on your app. '+(card._it?'Colour: '+card._it.colour+'. Offer Price: '+card._it.offer+'. ':'')+'Please confirm size and stock. '+(card._it&&card._it.n&&window.RBHProductLink?'Product: '+window.RBHProductLink(card._it.n):'Photo: '+img.src));if(a.href!==wanted)a.href=wanted;}});});
 }
 var queued=false;new MutationObserver(function(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;update();});}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src','hidden','href']});
 document.addEventListener('click',function(e){var size=e.target.closest('#pdp-sizes button');if(size){chosenSize=size.textContent;chosenProduct=document.getElementById('pdp').dataset.productId||'';}if(e.target.closest('#pdp-order'))update();if(e.target.closest('#pdp-sizes,#pdp-colours,.qty'))setTimeout(update,0);},true);update();

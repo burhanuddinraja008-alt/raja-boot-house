@@ -676,11 +676,11 @@
 
 
 <script src="rbh-catalog-seed.js?v=6-blk86"></script>
-<script src="rbh-catalog.js?v=2-nc"></script>
+<script src="rbh-catalog.js?v=3-plink"></script>
 
 
 <script src="rbh-bulk-edit.js?v=2"></script>
-<script src="4-rbh-vertex-catalog.js?v=76-ownerlink"></script>
+<script src="4-rbh-vertex-catalog.js?v=77-plink"></script>
 
 
   
@@ -704,6 +704,8 @@
     var chosen = sizes.querySelector('.chip.on');
     var size = chosen ? chosen.textContent.trim() : '';
     var text = 'Hi Raja Boot House! Please notify me on WhatsApp when ' + name.textContent.trim() + (size ? ' (size ' + size + ')' : ' (my size to be confirmed)') + ' is back in stock.';
+    var pm = location.hash.match(/^#p(\d+)$/);
+    if (pm) text += '\nProduct: ' + (window.RBHProductLink ? window.RBHProductLink(pm[1]) : 'https://burhanuddinraja008-alt.github.io/raja-boot-house/#p' + pm[1]);
     link.href = 'https://wa.me/919022150546?text=' + encodeURIComponent(text);
   }
   new MutationObserver(refresh).observe(stock, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
@@ -858,7 +860,7 @@ burst(b);
 </script>
 <!-- /RBH Feature 1 -->
 <script src="rbh-diwali-2026.js?v=2"></script>
-<script src="rbh-green.js?v=8-discounts"></script>
+<script src="rbh-green.js?v=9-plink"></script>
 <script src="rbh-diwali-offer.js?v=1"></script>
 <script src="rbh-motion-extras.js?v=1" defer></script></body>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </html>
