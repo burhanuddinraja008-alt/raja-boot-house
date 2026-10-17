@@ -1,0 +1,36 @@
+/* RBH light motion graphics - CSS only, no libraries, ~2 KB.
+   Effects: soft shine sweep over product photos, gentle Diwali Offer
+   pill glow, subtle % OFF badge pulse. Images/prices/layout untouched. */
+
+/* 1) Soft shine sweep over product photos (grid cards + product page) */
+.imgwrap,.green-card-photo,.pdp-gallery{position:relative;overflow:hidden}
+.imgwrap::after,.green-card-photo::after,.pdp-gallery::after{
+  content:"";position:absolute;top:-20%;bottom:-20%;left:-45%;width:45%;
+  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.30) 44%,rgba(255,255,255,.48) 50%,rgba(255,255,255,.30) 56%,transparent 100%);
+  transform:skewX(-12deg);pointer-events:none;z-index:2;
+  animation:rbh-shine 4.8s ease-in-out infinite}
+.pdp-gallery::after{animation-duration:5.6s}
+@keyframes rbh-shine{0%{left:-45%}38%{left:105%}100%{left:105%}}
+
+/* Overrides for the skeleton-loader cleanup rules in 44-polish.css
+   (same selectors, later stylesheet wins) */
+.imgwrap:not(:has(img:not([data-pv-loaded])))::after{display:block}
+.imgwrap::after{animation:rbh-shine 4.8s ease-in-out infinite!important}
+
+/* 2) Gentle glow on the Diwali Offer pill */
+.rbh-diwali-tag{animation:rbh-pill-glow 3.2s ease-in-out infinite}
+@keyframes rbh-pill-glow{
+  0%,100%{box-shadow:0 1px 4px rgba(80,55,5,.3),inset 0 0 0 1px rgba(255,255,255,.55)}
+  50%{box-shadow:0 0 12px 2px rgba(226,181,74,.6),inset 0 0 0 1px rgba(255,255,255,.75)}}
+
+/* 3) Soft pulse on the % OFF badge */
+.offpill-card,.pdp-off{animation:rbh-off-pulse 3.8s ease-in-out infinite}
+@keyframes rbh-off-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(100,30,43,0)}
+  10%{box-shadow:0 0 10px 2px rgba(100,30,43,.5)}
+  22%{box-shadow:0 0 0 0 rgba(100,30,43,0)}}
+
+/* Respect reduced-motion settings */
+@media (prefers-reduced-motion:reduce){
+  .imgwrap::after,.green-card-photo::after,.pdp-gallery::after,
+  .rbh-diwali-tag,.offpill-card,.pdp-off{animation:none!important}}
