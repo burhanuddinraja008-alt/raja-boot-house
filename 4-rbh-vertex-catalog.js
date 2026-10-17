@@ -709,6 +709,18 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       if (lpopMsg) lpopMsg.textContent = 'Login failed - please try again.';
     });
   }
+  /* --- Private owner sign-in (#owner): no visible owner link in the customer popup.
+     The owner opens .../raja-boot-house/#owner (bookmark only he knows); it reveals the
+     Google button and, once he is signed in, opens the owner panel. --- */
+  function revealOwnerLogin() {
+    var ol = document.getElementById('rbh-owner-login');
+    if (ol) ol.hidden = false;
+  }
+  function openOwnerSignin() {
+    if (curUser && curUser.uid === OWNER_UID) { openAdmin(); return; }
+    revealOwnerLogin();
+    if (lpop) { lpop.hidden = false; document.body.style.overflow = 'hidden'; }
+  }
   if (lpop) {
     document.getElementById('lpop-skip').addEventListener('click', function () {
       localStorage.setItem('rbhSkipLogin', '1');
@@ -735,6 +747,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     curUser = u;
     if (u) {
       hideLpop();
+      if (u.uid === OWNER_UID && (location.hash === '#owner' || location.hash === '#admin')) { openAdmin(); }
       if (loginBtn) loginBtn.textContent = (u.displayName || 'Account').split(' ')[0];
       if (umEmail) umEmail.textContent = u.email || '';
       if (umAdmin) umAdmin.hidden = (u.uid !== OWNER_UID);
@@ -936,7 +949,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       adminBody.appendChild(p0);
       var lb = document.createElement('button'); lb.className = 'btn pdp-cta'; lb.type = 'button';
       lb.textContent = 'Sign in';
-      lb.addEventListener('click', function () { adminEl.hidden = true; document.body.style.overflow = ''; if (lpop) lpop.hidden = false; });
+      lb.addEventListener('click', function () { adminEl.hidden = true; document.body.style.overflow = ''; revealOwnerLogin(); if (lpop) lpop.hidden = false; });
       adminBody.appendChild(lb);
       return;
     }
@@ -986,6 +999,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     var h = location.hash;
     if (h === '#bag') { openBag(); return; }
     if (h === '#admin') { openAdmin(); return; }
+    if (h === '#owner') { openOwnerSignin(); return; }
     var m = h.match(/^#p(\d+)$/);
     if (m && byN[+m[1]]) { openPdp(byN[+m[1]]); }
   }

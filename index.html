@@ -643,7 +643,7 @@
     </form>
     <p class="lpop-note">No OTP, no password. Your number is only used for order updates on WhatsApp.</p>
     <p class="lpop-msg" id="rbh-phone-msg" role="status" aria-live="polite"></p>
-    <button class="rbh-owner-link" id="rbh-owner-toggle" type="button">Store owner? Sign in</button>
+    <!-- Owner sign-in: no visible link (owner request 17 Oct 2026). The owner opens the private link .../raja-boot-house/#owner, which reveals the Google button below. -->
     <div id="rbh-owner-login" hidden>
     <button class="btn lpop-g" id="lpop-google" type="button"><svg width="18" height="18" viewBox="0 0 24 24" style="width:18px;height:18px;"><path fill="#42f4b9" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l3.7 2.9c2.3-2.1 3.7-5.2 3.7-8.6z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.7-2.9c-1 .7-2.4 1.2-4.2 1.2-3.2 0-5.9-2.1-6.8-5H1.3v3C3.3 21.3 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.3 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.7.4-2.4v-3H1.3C.5 8.2 0 10 0 12s.5 3.8 1.3 5.4l4-3z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.3 2.7 1.3 6.6l4 3c.9-2.8 3.6-4.9 6.7-4.9z"/></svg>Sign in with Google</button>
     <p class="lpop-note">Google sign-in shares your name and email with RBH.</p>
@@ -680,7 +680,7 @@
 
 
 <script src="rbh-bulk-edit.js?v=2"></script>
-<script src="4-rbh-vertex-catalog.js?v=75-phonelgn"></script>
+<script src="4-rbh-vertex-catalog.js?v=76-ownerlink"></script>
 
 
   
@@ -718,7 +718,7 @@
 <script src="rbh-push.js?v=4" defer></script>
 <script src="rbh-angle-viewer.js?v=1" defer></script>
 <script src="rbh-email-auth.js?v=2" defer></script>
-<script src="rbh-phone-login.js?v=2" defer></script>
+<script src="rbh-phone-login.js?v=3" defer></script>
 
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js?v=70').catch(function () {}); }

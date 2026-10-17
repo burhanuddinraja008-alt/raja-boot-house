@@ -60,18 +60,11 @@
       window.dispatchEvent(new Event('rbh-signup-ready'));
     }).catch(function (error) {
       var code = error && error.code;
-      if (code === 'auth/admin-restricted-operation' || code === 'auth/operation-not-allowed') say('Mobile login is not available yet - please use Google or email.');
+      if (code === 'auth/admin-restricted-operation' || code === 'auth/operation-not-allowed') say('Mobile login is not available right now - please try again later.');
       else say('Could not sign you in right now - please try again.');
     }).finally(function () { submit.disabled = false; });
   });
 
-  // Owner sign-in toggle: reveals the hidden Google button for the store owner only.
-  var ownerToggle = document.getElementById('rbh-owner-toggle');
-  var ownerLogin = document.getElementById('rbh-owner-login');
-  if (ownerToggle && ownerLogin) {
-    ownerToggle.addEventListener('click', function () {
-      ownerLogin.hidden = !ownerLogin.hidden;
-      ownerToggle.textContent = ownerLogin.hidden ? 'Store owner? Sign in' : 'Hide owner sign-in';
-    });
-  }
+  // No visible owner link (owner request 17 Oct 2026): the Google button stays
+  // hidden and is revealed only by the private #owner link in 4-rbh-vertex-catalog.js.
 })();
