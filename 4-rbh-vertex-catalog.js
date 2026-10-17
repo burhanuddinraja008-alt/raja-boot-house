@@ -860,7 +860,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       var p = priceNum(it) * x.qty; total += p; if (!priceNum(it)) unsure++;
       lines.push((i + 1) + ') ' + it.name + ' (' + x.col + ', #' + it.n + ') - Size ' + (x.size || 'to be confirmed') + ' x ' + x.qty + (p ? ' = Rs ' + p : ' (price on WhatsApp)'));
       lines.push('Photo: ' + SITE + it.c);
-      lines.push('Link: ' + SITE + '#p' + it.n);
+      lines.push('Link: ' + (window.RBHProductLink ? window.RBHProductLink(it.n) : SITE + '#p' + it.n));
     });
     lines.push('Total: Rs ' + total + (unsure ? ' + some item prices to be confirmed' : ''));
     var a = lsGet(ADDRKEY, {}), prof = lsGet(PROFKEY, {});
