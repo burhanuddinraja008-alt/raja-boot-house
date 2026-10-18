@@ -1451,6 +1451,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       }
       shopConfigReady = !s.metadata.fromCache;
       applyConfig();
+      window.dispatchEvent(new Event('rbh-catalog-updated'));
     }, function () { shopConfigReady = false; applyConfig(); });
     db.collection('overrides').get().then(function (snap) {
       snap.forEach(function (d) { OVR[+d.id] = d.data(); });
@@ -2538,7 +2539,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     shareProduct=function(p,image){if(catalogSeed.some(function(s){return s.n===p.n;}))return legacyShare(p,image);var link=SITE+'#p'+p.n;var data={title:p.name,text:p.name+' - '+(p.offer||'Price on WhatsApp')+' at Raja Boot House',url:link};if(navigator.share)return navigator.share(data);window.open('https://wa.me/?text='+encodeURIComponent(data.text+' '+link),'_blank','noopener');return Promise.resolve();};
   }
 
-  window.RBHGreen={enquiryLink:function(text){return WA(encodeURIComponent(text));},items:function(){return items.filter(function(x){return !x.hidden;});},openProduct:openPdp,account:function(){renderAccount();openOverlay(document.getElementById('account'));},profile:openProfile,bag:getBag,saveBag:saveBag,add:addToBag,wishlist:function(){renderWish();openOverlay(document.getElementById('wish'));},faq:function(){renderFaq();openOverlay(document.getElementById('faq'));}};
+  window.RBHGreen={enquiryLink:function(text){return WA(encodeURIComponent(text));},items:function(){return items.filter(function(x){return !x.hidden;});},best:function(){return (CFG.best||[]).map(Number);},openProduct:openPdp,account:function(){renderAccount();openOverlay(document.getElementById('account'));},profile:openProfile,bag:getBag,saveBag:saveBag,add:addToBag,wishlist:function(){renderWish();openOverlay(document.getElementById('wish'));},faq:function(){renderFaq();openOverlay(document.getElementById('faq'));}};
   /* --- v20 init --- */
   wireSearch();
   wireQuickChips();
