@@ -58,27 +58,6 @@ window.open=function(url){
 if(typeof url==='string'&&url.indexOf('wa.me')>-1)burst(lastX,lastY);
 return _open.apply(null,arguments);};}
 
-/* E) Real-price count-up on the product page: MRP number counts down
-   to the real offer price, once per product view. Real figures only. */
-function num(el){if(!el)return 0;var m=(el.textContent.match(/([\d,]+)/)||[])[1];
-return m?parseInt(m.replace(/,/g,''),10):0;}
-function countUp(){if(RM)return;
-var price=document.querySelector('.pdp-price'),mrp=document.querySelector('.pdp-mrp');
-if(!price||!mrp)return;
-var offer=num(price),start=num(mrp);
-if(!offer||!start||start<=offer)return;
-if(price.__rbhCounted===offer+':'+start)return;
-price.__rbhCounted=offer+':'+start;
-var orig=price.textContent,t0=null,dur=1100;
-function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);
-var e=1-Math.pow(1-k,3);
-var v=Math.round(start+(offer-start)*e);
-price.textContent=orig.replace(/[\d,]+/,v.toLocaleString('en-IN'));
-if(k<1)requestAnimationFrame(step);else price.textContent=orig;}
-requestAnimationFrame(step);}
-var pdp=document.getElementById('pdp');
-function maybeCount(){if(pdp&&!pdp.hidden)countUp();}
-/* watch only the hidden attribute - observing the subtree loops with our own writes */
-if(pdp){new MutationObserver(maybeCount).observe(pdp,{attributes:true,attributeFilter:['hidden']});}
-maybeCount();
+/* E) Keep the product price stable. Animating from MRP changes the real offer
+   briefly and can desync the WhatsApp link. Product prices are shown as stored. */
 })();
