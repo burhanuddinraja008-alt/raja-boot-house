@@ -1,0 +1,17 @@
+body.utsav .green-top{padding-top:74px!important;margin-bottom:6px;overflow:visible}
+#u-garland{position:absolute;top:0;left:0;right:0;height:70px;background:#0b5a2b url(u-garland.jpg) center top/auto 100% repeat-x;border-bottom:2px solid #e9b949;box-shadow:0 6px 14px rgba(0,0,0,.35);z-index:3;overflow:hidden}
+#u-garland::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 55%,rgba(255,220,120,.55) 0 2px,transparent 3px) 0 0/46px 30px,radial-gradient(circle at 70% 40%,rgba(255,200,90,.5) 0 2px,transparent 3px) 0 0/62px 36px;animation:uTw 1.6s ease-in-out infinite}
+@keyframes uTw{0%,100%{opacity:.25}50%{opacity:1}}
+#u-greet{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;top:42px;padding:4px 12px;border-radius:12px;background:rgba(2,18,12,.72);border:1px solid rgba(233,185,73,.6);font:700 11px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.2em;color:#fff2c9;text-shadow:0 1px 4px #000,0 0 8px #000;z-index:4}
+body.utsav .green-hero{background:linear-gradient(90deg,rgba(2,18,12,.92) 0,rgba(2,18,12,.7) 45%,rgba(2,18,12,.1) 80%),url(u-hero.jpg) center/cover!important;border:1.5px solid #e9b949!important;box-shadow:0 12px 30px rgba(0,0,0,.4),0 0 24px rgba(233,185,73,.25)!important}
+#u-fw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+body.utsav .green-hero>*{position:relative;z-index:2}
+body.utsav .green-hero>#u-fw{position:absolute;z-index:1}
+body.utsav .green-hero h1,body.utsav .green-hero h2{text-shadow:0 2px 14px rgba(0,0,0,.6)}
+#u-diyas{height:92px;margin:14px 0 4px;border-radius:16px;border:1.5px solid #e9b949;background:url(u-diyas.jpg) center/cover;position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+#u-diyas::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,18,12,.55),rgba(2,18,12,0) 30%,rgba(2,18,12,0) 70%,rgba(2,18,12,.55))}
+#u-diyas b{position:absolute;left:0;right:0;top:10px;text-align:center;font:700 italic 20px/1 'Playfair Display',serif;color:#ffe9a8;text-shadow:0 2px 8px #000,0 0 12px rgba(233,185,73,.7)}
+body.utsav h2.sec-bar::after,body.utsav .sec-bar::after{content:"";display:block;width:64px;height:3px;margin-top:6px;border-radius:3px;background:linear-gradient(90deg,#e9b949,#f59e0b,transparent)}
+body.utsav .green-card{border:1.5px solid #ecd9a6!important;box-shadow:0 4px 14px rgba(233,185,73,.2)!important}
+body.utsav .green-nav{border-top:2px solid #e9b949}
+@media (prefers-reduced-motion:reduce){#u-garland::after{animation:none}}
