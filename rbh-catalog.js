@@ -9,7 +9,7 @@ function valid(p){return ['name','brand','colour','sizes','tag','tag2'].every(k=
 function clean(p){const out={};for(const k of ['n','brand','name','colour','cols','offer','mrp','sizes','szarr','tag','tag2','c','f','cat','rank','hidden','oos','revision','highlights'])if(p[k]!==undefined)out[k]=p[k];return out;}
 function merge(seed,docs){const map=new Map(seed.map(p=>[p.n,clean(p)]));docs.forEach(p=>{if(valid(p))map.set(p.n,clean(p));});return Array.from(map.values()).sort((a,b)=>a.rank-b.rank||a.n-b.n);}
 function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-const SHARE_PAGES=new Set(Array.from({length:87},(_,i)=>i+1));
+const SHARE_PAGES=new Set(Array.from({length:90},(_,i)=>i+1));
 root.RBHProductLink=function(n){n=+n;if(!n)return BASE;return SHARE_PAGES.has(n)?BASE+'p/'+n+'.html':BASE+'#p'+n;};
 function item(p){p={...p,szarr:(p.szarr?.length?p.szarr:['6','7','8','9','10']).map(String),f:p.f.map(u=>/^(https:|data:image\/jpeg;|rbhphoto:)/.test(u)?u:BASE+u)};p.c=p.f[0];p.wa='https://wa.me/919022150546?text='+encodeURIComponent('Hi Raja Boot House! I saw '+p.name+' ('+p.colour+') for '+(p.offer||'price on request')+'. Please confirm size and stock. (#'+p.n+')\nProduct: '+root.RBHProductLink(p.n));return p;}
 function connect(){if(!firebase.apps.length)firebase.initializeApp(CONFIG);return{db:firebase.firestore(),auth:firebase.auth()};}
