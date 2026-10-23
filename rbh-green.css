@@ -42,3 +42,13 @@ body,#green-app h1,#green-app h2,#green-app h3,#green-app strong,#green-app p,.p
 #admin .pdp-close,#orders .pdp-close{color:#063b28!important}
 #green-app .green-hero h2 strong,#green-app .green-top h1 span{font-family:'Playfair Display',Georgia,serif!important;font-style:italic}
 @media(max-width:699px){.green-hero{grid-template-columns:1.25fr .9fr}.green-hero h2{font-size:31px;white-space:nowrap}.green-hero h2 strong{font-size:35px}.green-hero .gold-btn{font-size:9px;padding:10px}}
+
+/* FIX 5 (Oct 2026): product page buttons - one big "Order on WhatsApp", smaller "Add to cart", small links lower down */
+html body #pdp #pdp-order.pdp-cta{display:flex!important;align-items:center;justify-content:center;width:auto!important;min-height:56px!important;margin:16px 0 0!important;padding:14px 16px!important;font-size:17px!important;font-weight:800!important;letter-spacing:.02em;background:#1d9e53!important;color:#fff!important;border-radius:14px!important;box-shadow:0 6px 16px rgba(29,158,83,.28)!important}
+html body #pdp .green-pdp-actions{display:flex!important;gap:8px!important;margin:10px 0 4px!important}
+html body #pdp .green-pdp-actions>button{flex:1 1 0!important;width:auto!important;min-width:0!important;min-height:40px!important;padding:8px!important;font-size:12px!important;font-weight:700!important;background:#fff!important;color:#063b28!important;border:1.5px solid #063b28!important;border-radius:10px!important;box-shadow:none!important}
+html body #pdp .green-pdp-actions>button .ic{width:16px;height:16px}
+html body #pdp .pdp-body .pdp-extra{display:flex!important;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px 14px;margin:10px 0 16px!important;padding:10px 0 0!important;border-top:1px solid #e7ece7}
+html body #pdp .pdp-body .pdp-extra .btn{display:inline-flex!important;width:auto!important;min-height:36px!important;margin:0!important;padding:6px 2px!important;background:none!important;border:0!important;box-shadow:none!important;color:#063b28!important;font-size:13px!important;font-weight:600!important;text-decoration:underline!important;text-underline-offset:3px}
+html body #pdp .pdp-body .pdp-extra .hold-note{flex-basis:100%;order:9;margin:0!important;font-size:11px!important;text-align:center;color:#5a6b60!important}
+html body #pdp .pdp-body .pdp-extra .mysz-note{flex-basis:100%;order:10}

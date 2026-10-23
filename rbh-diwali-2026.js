@@ -4,7 +4,7 @@
   var page=document.querySelector('main.page'), cats=document.getElementById('fest-categories');
   var catrow=document.querySelector('.catrow');if(cats&&catrow)cats.appendChild(catrow);
   if(catrow&&!catrow.querySelector('[href="#sec-kids"]')){
-    var kid=document.createElement('a');kid.href='#sec-kids';kid.innerHTML='<img src="1-53-paragon-kids-sandal-navy-front.jpg" alt="Kids footwear category"><span>Kids</span>';catrow.appendChild(kid);
+    var kid=document.createElement('a');kid.href='#sec-kids';kid.innerHTML='<img loading="lazy" decoding="async" src="1-53-paragon-kids-sandal-navy-front.webp" alt="Kids footwear category"><span>Kids</span>';catrow.appendChild(kid);
   }
   // Keep the reserved first-child festival slot untouched. Search stays before the catalogue.
   var hero=document.getElementById('diwali-hero'),status=document.getElementById('fest-store-status');
