@@ -85,6 +85,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===88));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===89));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===90));
+  [91,92,93].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
@@ -225,11 +226,11 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   function pick(ns) { return ns.map(function (n) { return byN[n]; }).filter(Boolean); }
   /* --- Trending (front page top): user-picked offer posters as card photos --- */
   var TRENDIMG = { 6: '1-trending-power-olive.webp', 7: '2-trending-power-navy.webp', 56: '1-3-56-paragon-kolhapuri-poster.webp' };
-  fill('grid-trending', pick([56, 6, 7]).map(function (it) { var t = Object.assign({}, it); if (TRENDIMG[t.n]) t.c = TRENDIMG[t.n]; return t; }));
+  fill('grid-trending', pick([91,92,93,56, 6, 7]).map(function (it) { var t = Object.assign({}, it); if (TRENDIMG[t.n]) t.c = TRENDIMG[t.n]; return t; }));
   fill('grid-shoes', pick([1, 2, 3, 4]));
   fill('grid-sandals', pick([73,74,75,68,69,70,56, 6, 7, 22, 23, 32, 38]));
-  fill('grid-sliders', pick([5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
-  fill('grid-flipflops', pick([14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
+  fill('grid-sliders', pick([91,92,5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
+  fill('grid-flipflops', pick([93,14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
   fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37, 45]));
   fill('grid-school', pick([33, 34]));
   fill('grid-kids', pick([53, 54, 55]));
@@ -2532,7 +2533,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
         grids.forEach(function(id){var grid=document.getElementById(id);if(grid)grid.innerHTML='';});
         ORD=0;
         items.forEach(function(p){if(!window.RBHCatalog.CATS.includes(p.cat))p.cat='grid-sandals';fill(p.cat,[p]);});
-        var trend=pick([56,6,7]).filter(Boolean);fill('grid-trending',trend.map(function(p){return Object.assign({},p);}));
+        var trend=pick([91,92,93,56,6,7]).filter(Boolean);fill('grid-trending',trend.map(function(p){return Object.assign({},p);}));
         renderHomeRows();applyOverrides();applyFilter();applySort();syncWishUI();renderBag();
         var nco=document.getElementById('sec-newcoll');if(nco)nco.hidden=!items.some(function(p){return p.cat==='grid-newcoll';});var limited=document.getElementById('sec-limited');if(limited)limited.hidden=!items.some(function(p){return p.cat==='grid-limited';});
         if(shown){if(byN[shown])openPdp(byN[shown]);else{pdp.hidden=true;document.body.style.overflow='';curIt=null;}}window.dispatchEvent(new Event('rbh-catalog-updated'));
