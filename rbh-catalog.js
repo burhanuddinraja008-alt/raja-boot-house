@@ -10,10 +10,10 @@ const WEBP=new Set(["1-119-w20","1-3-56-paragon-kolhapuri-poster","1-47-white-1"
 function webp(u){return String(u).replace(/^((?:https:\/\/burhanuddinraja008-alt\.github\.io\/raja-boot-house\/)?)([A-Za-z0-9_-]+)\.jpg$/,(m,a,n)=>WEBP.has(n)?a+n+'.webp':m);}
 
 function valid(p){return ['name','brand','colour','sizes','tag','tag2'].every(k=>p[k]===undefined||typeof p[k]==='string'&&!/[<>"]/g.test(p[k]))&&p.f?.every(u=>typeof u==='string'&&!/[<>" ]/.test(u))&& Number.isInteger(p.n)&&p.n>0&&p.n<1000000&&typeof p.name==='string'&&p.name.trim().length>0&&p.name.length<=100&&CATS.includes(p.cat)&&Array.isArray(p.f)&&p.f.length>0&&p.f.length<=8;}
-function clean(p){const out={};for(const k of ['n','brand','name','colour','cols','offer','mrp','sizes','szarr','tag','tag2','c','f','cat','rank','hidden','oos','revision','highlights'])if(p[k]!==undefined)out[k]=p[k];return out;}
+function clean(p){const out={};for(const k of ['n','brand','name','colour','cols','offer','mrp','sizes','szarr','tag','tag2','c','f','cat','rank','hidden','oos','revision','highlights','offerNote'])if(p[k]!==undefined)out[k]=p[k];return out;}
 function merge(seed,docs){const map=new Map(seed.map(p=>[p.n,clean(p)]));docs.forEach(p=>{if(valid(p))map.set(p.n,clean(p));});return Array.from(map.values()).sort((a,b)=>a.rank-b.rank||a.n-b.n);}
 function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-const SHARE_PAGES=new Set(Array.from({length:93},(_,i)=>i+1));
+const SHARE_PAGES=new Set(Array.from({length:97},(_,i)=>i+1));
 root.RBHProductLink=function(n){n=+n;if(!n)return BASE;return SHARE_PAGES.has(n)?BASE+'p/'+n+'.html':BASE+'#p'+n;};
 function item(p){p={...p,szarr:(p.szarr?.length?p.szarr:['6','7','8','9','10']).map(String),f:p.f.map(u=>/^(https:|data:image\/jpeg;|rbhphoto:)/.test(u)?webp(u):BASE+webp(u))};p.c=p.f[0];p.wa='https://wa.me/919022150546?text='+encodeURIComponent('Hi Raja Boot House! I saw '+p.name+' ('+p.colour+') for '+(p.offer||'price on request')+'. Please confirm size and stock. (#'+p.n+')\nProduct: '+root.RBHProductLink(p.n));return p;}
 function connect(){if(!firebase.apps.length)firebase.initializeApp(CONFIG);return{db:firebase.firestore(),auth:firebase.auth()};}

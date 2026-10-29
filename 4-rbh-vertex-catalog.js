@@ -86,6 +86,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===89));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===90));
   [91,92,93].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
+  [94,95,96,97].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
@@ -191,7 +192,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
       '<h3>' + esc(it.name) + '</h3>' +
       '<div class="imgwrap">' + (offPct(it) ? '<span class="offpill-card">' + offPct(it) + '% off</span>' : '') + '<span class="stockpill" hidden></span>' + '<img loading="lazy" decoding="async" src="' + it.c + '" alt="' + esc(it.name) + ', ' + esc(it.colour) + '" loading="lazy"></div>' +
       (it.mrp ? '<div class="mrp">MRP ' + esc(it.mrp) + '</div>' : '') +
-      '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp') + '</div>' +
+      '<div class="offer">' + (it.offer ? 'Offer Price ' + it.offer : 'Price: ask on WhatsApp') + (it.offerNote ? ' &nbsp;<span class="gtag2">' + esc(it.offerNote) + '</span>' : '') + '</div>' +
       '<div class="facts"><div><b>Colour</b> ' + esc(it.colour) + '</div><div><b>Available Sizes</b> ' + esc(it.sizes) + '</div></div>' +
       (it.oos ? '<div class="oosnote">Out of stock - WhatsApp us for new stock</div>' : '<a class="btn" href="' + it.wa + '" target="_blank" rel="noopener">Order on WhatsApp</a>') +
       (it.oos ? '' : '<a class="btn btn-hold-card" href="' + holdLink(it) + '" target="_blank" rel="noopener">Hold this pair for me</a>') +
@@ -227,7 +228,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   /* --- Trending (front page top): user-picked offer posters as card photos --- */
   var TRENDIMG = { 6: '1-trending-power-olive.webp', 7: '2-trending-power-navy.webp', 56: '1-3-56-paragon-kolhapuri-poster.webp' };
   fill('grid-trending', pick([91,92,93,56, 6, 7]).map(function (it) { var t = Object.assign({}, it); if (TRENDIMG[t.n]) t.c = TRENDIMG[t.n]; return t; }));
-  fill('grid-shoes', pick([1, 2, 3, 4]));
+  fill('grid-shoes', pick([94, 95, 96, 97, 1, 2, 3, 4]));
   fill('grid-sandals', pick([73,74,75,68,69,70,56, 6, 7, 22, 23, 32, 38]));
   fill('grid-sliders', pick([91,92,5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
   fill('grid-flipflops', pick([93,14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
@@ -497,6 +498,8 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (it.mrp) { pdpMrp.textContent = 'MRP ' + it.mrp; pdpMrp.hidden = false; } else { pdpMrp.hidden = true; }
     var off = offPct(it);
     if (off) { pdpOff.textContent = off + '% off'; pdpOff.hidden = false; } else { pdpOff.hidden = true; }
+    var onote=document.getElementById('rbh-pdp-offernote');if(!onote){onote=document.createElement('span');onote.id='rbh-pdp-offernote';onote.style.cssText='background:#8a6d1f;color:#fff;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;margin-left:4px';document.querySelector('.pdp-pricerow').appendChild(onote);}
+    onote.textContent=it.offerNote||'';onote.hidden=!it.offerNote;
     let photoBadge=document.getElementById('rbh-pdp-photo-off');
     if(!photoBadge){photoBadge=document.createElement('span');photoBadge.id='rbh-pdp-photo-off';pdpImg.parentElement.style.position='relative';pdpImg.parentElement.appendChild(photoBadge);}
     photoBadge.textContent=off+'% OFF';photoBadge.hidden=!off;photoBadge.style.cssText='position:absolute;top:12px;left:12px;background:#063e2d;color:white;border-radius:20px;padding:7px 12px;font-size:13px;font-weight:700;z-index:3;pointer-events:none';
