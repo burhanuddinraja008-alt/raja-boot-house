@@ -87,6 +87,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===90));
   [91,92,93].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
   [94,95,96,97].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
+  [98,99].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
@@ -231,13 +232,13 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   fill('grid-shoes', pick([94, 95, 96, 97, 1, 2, 3, 4]));
   fill('grid-sandals', pick([73,74,75,68,69,70,56, 6, 7, 22, 23, 32, 38]));
   fill('grid-sliders', pick([91,92,5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
-  fill('grid-flipflops', pick([93,14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
+  fill('grid-flipflops', pick([98,99,93,14, 15, 16, 17, 18, 19, 20, 21, 26, 39, 41, 42, 44]));
   fill('grid-shoes2', pick([24, 25, 30, 31, 36, 37, 45]));
   fill('grid-school', pick([33, 34]));
   fill('grid-kids', pick([53, 54, 55]));
   (function(){ if(!document.getElementById('sec-limited')){ var tr0=document.getElementById('sec-trending'); if(tr0){ var sl=document.createElement('section'); sl.id='sec-limited'; sl.innerHTML='<h2 class="sec-bar">Limited Sale</h2><div class="grid" id="grid-limited"></div>'; tr0.parentNode.insertBefore(sl,tr0); } } })();
   (function(){ if(!document.getElementById('sec-newcoll')){ var l0=document.getElementById('sec-limited'); if(l0){ var nc=document.createElement('section'); nc.id='sec-newcoll'; nc.innerHTML='<h2 class="sec-bar">New Collection</h2><div class="grid" id="grid-newcoll"></div>'; l0.parentNode.insertBefore(nc,l0); } } })();
-  fill('grid-newcoll', pick([79,80,81,82,83,84,85,86]));
+  fill('grid-newcoll', pick([91,79,80,81,82,83,84,85,86]));
   fill('grid-limited', pick([58, 59, 60, 61, 62, 63, 64, 65, 66, 67]));
   fill('grid-ladies', pick([76, 77, 78, 35, 46]));
 
