@@ -92,6 +92,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===102));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===103));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===104));
+  [105,106].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
@@ -480,7 +481,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (talk && curIt) talk.href = talkLink(curIt, curCol, pdpSelectedSize, qty);
     var holdE = document.getElementById('pdp-hold');
     if (holdE && curIt) holdE.href = holdLink(curIt, pdpSelectedSize, curCol);
-    var gen = document.querySelector('#pdp .trust-row .trust'); if (gen && curIt) gen.style.display = (curIt.n === 104 ? 'none' : '');
+    var gen = document.querySelector('#pdp .trust-row .trust'); if (gen && curIt) gen.style.display = ((curIt.n === 104 || curIt.n === 105 || curIt.n === 106) ? 'none' : '');
   }
 
   function chipRow(box, labels, onPick, active) {
