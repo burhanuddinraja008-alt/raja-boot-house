@@ -15,7 +15,8 @@
     list.forEach(function (s) { var p = new Image(); p.src = s; });
     idx = Math.max(0, list.indexOf(img.src));
     hint = document.createElement('div'); hint.className = 'av-hint';
-    hint.textContent = '\u25C0  Drag to turn  \u25B6   \u00B7   ' + list.length + ' angles';
+    var pid = (document.querySelector('[data-product-id]') || { dataset: {} }).dataset.productId;
+    hint.textContent = pid === '100' ? '\u25C0  Swipe  \u25B6   \u00B7   ' + list.length + ' photos' : '\u25C0  Drag to turn  \u25B6   \u00B7   ' + list.length + ' angles';
     dots = document.createElement('div'); dots.className = 'av-dots';
     list.forEach(function () { dots.appendChild(document.createElement('i')); });
     gal.appendChild(hint); gal.appendChild(dots); mark();
