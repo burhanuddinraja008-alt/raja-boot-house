@@ -91,6 +91,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===101));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===102));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===103));
+  items.push(window.RBH_CATALOG_SEED.find(p=>p.n===104));
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
@@ -478,7 +479,8 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     var talk = document.getElementById('pdp-talk');
     if (talk && curIt) talk.href = talkLink(curIt, curCol, pdpSelectedSize, qty);
     var holdE = document.getElementById('pdp-hold');
-    if (holdE && curIt) holdE.href = holdLink(curIt, pdpSelectedSize);
+    if (holdE && curIt) holdE.href = holdLink(curIt, pdpSelectedSize, curCol);
+    var gen = document.querySelector('#pdp .trust-row .trust'); if (gen && curIt) gen.style.display = (curIt.n === 104 ? 'none' : '');
   }
 
   function chipRow(box, labels, onPick, active) {
@@ -1497,15 +1499,15 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   }
   function talkLink(it, col, size, q) {
     var t = 'Hello Raja Boot House 👋\n\nI am interested in:\n\nProduct: ' + it.name +
-      '\nBrand: ' + it.brand + '\nSize: ' + (size || 'to be confirmed') +
+      '\nBrand: ' + it.brand + (it.n === 104 && col ? '\nColour: ' + col : '') + '\nSize: ' + (size || 'to be confirmed') +
       '\nQuantity: ' + (q || 1) + '\nPrice: ' + (it.offer ? it.offer.replace('₹', 'Rs ') : 'please share') +
       '\nLink: ' + (window.RBHProductLink ? window.RBHProductLink(it.n) : '') +
       '\n\nPlease confirm availability and delivery details.';
     return WA(encodeURIComponent(t));
   }
-  function holdLink(it, size) {
+  function holdLink(it, size, col) {
     var t = 'Hello Raja Boot House 👋\n\nPlease keep this pair for me till tomorrow evening, I will come to the shop to collect it.\n\nProduct: ' + it.name +
-      '\nBrand: ' + it.brand + '\nColour: ' + it.colour + '\nSize: ' + (size || 'will confirm at shop') +
+      '\nBrand: ' + it.brand + '\nColour: ' + (it.n === 104 && col ? col : it.colour) + '\nSize: ' + (size || 'will confirm at shop') +
       '\nPrice: ' + (it.offer ? it.offer.replace('₹', 'Rs ') : 'please share') + '\nLink: ' + (window.RBHProductLink ? window.RBHProductLink(it.n) : '') + '\n\nThank you!';
     return WA(encodeURIComponent(t));
   }
@@ -1529,7 +1531,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     /* talk link */
     document.getElementById('pdp-talk').href = talkLink(it, curCol, pdpSelectedSize, qty);
     var holdEl = document.getElementById('pdp-hold');
-    if (holdEl) { holdEl.href = holdLink(it, pdpSelectedSize); holdEl.parentNode.classList.toggle('hold-off', !!effOos(it)); }
+    if (holdEl) { holdEl.href = holdLink(it, pdpSelectedSize, curCol); holdEl.parentNode.classList.toggle('hold-off', !!effOos(it)); }
     /* my size */
     var sizes = sizeList(it), saved = lsGet(SIZES_KEY, {})[itemGender(it)];
     var msNote = document.getElementById('pdp-mysz');
@@ -2586,10 +2588,13 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
 var chosenSize='',chosenProduct='';function update(){
  document.querySelectorAll('.acct-card').forEach(function(el){if(el.textContent.includes('My Orders'))el.remove();});
  var pdp=document.getElementById('pdp'),btn=document.getElementById('pdp-order'),photo=document.getElementById('pdp-img');
- if(btn&&photo&&photo.getAttribute('src')){var productId=(pdp&&pdp.dataset.productId)||((location.hash.match(/^#p(\d+)$/)||[])[1]);if(productId!==chosenProduct){chosenProduct=productId;chosenSize='';}var seed=window.RBH_CATALOG_SEED?.find(p=>String(p.n)===productId);var product=window.RBHGreen?.items?.().find(p=>String(p.n)===productId)||seed;var original=seed?.c?new URL(seed.c,location.origin+'/raja-boot-house/').href:photo.src;if(original.startsWith('blob:'))original=location.origin+location.pathname+location.hash;var amount=document.getElementById('q-val');var price=product&&product.offer?' - Offer Price '+product.offer:'';var text='Hi Raja Boot House!\n\nName:\nAddress (with PIN):\n\nI want to ask about '+document.getElementById('pdp-name').textContent+(product?' ('+(function(){var col=product.colour||seed?.colour||'';if(productId==='100'){var oc=document.querySelector('#pdp-colours .on');if(oc)col=oc.textContent.trim();}return col;})()+')'+price:'')+'. Size: '+(chosenSize||Array.from(document.querySelectorAll('#pdp-sizes .chip.on')).map(e=>e.textContent).join(', ')||'Please confirm')+'. Qty: '+(amount?amount.textContent:'1')+'.\nProduct: '+(productId&&window.RBHProductLink?window.RBHProductLink(productId):original);var desired='https://wa.me/919022150546?text='+encodeURIComponent(text);if(btn.href!==desired)btn.href=desired;if(btn.textContent!=='Order on WhatsApp')btn.textContent='Order on WhatsApp';}
+ if(btn&&photo&&photo.getAttribute('src')){var productId=(pdp&&pdp.dataset.productId)||((location.hash.match(/^#p(\d+)$/)||[])[1]);if(productId!==chosenProduct){chosenProduct=productId;chosenSize='';}var seed=window.RBH_CATALOG_SEED?.find(p=>String(p.n)===productId);var product=window.RBHGreen?.items?.().find(p=>String(p.n)===productId)||seed;var original=seed?.c?new URL(seed.c,location.origin+'/raja-boot-house/').href:photo.src;if(original.startsWith('blob:'))original=location.origin+location.pathname+location.hash;var amount=document.getElementById('q-val');var price=product&&product.offer?' - Offer Price '+product.offer:'';var text='Hi Raja Boot House!\n\nName:\nAddress (with PIN):\n\nI want to ask about '+document.getElementById('pdp-name').textContent+(product?' ('+(function(){var col=product.colour||seed?.colour||'';if(productId==='100'||productId==='104'){var oc=document.querySelector('#pdp-colours .on');if(oc)col=oc.textContent.trim();}return col;})()+')'+price:'')+'. Size: '+(chosenSize||Array.from(document.querySelectorAll('#pdp-sizes .chip.on')).map(e=>e.textContent).join(', ')||'Please confirm')+'. Qty: '+(amount?amount.textContent:'1')+'.\nProduct: '+(productId&&window.RBHProductLink?window.RBHProductLink(productId):original);var desired='https://wa.me/919022150546?text='+encodeURIComponent(text);if(btn.href!==desired)btn.href=desired;if(btn.textContent!=='Order on WhatsApp')btn.textContent='Order on WhatsApp';}
  document.querySelectorAll('article.card').forEach(function(card){var img=card.querySelector('.imgwrap img'),name=card.querySelector('h3');card.querySelectorAll('a.btn').forEach(function(a){if(a.textContent.trim()==='Order on WhatsApp'&&img&&name){var wanted='https://wa.me/919022150546?text='+encodeURIComponent('Hi Raja Boot House! I saw '+name.textContent+' on your app. '+(card._it?'Colour: '+card._it.colour+'. Offer Price: '+card._it.offer+'. ':'')+'Please confirm size and stock. '+(card._it&&card._it.n&&window.RBHProductLink?'Product: '+window.RBHProductLink(card._it.n):'Photo: '+img.src));if(a.href!==wanted)a.href=wanted;}});});
 }
 var queued=false;new MutationObserver(function(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;update();});}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src','hidden','href']});
 document.addEventListener('click',function(e){var size=e.target.closest('#pdp-sizes button');if(size){chosenSize=size.textContent;chosenProduct=document.getElementById('pdp').dataset.productId||'';}if(e.target.closest('#pdp-order'))update();if(e.target.closest('#pdp-sizes,#pdp-colours,.qty'))setTimeout(update,0);},true);update();
 if(location.hash==='#bag'||location.hash==='#orders')history.replaceState(null,'',location.pathname+location.search);
 })();
+
+/* #104 only: choosing a colour chip shows that colour's photo */
+document.addEventListener('click',function(e){try{var chip=e.target.closest('#pdp-colours .chip, #pdp-colours button');if(!chip)return;var pdp=document.getElementById('pdp');if(!pdp||pdp.dataset.productId!=='104')return;var seed=window.RBH_CATALOG_SEED.find(function(p){return p.n===104});var idx=seed.cols.indexOf(chip.textContent.trim());if(idx<0)return;var th=document.querySelectorAll('#pdp-thumbs img');if(th[idx])th[idx].click();}catch(x){}});
