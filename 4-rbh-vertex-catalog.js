@@ -90,6 +90,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   [98,99,100].forEach(function(n){items.push(window.RBH_CATALOG_SEED.find(p=>p.n===n));});
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===101));
   items.push(window.RBH_CATALOG_SEED.find(p=>p.n===102));
+  items.push(window.RBH_CATALOG_SEED.find(p=>p.n===103));
   function offPct(it) {
     if (!it.mrp || !it.offer) return 0;
     var m = parseInt(it.mrp.replace(/[^0-9]/g, ''), 10), o = parseInt(it.offer.replace(/[^0-9]/g, ''), 10);
