@@ -1016,7 +1016,11 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (h === '#admin') { openAdmin(); return; }
     if (h === '#owner') { openOwnerSignin(); return; }
     var m = h.match(/^#p(\d+)$/);
-    if (m && byN[+m[1]]) { openPdp(byN[+m[1]]); }
+    if (m && byN[+m[1]]) {
+      /* Direct product links (#p86) open through the green UI when it is loaded, so the PDP gets the same Add to Cart / Continue actions as a card tap. Fallback keeps the legacy overlay if the green UI has not loaded yet. */
+      if (window.RBHGreenUI && window.RBHGreenUI.openProduct) { window.RBHGreenUI.openProduct(+m[1]); }
+      else { openPdp(byN[+m[1]]); }
+    }
   }
   window.addEventListener('hashchange', handleHash);
   var pendingPdpHash = (location.hash.match(/^#p(\d+)$/) || [])[1] || '';
