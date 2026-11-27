@@ -233,7 +233,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
   function pick(ns) { return ns.map(function (n) { return byN[n]; }).filter(Boolean); }
   /* --- Trending (front page top): user-picked offer posters as card photos --- */
   var TRENDIMG = { 6: '1-trending-power-olive.webp', 7: '2-trending-power-navy.webp', 56: '1-3-56-paragon-kolhapuri-poster.webp' };
-  fill('grid-trending', pick([100,91,92,93,56, 6, 7]).map(function (it) { var t = Object.assign({}, it); if (TRENDIMG[t.n]) t.c = TRENDIMG[t.n]; return t; }));
+  fill('grid-trending', pick([101,100,91,92,93,56, 6, 7]).map(function (it) { var t = Object.assign({}, it); if (TRENDIMG[t.n]) t.c = TRENDIMG[t.n]; return t; }));
   fill('grid-shoes', pick([100, 94, 95, 96, 97, 1, 2, 3, 4]));
   fill('grid-sandals', pick([73,74,75,68,69,70,56, 6, 7, 22, 23, 32, 38]));
   fill('grid-sliders', pick([91,92,5, 8, 9, 10, 11, 12, 13, 27, 28, 29, 40, 43]));
@@ -1044,6 +1044,9 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
     if (carousel && arrivals) carousel.parentNode.insertBefore(arrivals, carousel);
     if (!track) return;
     var posters = [
+      ['rbh-poster-101-combo.webp', 'Lancer Running Shoes - White Grey and Silver Grey, offer Rs 850'],
+      ['rbh-poster-101-white.webp', 'Lancer Running Shoes White Grey, offer Rs 850'],
+      ['rbh-poster-101-silver.webp', 'Lancer Running Shoes Silver Grey, offer Rs 850'],
     ];
     posters.slice().reverse().forEach(function (p) {
       var img = document.createElement('img'); img.src = p[0]; img.alt = p[1]; img.loading = 'lazy'; img.className = 'rbh-poster-slide';
@@ -2547,7 +2550,7 @@ window.RBH_CATALOG_SEED=window.RBH_CATALOG_SEED.concat([{"n": 68, "brand": "Para
         grids.forEach(function(id){var grid=document.getElementById(id);if(grid)grid.innerHTML='';});
         ORD=0;
         items.forEach(function(p){if(!window.RBHCatalog.CATS.includes(p.cat))p.cat='grid-sandals';fill(p.cat,[p]);});
-        var trend=pick([100,91,92,93,56,6,7]).filter(Boolean);fill('grid-trending',trend.map(function(p){return Object.assign({},p);}));
+        var trend=pick([101,100,91,92,93,56,6,7]).filter(Boolean);fill('grid-trending',trend.map(function(p){return Object.assign({},p);}));
         renderHomeRows();applyOverrides();applyFilter();applySort();syncWishUI();renderBag();
         var nco=document.getElementById('sec-newcoll');if(nco)nco.hidden=!items.some(function(p){return p.cat==='grid-newcoll';});var limited=document.getElementById('sec-limited');if(limited)limited.hidden=!items.some(function(p){return p.cat==='grid-limited';});
         if(shown){if(byN[shown])openPdp(byN[shown]);else{pdp.hidden=true;document.body.style.overflow='';curIt=null;}}window.dispatchEvent(new Event('rbh-catalog-updated'));
